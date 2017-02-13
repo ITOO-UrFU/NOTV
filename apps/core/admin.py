@@ -6,15 +6,33 @@ from .models import *
 
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
-    list_display = ('title', 'description', 'get_speakers', 'startdate', 'enddate')
-    fields = ('title', 'description', 'speakers', 'startdate', 'enddate')
-    search_fields = ('title', 'descroption', 'speakers')
-    list_filter = ('startdate', 'enddate', 'speakers')
-    filter_horizontal = ('speakers', )
+    list_display = ('title', 'description', 'startdate', 'enddate')
+    fields = ('title', 'description', 'startdate', 'enddate')
+    search_fields = ('title', 'descroption')
+    list_filter = ('startdate', 'enddate')
 
 
-@admin.register(Speaker)
-class SpeakerAdmin(VersionAdmin):
-    fields = ("person",)
-    search_fields = ("person",)
+@admin.register(CustomObject)
+class CustomObjectAdmin(VersionAdmin):
+    fields = ("title", "json")
+    search_fields = ("title",)
 
+
+@admin.register(RegistrationType)
+class RegistrationTypeAdmin(VersionAdmin):
+    fields = ("title",)
+
+
+@admin.register(EventUserRegistration)
+class EventUserRegistrationAdmin(VersionAdmin):
+    fields = ("person", "event", "type", "status")
+    list_display = ("__str__", "status")
+    search_fields = ("__str__",)
+    list_filter = ("person", "event", "type", "status")
+
+
+@admin.register(Page)
+class PageAdmin(VersionAdmin):
+    fields = ("slug", "html", "pages")
+    list_display = ("slug", "html", "get_pages_display")
+    filter_horizontal = ('pages',)

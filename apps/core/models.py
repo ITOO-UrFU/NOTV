@@ -6,8 +6,36 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_countries.fields import CountryField
+from jsonfield import JSONField
 
 from django.utils.translation import ugettext_lazy as _
+
+
+class RegistrationType(models.Model):
+    title = models.CharField(_("Тип регистрации на мероприятие"), max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class EventUserRegistration(models.Model):
+    STATUSES = (
+        ("r", _("Зарегистрирован")),
+        ("y", _("Посетил")),
+        ("n", _("Не посетил")),
+    )
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    person = models.ForeignKey("Person")
+    event = models.ForeignKey("Event")
+    type = models.ForeignKey("RegistrationType")
+    status = models.CharField(_("Статус"), choices=STATUSES, max_length=1, default="r")
+
+    class Meta:
+        unique_together = ('person', 'event',)
+
+    def __str__(self):
+        return " ".join([str(self.person), str(self.event), str(self.type)])
 
 
 class Event(models.Model):
@@ -16,10 +44,6 @@ class Event(models.Model):
     description = models.TextField(_("Описание события"), max_length=16384, blank=True, default="")
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
-    speakers = models.ManyToManyField("Speaker")
-
-    def get_speakers(self):
-        return ' '.join([str(speaker.person) for speaker in self.speakers.all()])
 
     class Meta:
         verbose_name = 'событие'
@@ -27,20 +51,6 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
-
-    get_speakers.short_description = _("Спикеры")
-
-
-class Speaker(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    person = models.ForeignKey('Person')
-
-    class Meta:
-        verbose_name = 'спикер'
-        verbose_name_plural = 'спикеры'
-
-    def __str__(self):
-        return str(self.person)
 
 
 class Person(models.Model):
@@ -84,3 +94,23 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.person.save()
+
+
+class Page(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slug = models.SlugField(_("Код"))
+    html = models.TextField(_("Контент"), blank=True, null=True)
+    pages = models.ManyToManyField("self", blank=True, related_name='+', symmetrical=False)
+    keywords = models.TextField("SEO", blank=True, null=True)
+
+    def __str__(self):
+        return self.slug
+
+    def get_pages_display(self):
+        return " ".join([page.slug for page in self.pages.all()])
+
+
+class CustomObject(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(_('Наименование'), max_length=32, blank=False, default='')
+    json = JSONField()

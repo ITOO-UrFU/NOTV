@@ -16,6 +16,23 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from rest_framework import routers, serializers, viewsets
+
+from api.views import *
+from core.views import custom_json_view
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^custom/(?P<title>.*)/$', custom_json_view, name="custom_json_view"),
+
+
 ]
+
+router = routers.DefaultRouter()
+router.register(r'events', Events)
+router.register(r'persons', Persons)
+router.register(r'users', Users)
+router.register(r'pages', Pages)
+
+urlpatterns.append(url(r'^api/v1/', include(router.urls, namespace='api')))

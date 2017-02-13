@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from .models import CustomObject
 
-# Create your views here.
+
+def custom_json_view(request, title):
+    json_object = get_object_or_404(CustomObject, title=title)
+    return JsonResponse(json_object.json)
+
+
