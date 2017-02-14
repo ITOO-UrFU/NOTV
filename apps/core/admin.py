@@ -36,3 +36,11 @@ class PageAdmin(VersionAdmin):
     fields = ("slug", "html", "pages")
     list_display = ("slug", "html", "get_pages_display")
     filter_horizontal = ('pages',)
+
+
+@admin.register(Person)
+class PersonAdmin(VersionAdmin):
+    fields = ("user", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography")
+    list_display = ("user", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography")
+
+
