@@ -141,7 +141,7 @@ CORS_ORIGIN_WHITELIST = (
     "*"
 )
 
-CORS_URLS_REGEX = r'^/api/v1/.*$'
+CORS_URLS_REGEX = r'^.*$'
 
 CORS_ALLOW_METHODS = (
     'DELETE',
