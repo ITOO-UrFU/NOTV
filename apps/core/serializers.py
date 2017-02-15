@@ -39,16 +39,14 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PageSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Page
         fields = '__all__'
-        # depth = 10
 
-
-class PageDetail(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Page
-
+# class PageDetail(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Page
 
 class EventDetail(serializers.HyperlinkedModelSerializer):
     class Meta:
