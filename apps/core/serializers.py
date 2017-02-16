@@ -39,10 +39,15 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PageSerializer(serializers.ModelSerializer):
+    pages = serializers.SerializerMethodField('get_alternate_name')
+
+    def get_alternate_name(self, obj):
+        return obj.get_pages_list()
 
     class Meta:
         model = Page
-        fields = '__all__'
+        fields = ("id", "slug", "title", "html", "keywords", "pages")
+
 
 # class PageDetail(serializers.HyperlinkedModelSerializer):
 #     class Meta:

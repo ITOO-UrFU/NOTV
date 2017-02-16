@@ -37,19 +37,24 @@ def page_slug(request, slug):
     Courses ids.
     """
 
-    #slug = request.GET.get("slug")
     try:
-        print(request.GET, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         page = Page.objects.get(slug=slug)
     except:
         page = None
+
+    if not page:
+        try:
+            page = Page.objects.get(pk=slug)
+        except:
+            page = None
 
     if page:
         return Response({
             "id": page.id,
             "slug": page.slug,
+            "title": page.title,
             "html": page.html,
-            "pages": page.get_pages_display(),
+            "pages": page.get_pages_list(),
             "keywords": page.keywords,
 
         })

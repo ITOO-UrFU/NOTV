@@ -99,6 +99,7 @@ class Person(models.Model):
 class Page(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(_("Код"))
+    title = models.CharField(_("Название страницы"), max_length=256, blank=True, null=True)
     html = models.TextField(_("Контент"), blank=True, null=True)
     pages = models.ManyToManyField("self", blank=True, related_name='+', symmetrical=False)
     keywords = models.TextField("SEO", blank=True, null=True)
@@ -108,6 +109,9 @@ class Page(models.Model):
 
     def get_pages_display(self):
         return " ".join([page.slug for page in self.pages.all()])
+
+    def get_pages_list(self):
+        return [page.slug for page in self.pages.all()]
 
 
 class CustomObject(models.Model):
