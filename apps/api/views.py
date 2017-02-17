@@ -54,12 +54,11 @@ def page_slug(request, slug):
             "slug": page.slug,
             "title": page.title,
             "html": page.html,
-            "pages": page.get_pages_list(),
+            "pages": page.get_pages_dict(),
             "keywords": page.keywords,
 
         })
     else:
         return Response({"status": "error",
                          "message": "Page not found"})
-
 

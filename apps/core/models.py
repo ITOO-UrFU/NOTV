@@ -11,6 +11,16 @@ from jsonfield import JSONField
 from django.utils.translation import ugettext_lazy as _
 
 
+def page_as_dict(page):
+    return {
+        "id": page.id,
+        "slug": page.slug,
+        "title": page.title,
+        "html": page.html,
+        "pages": page.get_pages_dict(),
+        "keywords": page.keywords,
+    }
+
 class RegistrationType(models.Model):
     title = models.CharField(_("Тип регистрации на мероприятие"), max_length=256, blank=True, null=True)
 
@@ -112,6 +122,10 @@ class Page(models.Model):
 
     def get_pages_list(self):
         return [page.slug for page in self.pages.all()]
+
+    def get_pages_dict(self):
+        return [page_as_dict(page) for page in self.pages.all()]
+
 
 
 class CustomObject(models.Model):
