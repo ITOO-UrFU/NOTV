@@ -113,6 +113,7 @@ class Page(models.Model):
     html = models.TextField(_("Контент"), blank=True, null=True)
     pages = models.ManyToManyField("self", blank=True, related_name='+', symmetrical=False)
     keywords = models.TextField("SEO", blank=True, null=True)
+    weight = models.IntegerField(_("Вес страницы"), max_length=8, default=100)
 
     def __str__(self):
         return self.slug
@@ -125,6 +126,9 @@ class Page(models.Model):
 
     def get_pages_dict(self):
         return [page_as_dict(page) for page in self.pages.all()]
+
+    class Meta:
+        ordering = ['weight']
 
 
 

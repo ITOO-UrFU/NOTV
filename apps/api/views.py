@@ -27,7 +27,7 @@ class Users(viewsets.ModelViewSet):
 
 
 class Pages(viewsets.ModelViewSet):
-    queryset = Page.objects.all()
+    queryset = Page.objects.order_by("weight")
     serializer_class = PageSerializer
 
 
