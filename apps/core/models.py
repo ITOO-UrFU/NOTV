@@ -21,6 +21,7 @@ def page_as_dict(page):
         "keywords": page.keywords,
     }
 
+
 class RegistrationType(models.Model):
     title = models.CharField(_("Тип регистрации на мероприятие"), max_length=256, blank=True, null=True)
 
@@ -61,6 +62,10 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_users(self):
+        registrations = EventUserRegistration.objects.filter(event=self)
+        return [registration for registration in registrations]
 
 
 class Person(models.Model):

@@ -4,12 +4,6 @@ from rest_framework import serializers
 from django_countries.serializer_fields import CountryField
 
 
-class EventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = '__all__'
-
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -38,6 +32,28 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
         depth = 2
 
 
+class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = RegistrationType
+        fields = ("title", )
+
+class EventUserRegistrationSerializer(serializers.ModelSerializer):
+    person = PersonSerializer()
+    type = RegistrationTypeSerializer()
+    class Meta:
+        model = EventUserRegistration
+        fields = ("id", "person", "type", "status")
+
+
+class EventSerializer(serializers.ModelSerializer):
+    get_users = EventUserRegistrationSerializer(many=True)
+    class Meta:
+        model = Event
+        fields = ("id", "title", "description", "get_users", "startdate", "enddate")
+
+
+
+
 class PageSerializer(serializers.ModelSerializer):
     pages = serializers.SerializerMethodField('get_alternate_name')
 
@@ -52,6 +68,16 @@ class PageSerializer(serializers.ModelSerializer):
 # class PageDetail(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = Page
+
+class RegistrationTypeDetail(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = RegistrationType
+
+
+class EventUserRegistrationDetail(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = EventUserRegistration
+
 
 class EventDetail(serializers.HyperlinkedModelSerializer):
     class Meta:
