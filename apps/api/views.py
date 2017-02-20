@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404, HttpResponseNotFound
 from rest_framework import viewsets, generics
 from rest_framework import serializers
 from rest_framework.response import Response
@@ -59,6 +60,6 @@ def page_slug(request, slug):
 
         })
     else:
-        return Response({"status": "error",
-                         "message": "Page not found"})
+        raise Http404
+
 
