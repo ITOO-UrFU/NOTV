@@ -23,35 +23,55 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class PersonSerializer(serializers.HyperlinkedModelSerializer):
-    country = CountryField()
-    user = UserSerializer()
-    class Meta:
-        model = Person
-        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography", "country", "user")
-        depth = 2
-
-
 class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RegistrationType
         fields = ("title", )
 
+
+class EventSerializer_noperson(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = ("id", "title", "description", "startdate", "enddate")
+
+
+class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
+    type = RegistrationTypeSerializer()
+    event = EventSerializer_noperson()
+
+    class Meta:
+        model = EventUserRegistration
+        fields = ("id", "type", "event",  "status")
+
+
+class PersonSerializer(serializers.HyperlinkedModelSerializer):
+    country = CountryField()
+    user = UserSerializer()
+    get_events = EventUserRegistrationSerializer_noperson(many=True)
+
+    class Meta:
+        model = Person
+        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography", "country", "user", "get_events")
+        depth = 2
+
+
 class EventUserRegistrationSerializer(serializers.ModelSerializer):
     person = PersonSerializer()
     type = RegistrationTypeSerializer()
+
     class Meta:
         model = EventUserRegistration
         fields = ("id", "person", "type", "status")
 
 
+
 class EventSerializer(serializers.ModelSerializer):
     get_users = EventUserRegistrationSerializer(many=True)
+
     class Meta:
         model = Event
         fields = ("id", "title", "description", "get_users", "startdate", "enddate")
-
-
 
 
 class PageSerializer(serializers.ModelSerializer):

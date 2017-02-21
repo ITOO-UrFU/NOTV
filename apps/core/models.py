@@ -99,6 +99,11 @@ class Person(models.Model):
         else:
             return str(self.user)
 
+    def get_events(self):
+        registrations = EventUserRegistration.objects.filter(person=self)
+        return [registration for registration in registrations]
+
+
 
 # @receiver(post_save, sender=User)
 # def create_user_profile(sender, instance, created, **kwargs):
