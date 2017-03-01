@@ -50,7 +50,7 @@ def page_slug(request, slug):
             page = None
 
     try:
-        type = Type.objects.get(pk=page.type).values("title")
+        type = Type.objects.filter(pk=page.type.id).values("title").first()["title"]
     except:
         type = None
 
