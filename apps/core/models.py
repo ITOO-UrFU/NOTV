@@ -88,6 +88,9 @@ class Person(models.Model):
     birthday_date = models.DateField(_('Дата рождения'), null=True, blank=True)
 #   roles = models.ManyToManyField(ROLE)  TODO: Сделать модель 'Роль'
     biography = models.TextField(_('Биография пользователя'), blank=True, default='')
+    position = models.CharField(_('Должность'), max_length=1024, blank=True, null=True)
+    division = models.CharField(_('Подразделение'), max_length=1024, blank=True, null=True)
+    photo = models.ImageField(_('Фото'), upload_to="media", blank=True, null=True)
 
     class Meta:
         verbose_name = 'персона'
@@ -102,7 +105,6 @@ class Person(models.Model):
     def get_events(self):
         registrations = EventUserRegistration.objects.filter(person=self)
         return [registration for registration in registrations]
-
 
 
 # @receiver(post_save, sender=User)
@@ -124,6 +126,7 @@ class Page(models.Model):
     pages = models.ManyToManyField("self", blank=True, related_name='+', symmetrical=False)
     keywords = models.TextField("SEO", blank=True, null=True)
     weight = models.IntegerField(_("Вес страницы"), max_length=8, default=100)
+    type = models.ForeignKey("Type", null=True, blank=True)
 
     def __str__(self):
         return self.slug
@@ -140,6 +143,11 @@ class Page(models.Model):
     class Meta:
         ordering = ['weight']
 
+
+class Type(models.Model):
+    title = models.CharField(_("Тип страницы"), max_length=256, blank=True, null=True)
+    def __str__(self):
+        return self.title
 
 
 class CustomObject(models.Model):

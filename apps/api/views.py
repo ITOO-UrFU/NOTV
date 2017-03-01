@@ -57,6 +57,7 @@ def page_slug(request, slug):
             "html": page.html,
             "pages": page.get_pages_dict(),
             "keywords": page.keywords,
+            "type": Type.objects.get(pk=page.type).values("title"),
 
         })
     else:
