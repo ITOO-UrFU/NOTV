@@ -12,6 +12,11 @@ from django.utils.translation import ugettext_lazy as _
 
 
 def page_as_dict(page):
+    try:
+        type = Type.objects.filter(pk=page.type.id).values("title").first()["title"]
+    except:
+        type = None
+
     return {
         "id": page.id,
         "slug": page.slug,
@@ -19,6 +24,7 @@ def page_as_dict(page):
         "html": page.html,
         "pages": page.get_pages_dict(),
         "keywords": page.keywords,
+        "type": type,
     }
 
 

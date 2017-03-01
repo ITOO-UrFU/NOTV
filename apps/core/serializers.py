@@ -65,7 +65,6 @@ class EventUserRegistrationSerializer(serializers.ModelSerializer):
         fields = ("id", "person", "type", "status")
 
 
-
 class EventSerializer(serializers.ModelSerializer):
     get_users = EventUserRegistrationSerializer(many=True)
 
