@@ -7,7 +7,7 @@ from .models import *
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
     list_display = ('title', 'description', 'startdate', 'enddate')
-    fields = ('title', 'description', 'startdate', 'enddate')
+    # fields = ('title', 'description', 'startdate', 'enddate')
     search_fields = ('title', 'descroption')
     list_filter = ('startdate', 'enddate')
 
@@ -40,12 +40,17 @@ class PageAdmin(VersionAdmin):
 
 @admin.register(Person)
 class PersonAdmin(VersionAdmin):
-    fields = ("user", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography")
     list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography")
 
 
 @admin.register(Type)
-class PageAdmin(VersionAdmin):
+class EventAdmin(VersionAdmin):
+    fields = ("title", )
+    list_display = ("title", )
+
+
+@admin.register(EventType)
+class EventTypeAdmin(VersionAdmin):
     fields = ("title", )
     list_display = ("title", )
 

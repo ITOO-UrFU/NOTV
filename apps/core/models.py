@@ -54,6 +54,9 @@ class EventUserRegistration(models.Model):
     def __str__(self):
         return " ".join([str(self.person), str(self.event), str(self.type)])
 
+    def get_type_display(self):
+        return str(self.type)
+
 
 class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -73,6 +76,12 @@ class Event(models.Model):
     def get_users(self):
         registrations = EventUserRegistration.objects.filter(event=self)
         return [registration for registration in registrations]
+
+    def get_type_display(self):
+        if self.type:
+            return self.type.title
+        else:
+            return None
 
 
 class Person(models.Model):
@@ -164,6 +173,7 @@ class EventType(models.Model):
 
     def __str__(self):
         return self.title
+
 
 
 class CustomObject(models.Model):
