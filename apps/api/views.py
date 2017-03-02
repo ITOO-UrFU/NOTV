@@ -49,6 +49,11 @@ def page_slug(request, slug):
         except:
             page = None
 
+    try:
+        type = Type.objects.filter(pk=page.type.id).values("title").first()["title"]
+    except:
+        type = None
+
     if page:
         return Response({
             "id": page.id,
@@ -57,7 +62,7 @@ def page_slug(request, slug):
             "html": page.html,
             "pages": page.get_pages_dict(),
             "keywords": page.keywords,
-            "type": Type.objects.get(pk=page.type).values("title"),
+            "type": type,
 
         })
     else:

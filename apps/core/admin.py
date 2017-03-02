@@ -33,8 +33,8 @@ class EventUserRegistrationAdmin(VersionAdmin):
 
 @admin.register(Page)
 class PageAdmin(VersionAdmin):
-    fields = ("slug", "weight", "title", "html", "pages", "type")
-    list_display = ("slug", "title", "weight", "html", "get_pages_display", "type")
+    fields = ("slug", "weight", "title", "html", "pages", "keywords", "type")
+    list_display = ("slug", "title", "weight", "html", "get_pages_display", "keywords", "type")
     filter_horizontal = ('pages',)
 
 

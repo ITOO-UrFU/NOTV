@@ -12,6 +12,11 @@ from django.utils.translation import ugettext_lazy as _
 
 
 def page_as_dict(page):
+    try:
+        type = Type.objects.filter(pk=page.type.id).values("title").first()["title"]
+    except:
+        type = None
+
     return {
         "id": page.id,
         "slug": page.slug,
@@ -19,6 +24,7 @@ def page_as_dict(page):
         "html": page.html,
         "pages": page.get_pages_dict(),
         "keywords": page.keywords,
+        "type": type,
     }
 
 
@@ -127,7 +133,7 @@ class Page(models.Model):
     html = models.TextField(_("Контент"), blank=True, null=True)
     pages = models.ManyToManyField("self", blank=True, related_name='+', symmetrical=False)
     keywords = models.TextField("SEO", blank=True, null=True)
-    weight = models.IntegerField(_("Вес страницы"), max_length=8, default=100)
+    weight = models.IntegerField(_("Вес страницы"), default=100)
     type = models.ForeignKey("Type", null=True, blank=True)
 
     def __str__(self):
