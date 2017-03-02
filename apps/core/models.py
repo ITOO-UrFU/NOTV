@@ -53,6 +53,7 @@ class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(_("Название события"), max_length=256, blank=False)
     description = models.TextField(_("Описание события"), max_length=16384, blank=True, default="")
+    type = models.ForeignKey("EventType", null=True, blank=True)
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
 
@@ -90,6 +91,7 @@ class Person(models.Model):
     biography = models.TextField(_('Биография пользователя'), blank=True, default='')
     position = models.CharField(_('Должность'), max_length=1024, blank=True, null=True)
     division = models.CharField(_('Подразделение'), max_length=1024, blank=True, null=True)
+    organisation = models.CharField(_('Организация'), max_length=1024, blank=True, null=True)
     photo = models.ImageField(_('Фото'), upload_to="media", blank=True, null=True)
 
     class Meta:
@@ -146,6 +148,14 @@ class Page(models.Model):
 
 class Type(models.Model):
     title = models.CharField(_("Тип страницы"), max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class EventType(models.Model):
+    title = models.CharField(_("Тип мероприятия"), max_length=256, blank=True, null=True)
+
     def __str__(self):
         return self.title
 

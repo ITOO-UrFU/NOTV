@@ -33,7 +33,7 @@ class EventSerializer_noperson(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("id", "title", "description", "startdate", "enddate")
+        fields = ("id", "title", "description", "type", "startdate", "enddate")
 
 
 class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
@@ -52,7 +52,7 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Person
-        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography", "country", "user", "get_events")
+        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography", "country", "user", "get_events")
         depth = 2
 
 
@@ -65,13 +65,12 @@ class EventUserRegistrationSerializer(serializers.ModelSerializer):
         fields = ("id", "person", "type", "status")
 
 
-
 class EventSerializer(serializers.ModelSerializer):
     get_users = EventUserRegistrationSerializer(many=True)
 
     class Meta:
         model = Event
-        fields = ("id", "title", "description", "get_users", "startdate", "enddate")
+        fields = ("id", "title", "description", "get_users", "type", "startdate", "enddate")
 
 
 class PageSerializer(serializers.ModelSerializer):
