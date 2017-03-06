@@ -187,6 +187,6 @@ ADMIN_REORDER = (
     {'app': 'core', 'label': 'Страницы', 'models': ('core.Page', )},
     {'app': 'core', 'label': 'Связи', 'models': ('core.RegistrationType',
                                                  'core.EventUserRegistration')},
-    {'app': 'core', 'label': 'Разное', 'models': ('core.Custom',)},
+    {'app': 'core', 'label': 'Разное', 'models': ('core.CustomObject',)},
 
 )
