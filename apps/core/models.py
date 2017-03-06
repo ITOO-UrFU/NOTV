@@ -72,6 +72,7 @@ class Event(models.Model):
     description = models.TextField(_("Описание события"), max_length=16384, blank=True, default="")
     type = models.ForeignKey("EventType", verbose_name=_("Тип мероприятия"), null=True, blank=True)
     path = models.ForeignKey("Path", verbose_name=_("Траектория"), blank=True, null=True)
+    room = models.ForeignKey("Room", verbose_name=_("Комната"), blank=True, null=True)
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
 

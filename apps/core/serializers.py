@@ -4,6 +4,24 @@ from rest_framework import serializers
 from django_countries.serializer_fields import CountryField
 
 
+class TypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Type
+        fields = ('title', 'slug')
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ('title', 'slug', 'address', 'housing')
+
+
+class PathSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Path
+        fields = ('title', 'slug',)
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -66,10 +84,12 @@ class EventUserRegistrationSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     get_users = EventUserRegistrationSerializer(many=True)
+    room = RoomSerializer()
+    path = PathSerializer()
 
     class Meta:
         model = Event
-        fields = ("id", "title", "description", "get_users", "get_type_display", "get_type_display", "startdate", "enddate")
+        fields = ("id", "title", "description", "get_users", "get_type_display", "get_type_display", "room", "path", "startdate", "enddate")
 
 
 class PageSerializer(serializers.ModelSerializer):
@@ -81,24 +101,6 @@ class PageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = ("id", "slug", "title", "html", "keywords", "pages", "type")
-
-
-class TypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Type
-        fields = ('title', 'slug')
-
-
-class RoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Room
-        fields = ('title', 'slug', 'address', 'housing')
-
-
-class PathSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Path
-        fields = ('title', 'slug',)
 
 
 # class PageDetail(serializers.HyperlinkedModelSerializer):
