@@ -57,7 +57,7 @@ class EventTypeAdmin(VersionAdmin):
 
 @admin.register(Room)
 class RoomAdmin(VersionAdmin):
-    list_display = ("slug", "title")
+    list_display = ("slug", "title", 'address', 'housing')
 
 
 @admin.register(Path)

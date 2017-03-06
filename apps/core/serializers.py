@@ -92,13 +92,13 @@ class TypeSerializer(serializers.ModelSerializer):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ('title', 'slug')
+        fields = ('title', 'slug', 'address', 'housing')
 
 
 class PathSerializer(serializers.ModelSerializer):
     class Meta:
         model = Path
-        fields = ('title', 'slug')
+        fields = ('title', 'slug',)
 
 
 # class PageDetail(serializers.HyperlinkedModelSerializer):

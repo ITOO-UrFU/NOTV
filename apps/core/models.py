@@ -47,9 +47,9 @@ class EventUserRegistration(models.Model):
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    person = models.ForeignKey("Person")
-    event = models.ForeignKey("Event")
-    type = models.ForeignKey("RegistrationType")
+    person = models.ForeignKey("Person", verbose_name=_("Персона"))
+    event = models.ForeignKey("Event", verbose_name=_("Событие"))
+    type = models.ForeignKey("RegistrationType", verbose_name=_("Тип регистрации"))
     status = models.CharField(_("Статус"), choices=STATUSES, max_length=1, default="r")
 
     class Meta:
@@ -70,8 +70,8 @@ class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(_("Название события"), max_length=256, blank=False)
     description = models.TextField(_("Описание события"), max_length=16384, blank=True, default="")
-    type = models.ForeignKey("EventType", null=True, blank=True)
-    path = models.ForeignKey("Path", blank=True, null=True)
+    type = models.ForeignKey("EventType", verbose_name=_("Тип мероприятия"), null=True, blank=True)
+    path = models.ForeignKey("Path", verbose_name=_("Траектория"), blank=True, null=True)
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
 
@@ -160,6 +160,8 @@ class Room(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(_("Код"))
     title = models.CharField(_("Название аудитории"), max_length=256, blank=True, null=True)
+    address = models.CharField(_("Адрес"), max_length=256, blank=True, null=True)
+    housing = models.CharField(_("Корпус"), max_length=256, blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -174,10 +176,10 @@ class Page(models.Model):
     slug = models.SlugField(_("Код"))
     title = models.CharField(_("Название страницы"), max_length=256, blank=True, null=True)
     html = models.TextField(_("Контент"), blank=True, null=True)
-    pages = models.ManyToManyField("self", blank=True, related_name='+', symmetrical=False)
+    pages = models.ManyToManyField("self", verbose_name=_("Вложенные страницы"), blank=True, related_name='+', symmetrical=False)
     keywords = models.TextField("SEO", blank=True, null=True)
     weight = models.IntegerField(_("Вес страницы"), default=100)
-    type = models.ForeignKey("Type", null=True, blank=True)
+    type = models.ForeignKey("Type", verbose_name=_("Тип"), null=True, blank=True)
 
     def __str__(self):
         return self.slug
