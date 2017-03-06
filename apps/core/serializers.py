@@ -83,6 +83,24 @@ class PageSerializer(serializers.ModelSerializer):
         fields = ("id", "slug", "title", "html", "keywords", "pages", "type")
 
 
+class TypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Type
+        fields = ('title', 'slug')
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ('title', 'slug')
+
+
+class PathSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Path
+        fields = ('title', 'slug')
+
+
 # class PageDetail(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = Page
@@ -110,3 +128,18 @@ class PersonDetail(serializers.HyperlinkedModelSerializer):
 class UserDetail(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
+
+
+class TypeDetail(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Type
+
+
+class RoomDetail(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Room
+
+
+class PathDetail(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Path

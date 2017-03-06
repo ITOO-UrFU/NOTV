@@ -1,8 +1,6 @@
-from django.shortcuts import render
-from django.http import Http404, HttpResponseNotFound
-from rest_framework import viewsets, generics
+from django.http import Http404
+from rest_framework import viewsets
 from rest_framework import serializers
-from rest_framework.response import Response
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -30,6 +28,12 @@ class Users(viewsets.ModelViewSet):
 class Pages(viewsets.ModelViewSet):
     queryset = Page.objects.order_by("weight")
     serializer_class = PageSerializer
+
+
+class Paths(viewsets.ModelViewSet):
+    queryset = Path.objects.all()
+    serializer_class = PathSerializer
+
 
 
 @api_view(('GET',))

@@ -63,6 +63,7 @@ class Event(models.Model):
     title = models.CharField(_("Название события"), max_length=256, blank=False)
     description = models.TextField(_("Описание события"), max_length=16384, blank=True, default="")
     type = models.ForeignKey("EventType", null=True, blank=True)
+    path = models.ForeignKey("Path", blank=True, null=True)
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
 
@@ -134,6 +135,23 @@ class Person(models.Model):
 # def save_user_profile(sender, instance, **kwargs):
 #     instance.person.save()
 
+class Path(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slug = models.SlugField(_("Код"))
+    title = models.CharField(_("Название траектории"), max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Room(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slug = models.SlugField(_("Код"))
+    title = models.CharField(_("Название аудитории"), max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
 
 class Page(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -163,6 +181,7 @@ class Page(models.Model):
 
 class Type(models.Model):
     title = models.CharField(_("Тип страницы"), max_length=256, blank=True, null=True)
+    slug = models.SlugField(_("Код"), blank=True)
 
     def __str__(self):
         return self.title
@@ -175,8 +194,10 @@ class EventType(models.Model):
         return self.title
 
 
-
 class CustomObject(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(_('Наименование'), max_length=32, blank=False, default='')
     json = JSONField()
+
+    def __str__(self):
+        return self.title

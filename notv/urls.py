@@ -34,6 +34,7 @@ router = routers.DefaultRouter()
 router.register(r'events', Events)
 router.register(r'persons', Persons)
 router.register(r'users', Users)
+router.register(r'paths', Paths)
 router.register(r'pages', Pages, base_name='pages')
 
 urlpatterns.append(url(r'^api/v1/', include(router.urls, namespace='api')))

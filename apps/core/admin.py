@@ -6,10 +6,10 @@ from .models import *
 
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
-    list_display = ('title', 'description', 'startdate', 'enddate')
+    list_display = ('title', 'description', 'path', 'startdate', 'enddate')
     # fields = ('title', 'description', 'startdate', 'enddate')
-    search_fields = ('title', 'descroption')
-    list_filter = ('startdate', 'enddate')
+    search_fields = ('title', 'description', 'path')
+    list_filter = ('startdate', 'enddate', 'path')
 
 
 @admin.register(CustomObject)
@@ -45,8 +45,8 @@ class PersonAdmin(VersionAdmin):
 
 @admin.register(Type)
 class EventAdmin(VersionAdmin):
-    fields = ("title", )
-    list_display = ("title", )
+    fields = ("title", "slug")
+    list_display = ("title", "slug")
 
 
 @admin.register(EventType)
@@ -54,5 +54,14 @@ class EventTypeAdmin(VersionAdmin):
     fields = ("title", )
     list_display = ("title", )
 
+
+@admin.register(Room)
+class RoomAdmin(VersionAdmin):
+    list_display = ("slug", "title")
+
+
+@admin.register(Path)
+class PathAdmin(VersionAdmin):
+    list_display = ("slug", "title")
 
 
