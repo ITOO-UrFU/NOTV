@@ -34,6 +34,10 @@ class RegistrationType(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'тип регистрации на событие'
+        verbose_name_plural = 'типы регистраций на события'
+
 
 class EventUserRegistration(models.Model):
     STATUSES = (
@@ -56,6 +60,10 @@ class EventUserRegistration(models.Model):
 
     def get_type_display(self):
         return str(self.type)
+
+    class Meta:
+        verbose_name = 'регистрация пользователя на событие'
+        verbose_name_plural = 'регистрации пользователей на события'
 
 
 class Event(models.Model):
@@ -143,6 +151,10 @@ class Path(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'траектория'
+        verbose_name_plural = 'траектории'
+
 
 class Room(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -151,6 +163,10 @@ class Room(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'комната'
+        verbose_name_plural = 'комнаты'
 
 
 class Page(models.Model):
@@ -178,6 +194,10 @@ class Page(models.Model):
     class Meta:
         ordering = ['weight']
 
+    class Meta:
+        verbose_name = 'страница'
+        verbose_name_plural = 'страницы'
+
 
 class Type(models.Model):
     title = models.CharField(_("Тип страницы"), max_length=256, blank=True, null=True)
@@ -186,12 +206,20 @@ class Type(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'тип'
+        verbose_name_plural = 'типы'
+
 
 class EventType(models.Model):
     title = models.CharField(_("Тип мероприятия"), max_length=256, blank=True, null=True)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'тип мероприятия'
+        verbose_name_plural = 'типы мероприятий'
 
 
 class CustomObject(models.Model):

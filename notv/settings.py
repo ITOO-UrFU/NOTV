@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'reversion',
     'rest_framework',
     'corsheaders',
+    'admin_reorder',
     'core',
     'api',
 ]
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'notv.urls'
@@ -172,3 +174,19 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
 }
+
+ADMIN_REORDER = (
+    {'app': 'core', 'label': 'События', 'models': (
+        'core.Event',
+        'core.EventType',
+        'core.Room',
+        'core.Path',
+    )
+     },
+    {'app': 'core', 'label': 'Персона', 'models': ('core.Person', )},
+    {'app': 'core', 'label': 'Страницы', 'models': ('core.Page', )},
+    {'app': 'core', 'label': 'Связи', 'models': ('core.RegistrationType',
+                                                 'core.EventUserRegistration')},
+    {'app': 'core', 'label': 'Разное', 'models': ('core.Custom',)},
+
+)
