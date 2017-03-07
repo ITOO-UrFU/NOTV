@@ -100,12 +100,8 @@ class PageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Page
-        fields = ("id", "slug", "title", "html", "keywords", "pages", "type")
+        fields = ("id", "slug", "title", "html", "keywords", "pages", "type", "weigth")
 
-
-# class PageDetail(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Page
 
 class RegistrationTypeDetail(serializers.HyperlinkedModelSerializer):
     class Meta:
