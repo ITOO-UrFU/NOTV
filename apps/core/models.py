@@ -217,6 +217,7 @@ class Type(models.Model):
 
 class EventType(models.Model):
     title = models.CharField(_("Тип мероприятия"), max_length=256, blank=True, null=True)
+    slug = models.SlugField(_("Код"), blank=True)
 
     def __str__(self):
         return self.title
