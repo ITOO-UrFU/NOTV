@@ -10,7 +10,7 @@ from core.serializers import *
 
 
 class Events(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
+    queryset = Event.objects.filter(status="p")
     serializer_class = EventSerializer
 
 
@@ -25,7 +25,7 @@ class Users(viewsets.ModelViewSet):
 
 
 class Pages(viewsets.ModelViewSet):
-    queryset = Page.objects.order_by("weight")
+    queryset = Page.objects.filter(status="p").order_by("weight")
     serializer_class = PageSerializer
 
 
