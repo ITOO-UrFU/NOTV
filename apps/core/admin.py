@@ -44,15 +44,15 @@ class PersonAdmin(VersionAdmin):
 
 
 @admin.register(Type)
-class EventAdmin(VersionAdmin):
+class TypeAdmin(VersionAdmin):
     fields = ("title", "slug")
     list_display = ("title", "slug")
 
 
 @admin.register(EventType)
 class EventTypeAdmin(VersionAdmin):
-    fields = ("title", )
-    list_display = ("title", )
+    fields = ("title", "slug")
+    list_display = ("title", "slug")
 
 
 @admin.register(Room)
