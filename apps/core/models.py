@@ -186,13 +186,13 @@ class Page(models.Model):
         return self.slug
 
     def get_pages_display(self):
-        return " ".join([page.slug for page in self.pages.all()])
+        return " ".join([page.slug for page in self.pages.all().order_by('weight')])
 
     def get_pages_list(self):
         return [page.slug for page in self.pages.all()]
 
     def get_pages_dict(self):
-        return [page_as_dict(page) for page in self.pages.all()]
+        return [page_as_dict(page) for page in self.pages.all().order_by('weight')]
 
     class Meta:
         ordering = ['weight']
