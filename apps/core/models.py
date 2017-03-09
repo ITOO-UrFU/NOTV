@@ -68,12 +68,17 @@ class EventUserRegistration(models.Model):
 
 
 class Event(models.Model):
+    STATUSES = (
+        ('h', _("Скрыт")),
+        ('p', _("Опубликован")),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(_("Название события"), max_length=256, blank=False)
     description = models.TextField(_("Описание события"), max_length=16384, blank=True, default="")
     type = models.ForeignKey("EventType", verbose_name=_("Тип мероприятия"), null=True, blank=True)
     path = models.ForeignKey("Path", verbose_name=_("Траектория"), blank=True, null=True)
     room = models.ForeignKey("Room", verbose_name=_("Комната"), blank=True, null=True)
+    status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
 
@@ -174,6 +179,10 @@ class Room(models.Model):
 
 
 class Page(models.Model):
+    STATUSES = (
+        ('h', _("Скрыт")),
+        ('p', _("Опубликован")),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(_("Код"))
     title = models.CharField(_("Название страницы"), max_length=256, blank=True, null=True)
@@ -182,6 +191,7 @@ class Page(models.Model):
     keywords = models.TextField("SEO", blank=True, null=True)
     weight = models.IntegerField(_("Вес страницы"), default=100)
     type = models.ForeignKey("Type", verbose_name=_("Тип"), null=True, blank=True)
+    status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
 
     def __str__(self):
         return self.slug
@@ -228,9 +238,14 @@ class EventType(models.Model):
 
 
 class CustomObject(models.Model):
+    STATUSES = (
+        ('h', _("Скрыт")),
+        ('p', _("Опубликован")),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(_('Наименование'), max_length=32, blank=False, default='')
     json = JSONField()
+    status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
 
     def __str__(self):
         return self.title

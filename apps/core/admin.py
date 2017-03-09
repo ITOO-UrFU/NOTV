@@ -6,16 +6,16 @@ from .models import *
 
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
-    list_display = ('title', 'description', 'path', 'startdate', 'enddate')
+    list_display = ('title', 'description', 'path', 'startdate', 'enddate', "status")
     # fields = ('title', 'description', 'startdate', 'enddate')
-    search_fields = ('title', 'description', 'path')
-    list_filter = ('startdate', 'enddate', 'path')
+    search_fields = ('title', 'description', 'path', "status")
+    list_filter = ('startdate', 'enddate', 'path', "status")
 
 
 @admin.register(CustomObject)
 class CustomObjectAdmin(VersionAdmin):
-    fields = ("title", "json")
-    search_fields = ("title",)
+    fields = ("title", "json", "status")
+    search_fields = ("title", "status")
 
 
 @admin.register(RegistrationType)
@@ -33,8 +33,8 @@ class EventUserRegistrationAdmin(VersionAdmin):
 
 @admin.register(Page)
 class PageAdmin(VersionAdmin):
-    fields = ("slug", "weight", "title", "html", "pages", "keywords", "type")
-    list_display = ("slug", "title", "weight", "html", "get_pages_display", "keywords", "type")
+    fields = ("slug", "weight", "title", "html", "pages", "keywords", "type", "status")
+    list_display = ("slug", "title", "weight", "html", "get_pages_display", "keywords", "type", "status")
     filter_horizontal = ('pages',)
 
 
