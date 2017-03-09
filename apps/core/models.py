@@ -203,7 +203,7 @@ class Page(models.Model):
         return [page.slug for page in self.pages.all()]
 
     def get_pages_dict(self):
-        return [page_as_dict(page) for page in self.pages.all().order_by('weight')]
+        return [page_as_dict(page) for page in self.pages.filter(status="p").order_by('weight')]
 
     class Meta:
         ordering = ['weight']
