@@ -66,6 +66,7 @@ def page_slug(request, slug):
             "pages": page.get_pages_dict(),
             "keywords": page.keywords,
             "type": type,
+            "weight": page.weight,
 
         })
     else:

@@ -25,6 +25,7 @@ def page_as_dict(page):
         "pages": page.get_pages_dict(),
         "keywords": page.keywords,
         "type": type,
+        "weight": page.weight,
     }
 
 
