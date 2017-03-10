@@ -99,6 +99,12 @@ class Event(models.Model):
         else:
             return None
 
+    def get_event_slug(self):
+        if self.type:
+            return self.type.slug
+        else:
+            return None
+
 
 class Person(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
