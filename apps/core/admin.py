@@ -38,6 +38,7 @@ class PageAdmin(VersionAdmin):
     filter_horizontal = ('pages',)
     search_fields = ("slug", "title", "weight", "html", "get_pages_display", "keywords", "type", "status")
     list_filter = ("keywords", "type", "status", "weight", "slug")
+    save_as = True
 
 
 @admin.register(Person)

@@ -90,12 +90,15 @@ class UserList(ListCreateAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        if self.request.user.is_staff:
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', "lol1", self.request.user)
+        if self.request.user.is_superuser:
+            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', "lol2")
             return User.objects.all()
         else:
-            if self.request.user.is_anonymous():
+            if self.request.user.is_anonymous:
                 return None  # [self.request.user]
             else:
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', "lol3")
                 return None
 
     def post(self, request, format=None):
