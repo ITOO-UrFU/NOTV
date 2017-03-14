@@ -102,7 +102,7 @@ class UserCreateSerializer(ExtensibleModelSerializer):
     """ Profile Serializer for User Creation """
 
     password_confirmation = serializers.CharField(max_length=64)
-    email = serializers.CharField(source='email', required='email' in User.REQUIRED_FIELDS)
+    email = serializers.CharField('email', required='email' in User.REQUIRED_FIELDS)
 
     def validate_password_confirmation(self, attrs, source):
         """
