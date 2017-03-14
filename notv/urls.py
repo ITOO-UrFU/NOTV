@@ -21,14 +21,16 @@ from rest_framework import routers, serializers, viewsets
 from api.views import *
 from core.views import custom_json_view
 
-urlpatterns = [
+urlpatterns = []
+
+urlpatterns += [
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^custom/(?P<title>.*)/$', custom_json_view, name="custom_json_view"),
-
-
 ]
-urlpatterns.append(url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"))
+urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
+                url(r'^api/v1/profiles/$', UserList.as_view(), name='api_profile_list'),
+                ]
 
 router = routers.DefaultRouter()
 router.register(r'events', Events)
@@ -36,5 +38,6 @@ router.register(r'persons', Persons)
 router.register(r'users', Users)
 router.register(r'paths', Paths)
 router.register(r'pages', Pages, base_name='pages')
+
 
 urlpatterns.append(url(r'^api/v1/', include(router.urls, namespace='api')))

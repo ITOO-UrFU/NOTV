@@ -4,6 +4,41 @@ from rest_framework import serializers
 from django_countries.serializer_fields import CountryField
 
 
+class ExtensibleModelSerializer(serializers.ModelSerializer):
+    """
+    ModelSerializer in which non native extra fields can be specified.
+    """
+
+    def restore_object(self, attrs, instance=None):
+        """
+        Deserialize a dictionary of attributes into an object instance.
+        You should override this method to control how deserialized objects
+        are instantiated.
+        """
+
+        for field in self.opts.non_native_fields:
+            attrs.pop(field)
+
+        return super(ExtensibleModelSerializer, self).restore_object(attrs, instance)
+
+    def to_native(self, obj):
+        """
+        Serialize objects -> primitives.
+        """
+        ret = self._dict_class()
+        ret.fields = {}
+
+        for field_name, field in self.fields.items():
+            if field_name in self.opts.non_native_fields:
+                continue
+            field.initialize(parent=self, field_name=field_name)
+            key = self.get_field_key(field_name)
+            value = field.field_to_native(obj, field_name)
+            ret[key] = value
+            ret.fields[key] = field
+        return ret
+
+
 class TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Type
@@ -23,22 +58,71 @@ class PathSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    # class Meta:
+    #     model = User
+    #     fields = (
+    #         "id",
+    #         "last_login",
+    #         "is_superuser",
+    #         "username",
+    #         "first_name",
+    #         "last_name",
+    #         "email",
+    #         "is_staff",
+    #         "is_active",
+    #         "date_joined",
+    #         # "groups",
+    #         # "user_permissions"
+    #     )
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'password', 'email')
+        write_only_fields = ('password',)
+        read_only_fields = ('id',)
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+        )
+
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
+
+    def restore_object(self, attrs, instance=None):
+        user = super(UserSerializer, self).restore_object(attrs, instance)
+        user.set_password(attrs['password'])
+        return user
+
+
+class UserCreateSerializer(ExtensibleModelSerializer):
+    """ Profile Serializer for User Creation """
+
+    password_confirmation = serializers.CharField(max_length=64)
+    email = serializers.CharField(source='email', required='email' in User.REQUIRED_FIELDS)
+
+    def validate_password_confirmation(self, attrs, source):
+        """
+        password_confirmation check
+        """
+        password_confirmation = attrs[source]
+        password = attrs['password']
+
+        if password_confirmation != password:
+            raise serializers.ValidationError(_('Password confirmation mismatch'))
+
+        return attrs
+
     class Meta:
         model = User
         fields = (
-            "id",
-            "last_login",
-            "is_superuser",
-            "username",
-            "first_name",
-            "last_name",
-            "email",
-            "is_staff",
-            "is_active",
-            "date_joined",
-            # "groups",
-            # "user_permissions"
+            # required
+            'username', 'email', 'password', 'password_confirmation',
         )
+        non_native_fields = ('password_confirmation',)
 
 
 class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):
