@@ -15,7 +15,7 @@ class Events(viewsets.ModelViewSet):
 
 
 class Persons(viewsets.ModelViewSet):
-    queryset = Person.objects.all().order_by("karma")
+    queryset = Person.objects.all().order_by("-karma")
     serializer_class = PersonSerializer
 
 
