@@ -58,22 +58,6 @@ class PathSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    # class Meta:
-    #     model = User
-    #     fields = (
-    #         "id",
-    #         "last_login",
-    #         "is_superuser",
-    #         "username",
-    #         "first_name",
-    #         "last_name",
-    #         "email",
-    #         "is_staff",
-    #         "is_active",
-    #         "date_joined",
-    #         # "groups",
-    #         # "user_permissions"
-    #     )
 
     class Meta:
         model = User
@@ -92,37 +76,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
         return user
 
-    def restore_object(self, attrs, instance=None):
-        user = super(UserSerializer, self).restore_object(attrs, instance)
-        user.set_password(attrs['password'])
-        return user
-
-
-class UserCreateSerializer(ExtensibleModelSerializer):
-    """ Profile Serializer for User Creation """
-
-    password_confirmation = serializers.CharField(max_length=64)
-    email = serializers.CharField('email', required='email' in User.REQUIRED_FIELDS)
-
-    def validate_password_confirmation(self, attrs, source):
-        """
-        password_confirmation check
-        """
-        password_confirmation = attrs[source]
-        password = attrs['password']
-
-        if password_confirmation != password:
-            raise serializers.ValidationError(_('Password confirmation mismatch'))
-
-        return attrs
-
-    class Meta:
-        model = User
-        fields = (
-            # required
-            'username', 'email', 'password', 'password_confirmation',
-        )
-        non_native_fields = ('password_confirmation',)
 
 
 class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):

@@ -76,64 +76,35 @@ def page_slug(request, slug):
         raise Http404
 
 
-class CreateUserView(CreateAPIView):
-    model = User
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = UserSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    def create(self, request, format=None):
+        user = User.objects.create(
+            url=request['url'],
+            email=request['email'],
+        )
+        return user
 
 
 class UserList(ListCreateAPIView):
-    """
-    Return profile of current authenticated user or return 401.
+    # permission_classes = (permissions.IsAuthenticatedOrWriteOnly,)
+    serializer_class = UserSerializer
 
-    ### POST
-
-    Create a new user account.
-    Sends a confirmation mail if if PROFILE_EMAL_CONFIRMATION setting is True.
-
-    **Required Fields**:
-
-     * username
-     * email
-     * password
-     * password_confirmation
-
-    ** Optional Fields **
-
-     * first_name
-     * last_name
-     * about
-     * gender
-     * birth_date
-     * address
-     * city
-     * country
-    """
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-    model = User
-    serializer_class = UserCreateSerializer
-
-    # custom
-    serializer_reader_class = UserSerializer
-
-    def get(self, request, *args, **kwargs):
-        """ return profile of current user if authenticated otherwise 401 """
-        serializer = self.serializer_reader_class
-
-        if request.user.is_authenticated():
-            return Response({'detail': serializer(request.user, context=self.get_serializer_context()).data})
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return User.objects.all()
         else:
-            return Response({'detail': 'Authentication credentials were not provided'}, status=401)
+            if self.request.user.is_anonymous():
+                return None  # [self.request.user]
+            else:
+                return None
 
-    def post_save(self, obj, created):
-        """
-        Send email confirmation according to configuration
-        """
-        super(UserList, self).post_save(obj)
+    def post(self, request, format=None):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status="201")
+        return Response(serializer.errors, status="400")
 
-        if created:
-            obj.add_email()
+
 
 
