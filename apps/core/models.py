@@ -130,6 +130,7 @@ class Person(models.Model):
     division = models.CharField(_('Подразделение'), max_length=1024, blank=True, null=True)
     organisation = models.CharField(_('Организация'), max_length=1024, blank=True, null=True)
     photo = models.ImageField(_('Фото'), upload_to="media", blank=True, null=True)
+    karma = models.IntegerField(_("Карма"), default=0)
 
     class Meta:
         verbose_name = 'персона'
