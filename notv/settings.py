@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'reversion',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'admin_reorder',
     'core',
