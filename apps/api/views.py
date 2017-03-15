@@ -110,12 +110,10 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
     serializer_class = PersonSerializer
     permission_classes = (IsAuthenticated,)
 
-    def retrieve(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         token_data = jwt.encode(self.request.authorization)
         print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
-        self.object = self.get_object()
-        serializer = self.get_serializer(self.object)
-        return Response(serializer.data)
+        return self.retrieve(request, *args, **kwargs)
 
     def get_object(self):
         token_data = jwt.encode(self.request.authorization)
