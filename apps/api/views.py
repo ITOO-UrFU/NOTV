@@ -1,7 +1,7 @@
 from django.http import Http404
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 from rest_framework import permissions
@@ -37,9 +37,8 @@ class Paths(viewsets.ModelViewSet):
     queryset = Path.objects.all()
     serializer_class = PathSerializer
 
-
-
 @api_view(('GET',))
+@permission_classes((permissions.AllowAny,))
 def page_slug(request, slug):
     """
     Courses ids.
