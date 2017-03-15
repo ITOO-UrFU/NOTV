@@ -7,3 +7,6 @@ django-jsonfield==1.0.1
 django-reversion==2.0.8
 djangorestframework==3.5.3
 django-modeladmin-reorder
+django-rest-auth
+djangorestframework-jwt
+django-allauth

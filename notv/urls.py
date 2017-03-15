@@ -18,8 +18,12 @@ from django.contrib import admin
 
 from rest_framework import routers, serializers, viewsets
 
+from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import refresh_jwt_token
+
 from api.views import *
 from core.views import custom_json_view
+
 
 urlpatterns = []
 
@@ -29,6 +33,10 @@ urlpatterns += [
     url(r'^custom/(?P<title>.*)/$', custom_json_view, name="custom_json_view"),
 ]
 urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
+                url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
+                url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
+                url(r'^api/v1/api-token-auth/', obtain_jwt_token),
+                url(r'^api/v1/api-token-refresh/', refresh_jwt_token),
                 url(r'^api/v1/register/$', UserList.as_view(), name='api_profile_list'),
                 ]
 
