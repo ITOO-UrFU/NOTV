@@ -6,10 +6,10 @@ from .models import *
 
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
-    list_display = ('title', 'description', 'path', 'startdate', 'enddate', "status")
+    list_display = ('title', 'description', 'path', 'startdate', 'enddate', "line_of_work", "status")
     # fields = ('title', 'description', 'startdate', 'enddate')
     search_fields = ('title', 'description', 'path', "status")
-    list_filter = ('startdate', 'enddate', 'path', "status")
+    list_filter = ('startdate', 'enddate', 'path', "line_of_work", "status")
 
 
 @admin.register(CustomObject)
@@ -48,6 +48,12 @@ class PersonAdmin(VersionAdmin):
 
 @admin.register(Type)
 class TypeAdmin(VersionAdmin):
+    fields = ("title", "slug")
+    list_display = ("title", "slug")
+
+
+@admin.register(LineOfWork)
+class LineOfWorkAdmin(VersionAdmin):
     fields = ("title", "slug")
     list_display = ("title", "slug")
 

@@ -86,6 +86,7 @@ class Event(models.Model):
     type = models.ForeignKey("EventType", verbose_name=_("Тип мероприятия"), null=True, blank=True)
     path = models.ForeignKey("Path", verbose_name=_("Траектория"), blank=True, null=True)
     room = models.ForeignKey("Room", verbose_name=_("Комната"), blank=True, null=True)
+    line_of_work = models.ForeignKey("LineOfWork", verbose_name=_("Направление работы"), blank=True, null=True)
     status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
@@ -112,6 +113,9 @@ class Event(models.Model):
             return self.type.slug
         else:
             return None
+
+    def get_line_of_work_display(self):
+        return self.line_of_work.title
 
 
 class Person(models.Model):
@@ -250,6 +254,18 @@ class EventType(models.Model):
     class Meta:
         verbose_name = 'тип мероприятия'
         verbose_name_plural = 'типы мероприятий'
+
+
+class LineOfWork(models.Model):
+    slug = models.SlugField(_("Код"), blank=True)
+    title = models.CharField(_("Наименование направления работы"), max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'направление работы'
+        verbose_name_plural = 'направления работы'
 
 
 class CustomObject(models.Model):

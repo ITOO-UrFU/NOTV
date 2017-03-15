@@ -45,6 +45,12 @@ class TypeSerializer(serializers.ModelSerializer):
         fields = ('title', 'slug')
 
 
+class LineOfWorkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LineOfWork
+        fields = ('title', 'slug')
+
+
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
@@ -126,7 +132,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("id", "title", "description", "get_users", "get_type_display", "get_event_slug", "room", "path", "startdate", "enddate")
+        fields = ("id", "title", "description", "get_users", "get_type_display", "get_event_slug", "get_line_of_work_display", "room", "path", "startdate", "enddate")
 
 
 class PageSerializer(serializers.ModelSerializer):
@@ -148,6 +154,11 @@ class RegistrationTypeDetail(serializers.HyperlinkedModelSerializer):
 class EventUserRegistrationDetail(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EventUserRegistration
+
+
+class LineOfWorkRegistrationDetail(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = LineOfWork
 
 
 class EventDetail(serializers.HyperlinkedModelSerializer):

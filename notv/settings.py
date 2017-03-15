@@ -193,6 +193,7 @@ ADMIN_REORDER = (
     {'app': 'core', 'label': 'События', 'models': (
         'core.Event',
         'core.EventType',
+        'core.LineOfWork',
         'core.Room',
         'core.Path',
     )
