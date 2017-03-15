@@ -125,7 +125,7 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
-            current_user = User.objects.get(pk=json.loads(token_data)['user_id'])
+            current_user = User.objects.get(pk=token_data['user_id'])
 
         return Person.objects.get(user=current_user)
 
