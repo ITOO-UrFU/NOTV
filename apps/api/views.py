@@ -111,6 +111,8 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
+        token_data = jwt.encode(self.request.authorization)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
         return Person.objects.get(user=self.request.user)
 
     def get_queryset(self):
