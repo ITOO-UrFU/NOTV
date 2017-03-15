@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -104,5 +104,19 @@ class UserList(generics.ListCreateAPIView):
         return Response()
 
 
+class PersonDetailsView(generics.RetrieveUpdateAPIView):
+    serializer_class = PersonSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return Person.objects.get(user=self.request.user)
+
+    def get_queryset(self):
+        """
+        Adding this method since it is sometimes called when using
+        django-rest-swagger
+        https://github.com/Tivix/django-rest-auth/issues/275
+        """
+        return Person.objects.get(user=self.request.user)
 
 
