@@ -113,7 +113,7 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
     def get(self, request, *args, **kwargs):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
-            token_data = jwt.encode(self.request.authorization)
+            token_data = jwt.encode(jwt_token)
             print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
         return self.retrieve(request, *args, **kwargs)
 
