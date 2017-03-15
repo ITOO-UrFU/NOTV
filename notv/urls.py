@@ -29,7 +29,7 @@ urlpatterns += [
     url(r'^custom/(?P<title>.*)/$', custom_json_view, name="custom_json_view"),
 ]
 urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
-                url(r'^api/v1/profiles/$', UserList.as_view(), name='api_profile_list'),
+                url(r'^api/v1/register/$', UserList.as_view(), name='api_profile_list'),
                 ]
 
 router = routers.DefaultRouter()

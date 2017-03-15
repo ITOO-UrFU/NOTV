@@ -2,7 +2,8 @@ from django.http import Http404
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework import generics
+from rest_framework.permissions import IsAdminUser
 from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -85,21 +86,10 @@ class UserViewSet(viewsets.ModelViewSet):
         return user
 
 
-class UserList(ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrWriteOnly,)
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-
-    def get_queryset(self):
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', "lol1", self.request.user)
-        if self.request.user.is_superuser:
-            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', "lol2")
-            return User.objects.all()
-        else:
-            if self.request.user.is_anonymous:
-                return None  # [self.request.user]
-            else:
-                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', "lol3")
-                return None
+    permission_classes = (IsAdminUser,)
 
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
@@ -107,6 +97,11 @@ class UserList(ListCreateAPIView):
             serializer.save()
             return Response(serializer.data, status="201")
         return Response(serializer.errors, status="400")
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 
