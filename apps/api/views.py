@@ -108,7 +108,7 @@ class UserList(generics.ListCreateAPIView):
 
 class PersonDetailsView(generics.RetrieveUpdateAPIView):
     serializer_class = PersonSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
         print('!!!!!!!!!!!!!!!!!!!!!!!!!!!', self.request.META.get('Authorization', None))
