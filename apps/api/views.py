@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -36,6 +36,7 @@ class Pages(viewsets.ModelViewSet):
 class Paths(viewsets.ModelViewSet):
     queryset = Path.objects.all()
     serializer_class = PathSerializer
+
 
 @api_view(('GET',))
 @permission_classes((permissions.AllowAny,))
@@ -88,7 +89,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
@@ -100,7 +101,7 @@ class UserList(generics.ListCreateAPIView):
     def list(self, request):
         queryset = self.get_queryset()
         serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response()
 
 
 
