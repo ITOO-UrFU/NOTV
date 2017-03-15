@@ -111,13 +111,13 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
-        token_data = jwt.encode(self.request.authorization)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!', self.request.query_params)
+        # token_data = jwt.encode(self.request.authorization)
+        # print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
         return self.retrieve(request, *args, **kwargs)
 
     def get_object(self):
-        token_data = jwt.encode(self.request.authorization)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
+
         return Person.objects.get(user=self.request.user)
 
     def get_queryset(self):
@@ -126,8 +126,7 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
         django-rest-swagger
         https://github.com/Tivix/django-rest-auth/issues/275
         """
-        token_data = jwt.encode(self.request.authorization)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
+
         return Person.objects.get(user=self.request.user)
 
 
