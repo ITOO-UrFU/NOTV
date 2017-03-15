@@ -9,6 +9,7 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 
 import jwt
 from django.conf import settings
+import json
 
 from django.contrib.auth.models import User
 
@@ -112,15 +113,21 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
+
+        return self.retrieve(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        self.object = self.get_object(request)
+        serializer = self.get_serializer(self.object)
+        return Response(serializer.data)
+
+    def get_object(self, request):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
-            print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
-        return self.retrieve(request, *args, **kwargs)
+            current_user = User.objects.get(pk=json.loads(token_data)['user_id'])
 
-    def get_object(self):
-
-        return Person.objects.get(user=self.request.user)
+        return Person.objects.get(user=current_user)
 
     def get_queryset(self):
         """
