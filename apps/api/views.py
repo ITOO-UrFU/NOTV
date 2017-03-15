@@ -8,6 +8,7 @@ from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 import jwt
+from django.conf import settings
 
 from django.contrib.auth.models import User
 
@@ -113,7 +114,7 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
     def get(self, request, *args, **kwargs):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
-            token_data = jwt.encode(jwt_token)
+            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
             print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
         return self.retrieve(request, *args, **kwargs)
 
