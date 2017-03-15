@@ -115,7 +115,10 @@ class Event(models.Model):
             return None
 
     def get_line_of_work_display(self):
-        return self.line_of_work.title
+        if self.line_of_work:
+            return self.line_of_work.title
+        else:
+            return None
 
 
 class Person(models.Model):
