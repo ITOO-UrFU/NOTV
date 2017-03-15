@@ -38,7 +38,7 @@ urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"
                 url(r'^api/v1/api-token-auth/', obtain_jwt_token),
                 url(r'^api/v1/api-token-refresh/', refresh_jwt_token),
                 url(r'^api/v1/register/$', UserList.as_view(), name='api_profile_list'),
-                url(r'^api/v1/rest-auth/profile$', PersonDetailsView.as_view(), name='profile'),
+                url(r'^api/v1/rest-auth/profile/', PersonDetailsView.as_view(), name='profile'),
                 ]
 
 router = routers.DefaultRouter()

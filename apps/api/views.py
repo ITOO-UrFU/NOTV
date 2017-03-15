@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
+import jwt
+
 from django.contrib.auth.models import User
 
 from core.models import *
@@ -117,6 +119,8 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
         django-rest-swagger
         https://github.com/Tivix/django-rest-auth/issues/275
         """
+        token_data = jwt.encode(self.request.authorization)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!', token_data)
         return Person.objects.get(user=self.request.user)
 
 
