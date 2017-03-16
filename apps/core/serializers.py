@@ -121,7 +121,7 @@ class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Person
-        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography", "user")  # "country",
+        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography")  # "country",
         depth = 2
 
 
