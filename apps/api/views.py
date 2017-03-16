@@ -130,7 +130,7 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
             try:
                 person = Person.objects.get(user=current_user)
             except:
-                person = Person(user=current_user, first_name=_("Name"), last_name=_("Last name"))
+                person = Person(user=current_user)
                 person.save()
 
             return person
@@ -182,7 +182,7 @@ class PersonUpdate(generics.UpdateAPIView):
             try:
                 person = Person.objects.get(user=current_user)
             except:
-                person = Person(user=current_user, first_name=_("Name"), last_name=_("Last name"))
+                person = Person(user=current_user)
                 person.save()
 
             return person
