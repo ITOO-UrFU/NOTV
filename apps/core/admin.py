@@ -1,13 +1,25 @@
 from django.contrib import admin
+from django import forms
 from reversion.admin import VersionAdmin
-from klingon.admin import TranslationInline, create_translations
+from klingon.admin import TranslationInline, create_translations, TranslationInlineForm
+
 
 from .models import *
 
 
+class RichTranslationInlineForm(TranslationInlineForm):
+    widgets = {
+        'CharField': forms.TextInput(attrs={'class': 'klingon-char-field'}),
+        'TextField': forms.Textarea(attrs={'class': 'klingon-text-field'}),
+    }
+
+
+class RichTranslationInline(TranslationInline):
+    form = RichTranslationInlineForm
+
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
-    inlines = [TranslationInline]
+    inlines = [RichTranslationInline]
     actions = [create_translations]
 
     list_display = ('title', 'description', 'path', 'startdate', 'enddate', "line_of_work", "status")
