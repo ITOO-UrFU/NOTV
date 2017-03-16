@@ -6,6 +6,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from django.utils.translation import ugettext_lazy as _
 
 import jwt
 from django.conf import settings
@@ -126,7 +127,9 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
             current_user = User.objects.get(pk=token_data['user_id'])
 
-        return Person.objects.get_or_create(user=current_user)
+            return Person.objects.get_or_create(user=current_user, first_name=_("Name"), last_name=_("Last name"))
+        else:
+            return None
 
     def get_queryset(self):
         """
