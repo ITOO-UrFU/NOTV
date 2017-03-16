@@ -137,6 +137,8 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
                 print(person, 'CREATED    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 person.save()
 
+            return person
+
         else:
             return None
 
