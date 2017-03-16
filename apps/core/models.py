@@ -12,7 +12,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-from klingon.models import Translatable
+from klingon.models import Translatable, AutomaticTranslation
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -77,7 +77,7 @@ class EventUserRegistration(models.Model):
         verbose_name_plural = 'регистрации пользователей на события'
 
 
-class Event(models.Model, Translatable):
+class Event(AutomaticTranslation, models.Model):
     translatable_fields = ('title', 'description')
 
     STATUSES = (
