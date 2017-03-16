@@ -123,14 +123,18 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
 
     def get_object(self, request):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
+        print(jwt_token, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         if jwt_token:
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
             current_user = User.objects.get(pk=token_data['user_id'])
+            print(current_user, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
             try:
                 person = Person.objects.get(user=current_user)
+                print(person, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             except:
                 person = Person(user=current_user, first_name=_("Name"), last_name=_("Last name"))
+                print(person, 'CREATED    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 person.save()
 
         else:
