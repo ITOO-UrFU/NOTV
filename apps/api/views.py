@@ -149,6 +149,7 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class PersonUpdate(generics.UpdateAPIView):
+    serializer_class = PersonSerializer
     permission_classes = (AllowAny,)
 
     def put(self, request, *args, **kwargs):
