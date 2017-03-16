@@ -107,13 +107,13 @@ class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
 
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
-    country = CountryField()
+    # country = CountryField()
     user = UserSerializer()
     get_events = EventUserRegistrationSerializer_noperson(many=True)
 
     class Meta:
         model = Person
-        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography", "country", "user", "get_events")
+        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography", "user", "get_events")  # "country",
         depth = 2
 
 
