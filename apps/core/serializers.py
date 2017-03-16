@@ -117,6 +117,14 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
         depth = 2
 
 
+class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Person
+        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography", "user")  # "country",
+        depth = 2
+
+
 class EventUserRegistrationSerializer(serializers.ModelSerializer):
     person = PersonSerializer()
 
