@@ -10,3 +10,4 @@ django-modeladmin-reorder
 django-rest-auth
 djangorestframework-jwt
 django-allauth
+django-klingon

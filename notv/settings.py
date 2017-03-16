@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import sys
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'corsheaders',
     'admin_reorder',
+    'klingon',
     'core',
     'api',
 ]
@@ -133,6 +135,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
+
+LANGUAGES = [
+    ('ru', _('Russian')),
+    ('en', _('English')),
+]
 
 LANGUAGE_CODE = 'ru'
 
@@ -255,3 +262,5 @@ JWT_AUTH = {
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/'
+
+KLINGON_DEFAULT_LANGUAGE = 'ru'

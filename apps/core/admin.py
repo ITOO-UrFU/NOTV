@@ -1,11 +1,15 @@
 from django.contrib import admin
 from reversion.admin import VersionAdmin
+from klingon.admin import TranslationInline, create_translations
 
 from .models import *
 
 
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
+    inlines = [TranslationInline]
+    actions = [create_translations]
+
     list_display = ('title', 'description', 'path', 'startdate', 'enddate', "line_of_work", "status")
     # fields = ('title', 'description', 'startdate', 'enddate')
     search_fields = ('title', 'description', 'path', "status")
