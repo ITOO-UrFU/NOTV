@@ -127,7 +127,12 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
             current_user = User.objects.get(pk=token_data['user_id'])
 
-            return Person.objects.get_or_create(user=current_user, first_name=_("Name"), last_name=_("Last name"))
+            try:
+                person = Person.objects.get(user=current_user)
+            except:
+                person = Person(user=current_user, first_name=_("Name"), last_name=_("Last name"))
+                person.save()
+
         else:
             return None
 
