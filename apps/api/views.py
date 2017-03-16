@@ -187,13 +187,13 @@ class PersonUpdate(generics.UpdateAPIView):
         else:
             return None
 
-    def get_queryset(self):
+    def get_queryset(self, request):
         """
         Adding this method since it is sometimes called when using
         django-rest-swagger
         https://github.com/Tivix/django-rest-auth/issues/275
         """
 
-        return Person.objects.get(user=self.request.user)
+        return self.get_object(request)
 
 
