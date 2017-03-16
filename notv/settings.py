@@ -201,7 +201,7 @@ REST_FRAMEWORK = {
 }
 
 ADMIN_REORDER = (
-    {'app': 'core', 'label': 'События', 'models': (
+    {'app': 'core', 'label': 'Мероприятия', 'models': (
         'core.Event',
         'core.EventType',
         'core.LineOfWork',
