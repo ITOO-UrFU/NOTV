@@ -149,7 +149,7 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class PersonUpdate(generics.UpdateAPIView):
-    def update(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object(request)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
