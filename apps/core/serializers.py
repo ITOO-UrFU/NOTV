@@ -107,13 +107,22 @@ class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
 
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
+    photo_url = serializers.SerializerMethodField()
     # country = CountryField()
     user = UserSerializer()
     get_events = EventUserRegistrationSerializer_noperson(many=True)
 
+    def get_photo_url(self, person):
+        request = self.context.get('request')
+        if person.photo:
+            photo_url = person.photo.url
+            return request.build_absolute_uri(photo_url)
+        else:
+            return None
+
     class Meta:
         model = Person
-        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography", "user", "get_events")  # "country",
+        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "user", "get_events")  # "country",
         depth = 2
 
 
