@@ -137,11 +137,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGES = [
-    ('ru', _('Russian')),
-    ('en', _('English')),
+    ('ru', 'Russian'),
+    ('en', 'English'),
 ]
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'Asia/Yekaterinburg'
 
@@ -263,4 +263,4 @@ JWT_AUTH = {
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/'
 
-KLINGON_DEFAULT_LANGUAGE = 'ru'
+KLINGON_DEFAULT_LANGUAGE = 'en'
