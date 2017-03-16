@@ -149,6 +149,8 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class PersonUpdate(generics.UpdateAPIView):
+    permission_classes = (AllowAny,)
+
     def put(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object(request)
