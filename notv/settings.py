@@ -261,6 +261,6 @@ JWT_AUTH = {
 }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/'
+MEDIA_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/media/'
 
 KLINGON_DEFAULT_LANGUAGE = 'en'
