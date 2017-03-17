@@ -27,7 +27,7 @@ class Speakers(viewsets.ModelViewSet):
 
     def get_queryset(self):
         type = RegistrationType.objects.filter(title="Спикер").first()
-        speakers = Person.objects.filter(id__in=EventUserRegistration.objects.filter(type=type).values('person_id'))
+        speakers = Person.objects.filter(id__in=EventUserRegistration.objects.filter(type=type).values('person_id')).order_by("-karma")
         return speakers
 
 
