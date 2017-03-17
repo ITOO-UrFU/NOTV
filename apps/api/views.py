@@ -232,7 +232,7 @@ def register_on_event(request):
     person = Person(user=current_user)
     event = Event.objects.filter(id=request.POST.get('event_id')).first()
     type = RegistrationType.objects.filter(title="Участник").first()
-    print('!!!!!!!!!!!!!!!!!!', str(person), str(event), str(type))
+    print('!!!!!!!!!!!!!!!!!!', person.id, event.id, type.id)
 
     eur = EventUserRegistration(person=person, event=event, status="r", type=type)
     eur.save()
