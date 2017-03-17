@@ -49,16 +49,7 @@ def page_slug(request, slug):
     Courses ids.
     """
 
-    try:
-        page = Page.objects.get(slug=slug)
-    except:
-        page = None
-
-    if not page:
-        try:
-            page = Page.objects.get(pk=slug)
-        except:
-            page = None
+    page = get_page_by_pk_or_slug(slug)
 
     try:
         type = Type.objects.filter(pk=page.type.id).values("title").first()["title"]
@@ -79,6 +70,19 @@ def page_slug(request, slug):
         })
     else:
         raise Http404
+
+
+def get_page_by_pk_or_slug(slug):
+    try:
+        page = Page.objects.get(slug=slug)
+    except:
+        page = None
+    if not page:
+        try:
+            page = Page.objects.get(pk=slug)
+        except:
+            page = None
+    return page
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -122,6 +126,9 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
         return Response(serializer.data)
 
     def get_object(self, request):
+        return self.get_or_update_person_by_jwt()
+
+    def get_or_update_person_by_jwt(self):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
@@ -174,6 +181,9 @@ class PersonUpdate(generics.UpdateAPIView):
         queryset lookups.  Eg if objects are referenced using multiple
         keyword arguments in the url conf.
         """
+        return self.get_or_update_person_by_jwt()
+
+    def get_or_update_person_by_jwt(self):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
