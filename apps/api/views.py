@@ -22,6 +22,15 @@ class Events(viewsets.ModelViewSet):
     serializer_class = EventSerializer
 
 
+class Speakers(viewsets.ModelViewSet):
+    serializer_class = SpeakerSerializer
+
+    def get_queryset(self):
+        type = RegistrationType.objects.filter(title="Спикер").first()
+        speakers = Person.objects.filter(id__in=EventUserRegistration.objects.filter(type=type).values('person_id'))
+        return speakers
+
+
 class Persons(viewsets.ModelViewSet):
     queryset = Person.objects.all().order_by("-karma")
     serializer_class = PersonSerializer

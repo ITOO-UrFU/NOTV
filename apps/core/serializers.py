@@ -114,10 +114,13 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_photo_url(self, person):
         request = self.context.get('request')
-        if person.photo:
-            photo_url = person.photo.url
-            return request.build_absolute_uri(photo_url)
-        else:
+        try:
+            if person.photo:
+                photo_url = person.photo.url
+                return request.build_absolute_uri(photo_url)
+            else:
+                return None
+        except:
             return None
 
     class Meta:
@@ -125,6 +128,26 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "user", "get_events")  # "country",
         depth = 2
 
+
+class SpeakerSerializer(serializers.HyperlinkedModelSerializer):
+    get_events = EventUserRegistrationSerializer_noperson(many=True)
+    photo_url = serializers.SerializerMethodField()
+
+    def get_photo_url(self, person):
+        request = self.context.get('request')
+        try:
+            if person.photo:
+                photo_url = person.photo.url
+                return request.build_absolute_uri(photo_url)
+            else:
+                return None
+        except:
+            return None
+
+    class Meta:
+        model = Person
+        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "get_events")  # "country",
+        depth = 2
 
 class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
 

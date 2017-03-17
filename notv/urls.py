@@ -48,6 +48,7 @@ router.register(r'persons', Persons)
 router.register(r'users', Users)
 router.register(r'paths', Paths)
 router.register(r'pages', Pages, base_name='pages')
+router.register(r'speakers', Speakers, base_name='speakers')
 
 
 urlpatterns.append(url(r'^api/v1/', include(router.urls, namespace='api')))
