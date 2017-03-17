@@ -237,12 +237,12 @@ def register_on_event(request):
             try:
                 print("!!!!!!!!!!!!!!!!!!!!!    238")
                 eur = EventUserRegistration(person=person, event=event, status="r", type=type)
-                if eur:
-                    return Response({"success": False})
+                eur.save()
             except:
                 print("!!!!!!!!!!!!!!!!!!!!!    243")
                 eur = EventUserRegistration.objects.filter(person=person, event=event)
-                eur.save()
+                if eur:
+                    return Response({"success": False})
 
             return Response({"success": True})
 
