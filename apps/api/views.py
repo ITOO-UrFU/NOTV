@@ -278,3 +278,26 @@ def unregister_on_event(request):
     except:
         return Response({"success": False})
 
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def event_user_list(request):
+
+    try:
+
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+
+        if jwt_token:
+            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+
+            try:
+                eur = EventUserRegistration.objects.filter(person=person).values("event_id")
+                return Response(eur)
+            except:
+                return Response({"success": False})
+        else:
+            return Response({"success": False})
+    except:
+        return Response({"success": False})
