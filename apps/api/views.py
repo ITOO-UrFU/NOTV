@@ -235,11 +235,9 @@ def register_on_event(request):
             type = RegistrationType.objects.filter(title="Участник").first()
 
             try:
-                print("!!!!!!!!!!!!!!!!!!!!!    238")
                 eur = EventUserRegistration(person=person, event=event, status="r", type=type)
                 eur.save()
             except:
-                print("!!!!!!!!!!!!!!!!!!!!!    243")
                 eur = EventUserRegistration.objects.filter(person=person, event=event)
                 if eur:
                     return Response({"success": False})
@@ -247,11 +245,9 @@ def register_on_event(request):
             return Response({"success": True})
 
         else:
-            print("!!!!!!!!!!!!!!!!!!!!!    250")
 
             return Response({"success": False})
     except:
-        print("!!!!!!!!!!!!!!!!!!!!!    254")
         return Response({"success": False})
 
 
