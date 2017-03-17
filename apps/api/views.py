@@ -230,10 +230,8 @@ def register_on_event(request):
     token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
     current_user = User.objects.get(pk=token_data['user_id'])
     person = Person(user=current_user)
-    event = Event.objects.filter(id=request.POST.get('event_id')).first()
+    event = Event.objects.get(id=request.data.get('event_id'))
     type = RegistrationType.objects.filter(title="Участник").first()
-    print('!!!!!!!!!!!!!!!!!!', person.id, event.id, type.id)
-
     eur = EventUserRegistration(person=person, event=event, status="r", type=type)
     eur.save()
 
