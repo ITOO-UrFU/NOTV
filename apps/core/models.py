@@ -148,7 +148,7 @@ class Person(models.Model):
     position = models.CharField(_('Должность'), max_length=1024, blank=True, null=True)
     division = models.CharField(_('Подразделение'), max_length=1024, blank=True, null=True)
     organisation = models.CharField(_('Организация'), max_length=1024, blank=True, null=True)
-    photo = models.ImageField(_('Фото'), upload_to="media", blank=True, null=True)
+    photo = models.ImageField(_('Фото'), blank=True, null=True)
     karma = models.IntegerField(_("Карма"), default=0)
 
     class Meta:
