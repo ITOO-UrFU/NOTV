@@ -219,7 +219,7 @@ class PersonUpdate(generics.UpdateAPIView):
         return None
 
 
-@api_view(('GET',))
+@api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def register_on_event(request):
 
