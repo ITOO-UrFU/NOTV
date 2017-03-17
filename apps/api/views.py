@@ -223,9 +223,10 @@ class PersonUpdate(generics.UpdateAPIView):
 @permission_classes((permissions.AllowAny,))
 def register_on_event(request):
 
-     try:
+    try:
 
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+
         if jwt_token:
             token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
             current_user = User.objects.get(pk=token_data['user_id'])
@@ -243,6 +244,7 @@ def register_on_event(request):
 
             return Response({"success": True})
         else:
-                 return Response({"success": False})
-     except:
-         return Response({"success": False})
+            return Response({"success": False})
+    except:
+        return Response({"success": False})
+
