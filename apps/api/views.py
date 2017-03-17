@@ -219,3 +219,25 @@ class PersonUpdate(generics.UpdateAPIView):
         return None
 
 
+@api_view(('GET',))
+@permission_classes((permissions.AllowAny,))
+def register_on_event(request):
+
+    try:
+
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            current_user = User.objects.get(pk=token_data['user_id'])
+            event = Event.objects.get(pk=request.POST.get('event_id'))
+            type = RegistrationType.objects.filter(title="Участник").first()
+
+            eur = EventUserRegistration(person=person, event=event, status="r", type=type)
+
+            return Response({"success": True})
+        else:
+            return Response({"success": False})
+
+    except:
+
+        return Response({"success": False})
