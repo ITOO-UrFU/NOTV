@@ -41,6 +41,7 @@ urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"
                 url(r'^api/v1/rest-auth/profile/$', PersonDetailsView.as_view(), name='profile'),
                 url(r'^api/v1/rest-auth/profile/update/$', PersonUpdate.as_view(), name='update_profile'),
                 url(r'^api/v1/rest-auth/events/register/$', register_on_event, name='register_on_event'),
+                url(r'^api/v1/rest-auth/events/unregister/$', unregister_on_event, name='unregister_on_event'),
                 ]
 
 router = routers.DefaultRouter()
