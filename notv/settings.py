@@ -261,6 +261,7 @@ JWT_AUTH = {
 }
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/media/'
 
