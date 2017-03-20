@@ -5,8 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework import permissions
-
-from itertools import chain
+from django.db.models import Q
 
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from django.utils.translation import ugettext_lazy as _
@@ -30,11 +29,8 @@ class Speakers(viewsets.ModelViewSet):
 
     def get_queryset(self):
         type = RegistrationType.objects.filter(title="Спикер").first()
-        speakers = Person.objects.filter(id__in=EventUserRegistration.objects.filter(type=type).values('person_id'))
+        speakers = Person.objects.filter(Q(id__in=EventUserRegistration.objects.filter(type=type).values('person_id')) | Q(user=None))
 
-        another = Person.objects.filter(user=None).values('person_id')
-
-        all_speakers = list(chain(speakers, another))
         return speakers.order_by("-karma")
 
 
