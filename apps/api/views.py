@@ -30,12 +30,12 @@ class Speakers(viewsets.ModelViewSet):
 
     def get_queryset(self):
         type = RegistrationType.objects.filter(title="Спикер").first()
-        speakers = Person.objects.filter(id__in=EventUserRegistration.objects.filter(type=type).values('person_id')).order_by("-karma")
+        speakers = Person.objects.filter(id__in=EventUserRegistration.objects.filter(type=type).values('person_id'))
 
-        another = Person.objects.filter(id__in=EventUserRegistration.objects.filter(user=None).values('person_id')).order_by("-karma")
+        another = Person.objects.filter(user=None).values('person_id')
 
         all_speakers = list(chain(speakers, another))
-        return speakers
+        return speakers.order_by("-karma")
 
 
 class Persons(viewsets.ModelViewSet):
