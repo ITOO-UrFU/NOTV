@@ -3,11 +3,11 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
-from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework import permissions
 from django.db.models import Q
+from rest_framework import serializers
 
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from django.utils.translation import ugettext_lazy as _
 
 import jwt
@@ -19,15 +19,18 @@ from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from rest_auth.models import TokenModel
-from rest_auth.registration.app_settings import RegisterSerializer
 from allauth.account import app_settings as allauth_settings
 from rest_auth.app_settings import (TokenSerializer,
-                                    JWTSerializer,
-                                    create_token)
+                                JWTSerializer,
+                                create_token)
 from allauth.account.utils import complete_signup
 from rest_auth.utils import jwt_encode
 from importlib import import_module
 from six import string_types
+
+from allauth.account.adapter import get_adapter
+from allauth.utils import email_address_exists
+from allauth.account.utils import setup_user_email
 
 from core.models import *
 from core.serializers import *
@@ -354,6 +357,66 @@ def register_permission_classes():
     for klass in getattr(settings, 'REST_AUTH_REGISTER_PERMISSION_CLASSES', tuple()):
         permission_classes.append(import_callable(klass))
     return tuple(permission_classes)
+
+class RegisterSerializer(serializers.Serializer):
+    username = serializers.CharField(
+        max_length=256,
+        min_length=3,
+        required=False
+    )
+    email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+
+    def validate_username(self, username):
+        username = get_adapter().clean_username(username)
+        return username
+
+    def validate_email(self, email):
+        email = get_adapter().clean_email(email)
+        if allauth_settings.UNIQUE_EMAIL:
+            if email and email_address_exists(email):
+                raise serializers.ValidationError(
+                    _("A user is already registered with this e-mail address."))
+        return email
+
+    def validate_password1(self, password):
+        return get_adapter().clean_password(password)
+
+    def validate(self, data):
+        if data['password1'] != data['password2']:
+            raise serializers.ValidationError(_("The two password fields didn't match."))
+        return data
+
+    def custom_signup(self, request, user):
+        pass
+
+    def get_cleaned_data(self):
+        return {
+            'username': self.validated_data.get('username', ''),
+            'password1': self.validated_data.get('password1', ''),
+            'email': self.validated_data.get('email', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
+            'second_name': self.validated_data.get('second_name', ''),
+            'position': self.validated_data.get('position', ''),
+            'organisation': self.validated_data.get('organisation', ''),
+        }
+
+    def save(self, request):
+        adapter = get_adapter()
+        user = adapter.new_user(request)
+        self.cleaned_data = self.get_cleaned_data()
+        adapter.save_user(request, user, self)
+        person = Person(user=user, first_name=self.cleaned_data['first_name'],
+                        last_name=self.cleaned_data['last_name'],
+                        second_name=self.cleaned_data['second_name'],
+                        organisation=self.cleaned_data['organisation'],
+                        position=self.cleaned_data['position'])
+        person.save()
+        self.custom_signup(request, user)
+        setup_user_email(request, user, [])
+        return user
 
 
 class RegisterView(generics.CreateAPIView):
