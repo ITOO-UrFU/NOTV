@@ -12,8 +12,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-from klingon.models import Translatable, AutomaticTranslation
-
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -77,8 +75,7 @@ class EventUserRegistration(models.Model):
         verbose_name_plural = 'регистрации пользователей на события'
 
 
-class Event(AutomaticTranslation, models.Model):
-    translatable_fields = ('title', 'description')
+class Event(models.Model):
 
     STATUSES = (
         ('h', _("Скрыт")),
