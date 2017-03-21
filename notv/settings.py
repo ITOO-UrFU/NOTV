@@ -255,10 +255,10 @@ JWT_AUTH = {
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
 
-    'JWT_ALLOW_REFRESH': False,
+    'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=14),
 
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_HEADER_PREFIX': '',
 }
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
