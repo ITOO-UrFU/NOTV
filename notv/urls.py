@@ -34,7 +34,7 @@ urlpatterns += [
 ]
 urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
                 url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
-                url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
+                url(r'^api/v1/rest-auth/registration/', RegisterView.as_view(), name='rest_register'),
                 url(r'^api/v1/api-token-auth/', obtain_jwt_token),
                 url(r'^api/v1/api-token-refresh/', refresh_jwt_token),
                 url(r'^api/v1/register/$', UserList.as_view(), name='api_profile_list'),

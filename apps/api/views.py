@@ -15,6 +15,20 @@ from django.conf import settings
 
 from django.contrib.auth.models import User
 
+from rest_framework import status
+from django.utils.decorators import method_decorator
+from django.views.decorators.debug import sensitive_post_parameters
+from rest_auth.models import TokenModel
+from rest_auth.registration.app_settings import RegisterSerializer
+from allauth.account import app_settings as allauth_settings
+from rest_auth.app_settings import (TokenSerializer,
+                                    JWTSerializer,
+                                    create_token)
+from allauth.account.utils import complete_signup
+from rest_auth.utils import jwt_encode
+from importlib import import_module
+from six import string_types
+
 from core.models import *
 from core.serializers import *
 
@@ -321,3 +335,67 @@ def event_user_list(request):
     except:
         return Response({"success": False})
 
+
+def import_callable(path_or_callable):
+    if hasattr(path_or_callable, '__call__'):
+        return path_or_callable
+    else:
+        assert isinstance(path_or_callable, string_types)
+        package, attr = path_or_callable.rsplit('.', 1)
+        return getattr(import_module(package), attr)
+    
+sensitive_post_parameters_m = method_decorator(
+    sensitive_post_parameters('password1', 'password2')
+)
+
+
+def register_permission_classes():
+    permission_classes = [AllowAny, ]
+    for klass in getattr(settings, 'REST_AUTH_REGISTER_PERMISSION_CLASSES', tuple()):
+        permission_classes.append(import_callable(klass))
+    return tuple(permission_classes)
+
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = register_permission_classes()
+    token_model = TokenModel
+
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(RegisterView, self).dispatch(*args, **kwargs)
+
+    def get_response_data(self, user):
+        if allauth_settings.EMAIL_VERIFICATION == allauth_settings.EmailVerificationMethod.MANDATORY:
+            return {"detail": _("Verification e-mail sent.")}
+
+        if getattr(settings, 'REST_USE_JWT', False):
+            data = {
+                'user': user,
+                'token': self.token
+            }
+            return JWTSerializer(data).data
+        else:
+            return TokenSerializer(user.auth_token).data
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(self.get_response_data(user),
+                        status=status.HTTP_201_CREATED,
+                        headers=headers)
+
+    def perform_create(self, serializer):
+        user = serializer.save(self.request)
+        if getattr(settings, 'REST_USE_JWT', False):
+            self.token = jwt_encode(user)
+        else:
+            create_token(self.token_model, user, serializer)
+
+        complete_signup(self.request._request, user,
+                        allauth_settings.EMAIL_VERIFICATION,
+                        None)
+        return user
