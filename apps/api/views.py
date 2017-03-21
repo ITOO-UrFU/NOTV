@@ -408,11 +408,21 @@ class RegisterSerializer(serializers.Serializer):
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
-        person = Person(user=user, first_name=self.cleaned_data['first_name'],
+        print('!!!!!!!!!!!',
+              user,
+                self.cleaned_data['first_name'],
+                        self.cleaned_data['last_name'],
+                        self.cleaned_data['second_name'],
+                        self.cleaned_data['organisation'],
+                        self.cleaned_data['position']
+              )
+        person = Person(user=user,
+                        first_name=self.cleaned_data['first_name'],
                         last_name=self.cleaned_data['last_name'],
                         second_name=self.cleaned_data['second_name'],
                         organisation=self.cleaned_data['organisation'],
                         position=self.cleaned_data['position'])
+        print('OOOOOOOOO', person)
         person.save()
         self.custom_signup(request, user)
         setup_user_email(request, user, [])
