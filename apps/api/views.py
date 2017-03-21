@@ -368,6 +368,12 @@ class RegisterSerializer(serializers.Serializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
 
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    second_name = serializers.CharField()
+    position = serializers.CharField()
+    organisation = serializers.CharField()
+
     def validate_username(self, username):
         username = get_adapter().clean_username(username)
         return username
