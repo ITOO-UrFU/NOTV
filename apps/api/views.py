@@ -63,12 +63,12 @@ def page_slug(request, slug):
 
     page = get_page_by_pk_or_slug(slug)
 
-    try:
-        type = Type.objects.filter(pk=page.type.id).values("title").first()["title"]
-    except:
-        type = None
-
     if page:
+        try:
+            type = Type.objects.filter(pk=page.type.id).values("title").first()["title"]
+        except:
+            type = None
+
         return Response({
             "id": page.id,
             "slug": page.slug,
@@ -78,8 +78,8 @@ def page_slug(request, slug):
             "keywords": page.keywords,
             "type": type,
             "weight": page.weight,
-
         })
+
     else:
         raise Http404
 
