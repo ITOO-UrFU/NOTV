@@ -143,7 +143,11 @@ class PersonDetailsView(generics.RetrieveUpdateAPIView):
     def get_or_update_person_by_jwt(self):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
-            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+
             current_user = User.objects.get(pk=token_data['user_id'])
 
             try:
@@ -198,7 +202,10 @@ class PersonUpdate(generics.UpdateAPIView):
     def get_or_update_person_by_jwt(self):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
-            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
             current_user = User.objects.get(pk=token_data['user_id'])
 
             try:
@@ -231,7 +238,10 @@ def register_on_event(request):
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
 
         if jwt_token:
-            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
             current_user = User.objects.get(pk=token_data['user_id'])
             person = Person.objects.get(user=current_user)
             event = Event.objects.get(id=request.data.get('event_id'))
@@ -263,7 +273,10 @@ def unregister_on_event(request):
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
 
         if jwt_token:
-            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
             current_user = User.objects.get(pk=token_data['user_id'])
             person = Person.objects.get(user=current_user)
             event = Event.objects.get(id=request.data.get('event_id'))
@@ -291,7 +304,10 @@ def event_user_list(request):
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
 
         if jwt_token:
-            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
             current_user = User.objects.get(pk=token_data['user_id'])
             person = Person.objects.get(user=current_user)
 
