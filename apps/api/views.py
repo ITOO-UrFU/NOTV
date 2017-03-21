@@ -392,6 +392,8 @@ class RegisterSerializer(serializers.Serializer):
     def validate(self, data):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError(_("The two password fields didn't match."))
+        if data['first_name'] is None or data['last_name'] is None or data['position'] is None or data['organisation'] is None:
+            raise serializers.ValidationError(_("Fields can not be empty."))
         return data
 
     def custom_signup(self, request, user):
@@ -402,11 +404,11 @@ class RegisterSerializer(serializers.Serializer):
             'username': self.validated_data.get('username', ''),
             'password1': self.validated_data.get('password1', ''),
             'email': self.validated_data.get('email', ''),
-            'first_name': self.data.get('first_name', ''),
-            'last_name': self.data.get('last_name', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
             'second_name': self.data.get('second_name', ''),
-            'position': self.data.get('position', ''),
-            'organisation': self.data.get('organisation', ''),
+            'position': self.validated_data.get('position', ''),
+            'organisation': self.validated_data.get('organisation', ''),
         }
 
     def save(self, request):
