@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from rest_framework import routers, serializers, viewsets
+from django.views.generic import TemplateView
 
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework_jwt.views import refresh_jwt_token
@@ -35,6 +36,7 @@ urlpatterns += [
 urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
                 url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
                 url(r'^api/v1/rest-auth/registration/', RegisterView.as_view(), name='rest_register'),
+                url(r'^account-confirm-email/(?P<key>[-:\w]+)/$', TemplateView.as_view(), name='account_confirm_email'),
                 url(r'^api/v1/api-token-auth/', obtain_jwt_token),
                 url(r'^api/v1/api-token-refresh/', refresh_jwt_token),
                 url(r'^api/v1/register/$', UserList.as_view(), name='api_profile_list'),
