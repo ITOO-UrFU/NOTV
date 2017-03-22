@@ -103,6 +103,10 @@ class Event(models.Model):
         registrations = EventUserRegistration.objects.filter(event=self)
         return [registration for registration in registrations]
 
+    def get_speakers(self):
+        registrations = EventUserRegistration.objects.filter(event=self, type__title="Спикер")
+        return [registration for registration in registrations]
+
     def get_type_display(self):
         if self.type:
             return self.type.title
