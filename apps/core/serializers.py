@@ -167,7 +167,7 @@ class EventUserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    get_users = EventUserRegistrationSerializer(many=True)
+    get_speakers = EventUserRegistrationSerializer(many=True)
     room = RoomSerializer()
     path = PathSerializer()
 
