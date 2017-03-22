@@ -25,27 +25,26 @@ from rest_framework_jwt.views import refresh_jwt_token
 from api.views import *
 from core.views import custom_json_view
 
+main_urlpatterns = []
 
-urlpatterns = []
-
-urlpatterns += [
+main_urlpatterns += [
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^custom/(?P<title>.*)/$', custom_json_view, name="custom_json_view"),
 ]
-urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
-                url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
-                url(r'^api/v1/rest-auth/registration/', RegisterView.as_view(), name='rest_register'),
-                url(r'^api/v1/account-confirm-email/(?P<key>[-:\w]+)/$', TemplateView.as_view(), name='account_confirm_email'),
-                url(r'^api/v1/api-token-auth/', obtain_jwt_token),
-                url(r'^api/v1/api-token-refresh/', refresh_jwt_token),
-                url(r'^api/v1/register/$', UserList.as_view(), name='api_profile_list'),
-                url(r'^api/v1/rest-auth/profile/$', PersonDetailsView.as_view(), name='profile'),
-                url(r'^api/v1/rest-auth/profile/update/$', PersonUpdate.as_view(), name='update_profile'),
-                url(r'^api/v1/rest-auth/events/register/$', register_on_event, name='register_on_event'),
-                url(r'^api/v1/rest-auth/events/unregister/$', unregister_on_event, name='unregister_on_event'),
-                url(r'^api/v1/rest-auth/events/event_user_list/$', event_user_list, name='event_user_list'),
-                ]
+main_urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
+                     url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
+                     url(r'^api/v1/rest-auth/registration/', RegisterView.as_view(), name='rest_register'),
+                     url(r'^api/v1/account-confirm-email/(?P<key>[-:\w]+)/$', TemplateView.as_view(), name='account_confirm_email'),
+                     url(r'^api/v1/api-token-auth/', obtain_jwt_token),
+                     url(r'^api/v1/api-token-refresh/', refresh_jwt_token),
+                     url(r'^api/v1/register/$', UserList.as_view(), name='api_profile_list'),
+                     url(r'^api/v1/rest-auth/profile/$', PersonDetailsView.as_view(), name='profile'),
+                     url(r'^api/v1/rest-auth/profile/update/$', PersonUpdate.as_view(), name='update_profile'),
+                     url(r'^api/v1/rest-auth/events/register/$', register_on_event, name='register_on_event'),
+                     url(r'^api/v1/rest-auth/events/unregister/$', unregister_on_event, name='unregister_on_event'),
+                     url(r'^api/v1/rest-auth/events/event_user_list/$', event_user_list, name='event_user_list'),
+                     ]
 
 router = routers.DefaultRouter()
 router.register(r'events', Events)
@@ -56,4 +55,8 @@ router.register(r'pages', Pages, base_name='pages')
 router.register(r'speakers', Speakers, base_name='speakers')
 
 
-urlpatterns.append(url(r'^api/v1/', include(router.urls, namespace='api')))
+main_urlpatterns.append(url(r'^api/v1/', include(router.urls, namespace='api')))
+
+urlpatterns = [
+    url(r'^edcrunch/', include(main_urlpatterns)),
+]
