@@ -2,6 +2,14 @@ from .models import *
 from rest_framework import serializers
 
 from django_countries.serializer_fields import CountryField
+from django.utils import timezone
+
+
+class DateTimeFieldWihTZ(serializers.DateTimeField):
+
+    def to_representation(self, value):
+        value = timezone.localtime(value)
+        return super(DateTimeFieldWihTZ, self).to_representation(value)
 
 
 class ExtensibleModelSerializer(serializers.ModelSerializer):
@@ -91,6 +99,8 @@ class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EventSerializer_noperson(serializers.ModelSerializer):
+    startdate = DateTimeFieldWihTZ()
+    enddate = DateTimeFieldWihTZ()
 
     class Meta:
         model = Event
@@ -170,6 +180,8 @@ class EventSerializer(serializers.ModelSerializer):
     get_speakers = EventUserRegistrationSerializer(many=True)
     room = RoomSerializer()
     path = PathSerializer()
+    startdate = DateTimeFieldWihTZ()
+    enddate = DateTimeFieldWihTZ()
 
     class Meta:
         model = Event
