@@ -159,7 +159,7 @@ class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
 
 
 class EventUserRegistrationSerializer(serializers.ModelSerializer):
-    person = PersonSerializer()
+    person = PersonSerializerSimple()
 
     class Meta:
         model = EventUserRegistration
