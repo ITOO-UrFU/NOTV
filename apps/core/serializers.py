@@ -98,6 +98,16 @@ class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("title", )
 
 
+class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
+    type = RegistrationTypeSerializer()
+    event = EventSerializer_noperson()
+
+    class Meta:
+        model = EventUserRegistration
+        fields = ("id", "type", "event",  "status")
+
+
+
 class EventSerializer_noperson(serializers.ModelSerializer):
     startdate = DateTimeFieldWihTZ()
     enddate = DateTimeFieldWihTZ()
@@ -107,14 +117,6 @@ class EventSerializer_noperson(serializers.ModelSerializer):
         model = Event
         fields = ("id", "title", "description", "block", "get_speakers", "get_type_display", "get_event_slug", "startdate", "enddate")
 
-
-class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
-    type = RegistrationTypeSerializer()
-    event = EventSerializer_noperson()
-
-    class Meta:
-        model = EventUserRegistration
-        fields = ("id", "type", "event",  "status")
 
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
