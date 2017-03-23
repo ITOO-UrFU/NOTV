@@ -59,6 +59,12 @@ class TypeAdmin(VersionAdmin):
     list_display = ("title", "slug")
 
 
+@admin.register(Block)
+class BlockAdmin(VersionAdmin):
+    fields = ("title", "slug")
+    list_display = ("title", "slug")
+
+
 @admin.register(LineOfWork)
 class LineOfWorkAdmin(VersionAdmin):
     fields = ("title", "slug")

@@ -99,6 +99,11 @@ class Document(models.Model):
     file = models.FileField(upload_to=generate_new_filename, validators=[validate_file_extension])
 
 
+class Block(models.Model):
+    title = models.CharField(_("Название документа"), max_length=1024, blank=False)
+    slug = models.SlugField(_("Код"))
+
+
 class Event(models.Model):
 
     STATUSES = (
@@ -112,7 +117,7 @@ class Event(models.Model):
     path = models.ForeignKey("Path", verbose_name=_("Траектория"), blank=True, null=True)
     room = models.ForeignKey("Room", verbose_name=_("Комната"), blank=True, null=True)
     line_of_work = models.ForeignKey("LineOfWork", verbose_name=_("Направление работы"), blank=True, null=True)
-    block = models.CharField(_("Блок"), max_length=256, blank=True, null=True)
+    block = models.ForeignKey("Block", verbose_name=_("Блок"), blank=True, null=True)
     status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
@@ -138,6 +143,18 @@ class Event(models.Model):
         else:
             return None
 
+    def get_block_display(self):
+        if self.block:
+            return self.block.title
+        else:
+            return None
+
+    def get_block_slug(self):
+        if self.block:
+            return self.block.slug
+        else:
+            return None
+
     def get_event_slug(self):
         if self.type:
             return self.type.slug
@@ -147,6 +164,12 @@ class Event(models.Model):
     def get_line_of_work_display(self):
         if self.line_of_work:
             return self.line_of_work.title
+        else:
+            return None
+
+    def get_line_of_work_slug(self):
+        if self.line_of_work:
+            return self.line_of_work.slug
         else:
             return None
 
