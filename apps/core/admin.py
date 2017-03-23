@@ -43,9 +43,14 @@ class PageAdmin(VersionAdmin):
     save_as = True
 
 
+
+@admin.register(Document)
+class DocumentAdmin(VersionAdmin):
+    fields = ("title", "file")
+
 @admin.register(Person)
 class PersonAdmin(VersionAdmin):
-    list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone")
+    list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone", "get_docs")
 
 
 @admin.register(Type)

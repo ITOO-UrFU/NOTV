@@ -11,6 +11,24 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+import os
+import hashlib
+
+from .validators import validate_file_extension
+
+
+def key():
+
+    key = hashlib.md5(os.urandom(128)).hexdigest()
+    return key
+
+
+def generate_new_filename(instance, filename):
+    f, ext = os.path.splitext(filename)
+    filename = '%s%s' % (uuid.uuid4().hex, ext)
+    fullpath = 'documents/' + filename
+    return fullpath
+
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -73,6 +91,12 @@ class EventUserRegistration(models.Model):
     class Meta:
         verbose_name = 'регистрация пользователя на событие'
         verbose_name_plural = 'регистрации пользователей на события'
+
+
+class Document(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(_("Название документа"), max_length=1024, blank=False)
+    file = models.FileField(upload_to=generate_new_filename, validators=[validate_file_extension])
 
 
 class Event(models.Model):
@@ -152,6 +176,7 @@ class Person(models.Model):
     organisation = models.CharField(_('Организация'), max_length=1024, blank=True, null=True)
     photo = models.ImageField(_('Фото'), blank=True, null=True)
     phone = models.CharField(_('Телефон'), blank=True, null=True, max_length=32)
+    docs = models.ManyToManyField("Document", blank=True)
     karma = models.IntegerField(_("Карма"), default=0)
 
     class Meta:
@@ -167,6 +192,11 @@ class Person(models.Model):
     def get_events(self):
         registrations = EventUserRegistration.objects.filter(person=self)
         return [registration for registration in registrations]
+
+    def get_docs(self):
+        return ''.join(['<a href="'+doc.file.url+'">'+doc.title+'</a><br>' for doc in self.docs.all()])
+
+    get_docs.allow_tags = True
 
 
 # @receiver(post_save, sender=User)
