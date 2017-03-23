@@ -88,6 +88,7 @@ class Event(models.Model):
     path = models.ForeignKey("Path", verbose_name=_("Траектория"), blank=True, null=True)
     room = models.ForeignKey("Room", verbose_name=_("Комната"), blank=True, null=True)
     line_of_work = models.ForeignKey("LineOfWork", verbose_name=_("Направление работы"), blank=True, null=True)
+    block = models.CharField(_("Блок"), max_length=256, blank=True, null=True)
     status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
     startdate = models.DateTimeField(_("Начало события"))
     enddate = models.DateTimeField(_("Конец события"))
