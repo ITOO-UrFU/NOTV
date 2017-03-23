@@ -91,11 +91,26 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
 
 
+class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Person
+        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography")  # "country",
+        depth = 2
+
 
 class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RegistrationType
         fields = ("title", )
+
+
+class EventUserRegistrationSerializer(serializers.ModelSerializer):
+    person = PersonSerializerSimple()
+
+    class Meta:
+        model = EventUserRegistration
+        fields = ("id", "person", "get_type_display", "status")
 
 
 class EventSerializer_noperson(serializers.ModelSerializer):
@@ -106,6 +121,7 @@ class EventSerializer_noperson(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ("id", "title", "description", "block", "get_speakers", "get_type_display", "get_event_slug", "startdate", "enddate")
+
 
 
 class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
@@ -140,13 +156,6 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
         depth = 2
 
 
-class EventUserRegistrationSerializer(serializers.ModelSerializer):
-    person = PersonSerializerSimple()
-
-    class Meta:
-        model = EventUserRegistration
-        fields = ("id", "person", "get_type_display", "status")
-
 
 class SpeakerSerializer(serializers.HyperlinkedModelSerializer):
     get_events = EventUserRegistrationSerializer_noperson(many=True)
@@ -166,14 +175,6 @@ class SpeakerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Person
         fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "get_events")  # "country",
-        depth = 2
-
-
-class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Person
-        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo", "biography")  # "country",
         depth = 2
 
 
