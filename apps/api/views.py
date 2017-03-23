@@ -45,7 +45,8 @@ class Speakers(viewsets.ModelViewSet):
     serializer_class = SpeakerSerializer
 
     def get_queryset(self):
-        types = RegistrationType.objects.filter(title_iexact="Участник")
+        types = RegistrationType.objects.filter(title__iexact="Участник")
+        print('!!!!!!!!!!!!!!!', [typ.id for typ in types])
         speakers = Person.objects.filter(Q(id__in=EventUserRegistration.objects.filter(type_in=types).values('person_id')) | Q(user=None))
 
         return speakers.order_by("-karma")
