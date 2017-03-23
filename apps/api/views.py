@@ -409,6 +409,7 @@ class RegisterSerializer(serializers.Serializer):
             'second_name': self.data.get('second_name', ''),
             'position': self.validated_data.get('position', ''),
             'organisation': self.validated_data.get('organisation', ''),
+            'phone': self.validated_data.get('phone', ''),
         }
 
     def save(self, request):
@@ -421,7 +422,8 @@ class RegisterSerializer(serializers.Serializer):
                         last_name=self.cleaned_data['last_name'],
                         second_name=self.cleaned_data['second_name'],
                         organisation=self.cleaned_data['organisation'],
-                        position=self.cleaned_data['position'])
+                        position=self.cleaned_data['position'],
+                        phone=self.cleaned_data['phone'])
         person.save()
         self.custom_signup(request, user)
         setup_user_email(request, user, [])

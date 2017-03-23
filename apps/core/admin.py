@@ -45,7 +45,7 @@ class PageAdmin(VersionAdmin):
 
 @admin.register(Person)
 class PersonAdmin(VersionAdmin):
-    list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "biography")
+    list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone")
 
 
 @admin.register(Type)
