@@ -1,7 +1,8 @@
 from django.http import Http404
-from rest_framework import viewsets
+from rest_framework import viewsets, views
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.parsers import FileUploadParser
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -471,3 +472,64 @@ class RegisterView(generics.CreateAPIView):
                         allauth_settings.EMAIL_VERIFICATION,
                         None)
         return user
+
+
+class FileUploadView(views.APIView):
+    parser_classes = (FileUploadParser,)
+
+    def get_or_update_person_by_jwt(self):
+        jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+
+            current_user = User.objects.get(pk=token_data['user_id'])
+
+            try:
+                person = Person.objects.get(user=current_user)
+            except:
+                person = Person(user=current_user)
+                person.save()
+
+            return person
+
+        else:
+            return None
+
+    def put(self, request, filename, format=None):
+        person = self.get_or_update_person_by_jwt()
+        if person:
+            file_obj = request.data['file']
+            person.docs.add(file_obj)
+            return Response(status=204)
+        else:
+            return Response(status=403)
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def delete_file(request):
+
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+    except:
+        pass
+    if person:
+        file_id = request.data.get("file_id", "")
+
+    if file_id:
+        person.docs.delete(Document.objects.get(id=file_id))
+
+    return Response(status=204)
+
+
+
+

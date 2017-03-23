@@ -44,6 +44,8 @@ main_urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_
                      url(r'^api/v1/rest-auth/events/register/$', register_on_event, name='register_on_event'),
                      url(r'^api/v1/rest-auth/events/unregister/$', unregister_on_event, name='unregister_on_event'),
                      url(r'^api/v1/rest-auth/events/event_user_list/$', event_user_list, name='event_user_list'),
+                     url(r'^api/v1/docs/upload/$', FileUploadView.as_view()),
+                     url(r'^api/v1/docs/delete/$', delete_file, name='delete_file'),
                      ]
 
 router = routers.DefaultRouter()
