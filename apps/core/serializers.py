@@ -47,6 +47,12 @@ class ExtensibleModelSerializer(serializers.ModelSerializer):
         return ret
 
 
+class DocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Document
+        fields = ('title', 'file')
+
+
 class TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Type
@@ -138,6 +144,7 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
     # country = CountryField()
     user = UserSerializer()
     get_events = EventUserRegistrationSerializer_noperson(many=True)
+    docs = DocumentSerializer(many=True)
 
     def get_photo_url(self, person):
         request = self.context.get('request')
@@ -152,7 +159,7 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Person
-        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "user", "phone", "get_events", "get_docs")  # "country",
+        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "user", "phone", "get_events", "docs")  # "country",
         depth = 2
 
 
