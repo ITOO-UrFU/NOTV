@@ -34,10 +34,7 @@ from allauth.utils import email_address_exists
 from allauth.account.utils import setup_user_email
 
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
-from rest_framework_extensions.cache.decorators import (
-    cache_response
-)
-
+from django.views.decorators.cache import cache_page
 from core.models import *
 from core.serializers import *
 
@@ -79,6 +76,7 @@ class Paths(viewsets.ModelViewSet):
 
 @api_view(('GET',))
 @permission_classes((permissions.AllowAny,))
+@cache_page(60 * 5)
 def page_slug(request, slug):
     """
     Courses ids.
