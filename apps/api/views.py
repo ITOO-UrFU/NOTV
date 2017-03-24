@@ -34,6 +34,9 @@ from allauth.utils import email_address_exists
 from allauth.account.utils import setup_user_email
 
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
+from rest_framework_extensions.cache.decorators import (
+    cache_response
+)
 
 from core.models import *
 from core.serializers import *
@@ -80,6 +83,8 @@ def page_slug(request, slug):
     """
     Courses ids.
     """
+
+    @cache_response()
 
     page = get_page_by_pk_or_slug(slug)
 
