@@ -164,7 +164,7 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SpeakerSerializer(serializers.HyperlinkedModelSerializer):
-    get_events = EventUserRegistrationSerializer_noperson(many=True)
+    # get_events = EventUserRegistrationSerializer_noperson(many=True)
     photo_url = serializers.SerializerMethodField()
 
     def get_photo_url(self, person):
