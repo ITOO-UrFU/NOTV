@@ -79,12 +79,11 @@ class Paths(viewsets.ModelViewSet):
 
 @api_view(('GET',))
 @permission_classes((permissions.AllowAny,))
+@cache_response()
 def page_slug(request, slug):
     """
     Courses ids.
     """
-
-    @cache_response()
 
     page = get_page_by_pk_or_slug(slug)
 
