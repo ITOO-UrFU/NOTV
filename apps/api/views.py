@@ -33,6 +33,8 @@ from allauth.account.adapter import get_adapter
 from allauth.utils import email_address_exists
 from allauth.account.utils import setup_user_email
 
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
+
 from core.models import *
 from core.serializers import *
 
@@ -42,7 +44,7 @@ class Events(viewsets.ModelViewSet):
     serializer_class = EventSerializer
 
 
-class Speakers(viewsets.ModelViewSet):
+class Speakers(CacheResponseMixin, viewsets.ModelViewSet):
     serializer_class = SpeakerSerializer
 
     def get_queryset(self):
@@ -359,6 +361,7 @@ def register_permission_classes():
         permission_classes.append(import_callable(klass))
     return tuple(permission_classes)
 
+
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(
         max_length=256,
@@ -506,6 +509,7 @@ class FileUploadView(views.APIView):
             return Response(status=204)
         else:
             return Response(status=403)
+
 
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))

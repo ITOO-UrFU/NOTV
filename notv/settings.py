@@ -265,3 +265,10 @@ STATIC_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/staticfiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = 'https://openedu.urfu.ru/files/NOTV17/NOTV/media/'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': '_cache',
+    }
+}
+
