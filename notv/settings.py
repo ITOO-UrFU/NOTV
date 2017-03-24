@@ -270,10 +270,13 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': '_cache',
 
-        'TIMEOUT': 60,
+        'TIMEOUT': 60 * 15,
                     'OPTIONS': {
                         'MAX_ENTRIES': 1000
                     }
     }
 }
 
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 15
+}
