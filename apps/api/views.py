@@ -64,7 +64,7 @@ class Users(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class Pages(viewsets.ModelViewSet):
+class Pages(CacheResponseMixin, viewsets.ModelViewSet):
     queryset = Page.objects.filter(status="p").order_by("weight")
     serializer_class = PageSerializer
 

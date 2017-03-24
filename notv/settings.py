@@ -269,6 +269,11 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': '_cache',
+
+        'TIMEOUT': 60,
+                    'OPTIONS': {
+                        'MAX_ENTRIES': 1000
+                    }
     }
 }
 
