@@ -39,7 +39,7 @@ from core.models import *
 from core.serializers import *
 
 
-class Events(viewsets.ModelViewSet):
+class Events(CacheResponseMixin, viewsets.ModelViewSet):
     queryset = Event.objects.filter(status="p")
     serializer_class = EventSerializer
 
