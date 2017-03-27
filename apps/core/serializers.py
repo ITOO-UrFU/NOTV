@@ -160,7 +160,7 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Person
         fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "participation", "user", "phone", "get_events", "docs")  # "country",
-        depth = 2
+        depth = 1
 
 
 class SpeakerSerializer(serializers.HyperlinkedModelSerializer):
