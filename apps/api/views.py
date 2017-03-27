@@ -54,7 +54,7 @@ class Speakers(CacheResponseMixin, viewsets.ModelViewSet):
         return speakers.order_by("-karma")
 
 
-class Persons(viewsets.ModelViewSet):
+class Persons(CacheResponseMixin, viewsets.ModelViewSet):
     queryset = Person.objects.all().order_by("-karma")
     serializer_class = PersonSerializer
 
