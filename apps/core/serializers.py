@@ -122,12 +122,11 @@ class EventUserRegistrationSerializer(serializers.ModelSerializer):
 class EventSerializer_noperson(serializers.ModelSerializer):
     startdate = DateTimeFieldWihTZ()
     enddate = DateTimeFieldWihTZ()
-    get_speakers = EventUserRegistrationSerializer(many=True)
+    # get_speakers = EventUserRegistrationSerializer(many=True)
 
     class Meta:
         model = Event
-        fields = ("id", "title", "description", "get_block_slug", "get_speakers", "get_type_display", "get_event_slug", "startdate", "enddate")
-
+        fields = ("id", "title", "description", "get_block_slug", "get_type_display", "get_event_slug", "startdate", "enddate")
 
 
 class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
