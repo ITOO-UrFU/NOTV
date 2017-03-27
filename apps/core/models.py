@@ -185,6 +185,14 @@ class Person(models.Model):
         ('F', _('Женский')),
         ('M', _('Мужской')),
     )
+
+    PARTICIPATION = (
+        ('U', _('Не выбрано')),
+        ('O', _('Очно')),
+        ('T', _('Трансляции')),
+    )
+
+    participation = models.CharField(max_length=1, choices=PARTICIPATION, default='U')
     sex = models.CharField(max_length=1,
                            choices=SEXES,
                            default='U'

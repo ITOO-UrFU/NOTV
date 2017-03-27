@@ -412,6 +412,7 @@ class RegisterSerializer(serializers.Serializer):
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
             'second_name': self.data.get('second_name', ''),
+            'participation': self.data.get('participation', ''),
             'position': self.validated_data.get('position', ''),
             'organisation': self.validated_data.get('organisation', ''),
             'phone': self.validated_data.get('phone', ''),
@@ -428,7 +429,10 @@ class RegisterSerializer(serializers.Serializer):
                         second_name=self.cleaned_data['second_name'],
                         organisation=self.cleaned_data['organisation'],
                         position=self.cleaned_data['position'],
-                        phone=self.cleaned_data['phone'])
+                        phone=self.cleaned_data['phone'],
+                        participation=self.cleaned_data['participation']
+        )
+
         person.save()
         self.custom_signup(request, user)
         setup_user_email(request, user, [])
