@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework import viewsets, views
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import FileUploadParser
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -490,31 +490,38 @@ class DataAndFiles(object):
         self.data = data
         self.files = files
 
+from django.conf import settings
+from django.core.files.uploadhandler import StopFutureHandlers
+from django.http.multipartparser import (
+    ChunkIter,  parse_header )
+from django.utils.encoding import force_text
+from django.utils.six.moves.urllib import parse as urlparse
+from rest_framework.exceptions import ParseError
 
-class FileUploadView(views.APIView):
-    parser_classes = (MultiPartParser,)
-    permission_classes = (AllowAny,)
+class BaseParser(object):
+    """
+    All parsers should extend `BaseParser`, specifying a `media_type`
+    attribute, and overriding the `.parse()` method.
+    """
+    media_type = None
 
-    def get_or_update_person_by_jwt(self):
-        jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
-        if jwt_token:
-            try:
-                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
-            except jwt.exceptions.ExpiredSignatureError:
-                return Response({"status": "Session expired"})
+    def parse(self, stream, media_type=None, parser_context=None):
+        """
+        Given a stream to read from, return the parsed representation.
+        Should return parsed data, or a `DataAndFiles` object consisting of the
+        parsed data and files.
+        """
+        raise NotImplementedError(".parse() must be overridden.")
 
-            current_user = User.objects.get(pk=token_data['user_id'])
-
-            try:
-                person = Person.objects.get(user=current_user)
-            except:
-                person = Person(user=current_user)
-                person.save()
-
-            return person
-
-        else:
-            return None
+class FileUploadParser(BaseParser):
+    """
+    Parser for file upload data.
+    """
+    media_type = '*/*'
+    errors = {
+        'unhandled': 'FileUpload parse error - none of upload handlers can handle the stream',
+        'no_filename': 'Missing filename. Request should include a Content-Disposition header with a filename parameter.',
+    }
 
     def parse(self, stream, media_type=None, parser_context=None):
         """
@@ -523,14 +530,6 @@ class FileUploadView(views.APIView):
         `.data` will be None (we expect request body to be a file content).
         `.files` will be a `QueryDict` containing one 'file' element.
         """
-        from django.utils.encoding import force_text
-        from django.http.multipartparser import MultiPartParser as DjangoMultiPartParser
-        from django.http.multipartparser import (
-            ChunkIter, MultiPartParserError, parse_header
-        )
-        from django.core.files.uploadhandler import StopFutureHandlers
-        from rest_framework.exceptions import ParseError
-
         parser_context = parser_context or {}
         request = parser_context['request']
         encoding = parser_context.get('encoding', settings.DEFAULT_CHARSET)
@@ -610,6 +609,43 @@ class FileUploadView(views.APIView):
         except (AttributeError, KeyError, ValueError):
             pass
 
+    def get_encoded_filename(self, filename_parm):
+        """
+        Handle encoded filenames per RFC6266. See also:
+        http://tools.ietf.org/html/rfc2231#section-4
+        """
+        encoded_filename = force_text(filename_parm['filename*'])
+        try:
+            charset, lang, filename = encoded_filename.split('\'', 2)
+            filename = urlparse.unquote(filename)
+        except (ValueError, LookupError):
+            filename = force_text(filename_parm['filename'])
+        return filename
+
+class FileUploadView(views.APIView):
+    parser_classes = (FileUploadParser,)
+    permission_classes = (AllowAny,)
+
+    def get_or_update_person_by_jwt(self):
+        jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+
+            current_user = User.objects.get(pk=token_data['user_id'])
+
+            try:
+                person = Person.objects.get(user=current_user)
+            except:
+                person = Person(user=current_user)
+                person.save()
+
+            return person
+
+        else:
+            return None
 
     def put(self, request, format=None):
         person = self.get_or_update_person_by_jwt()
