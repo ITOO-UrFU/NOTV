@@ -493,7 +493,7 @@ class DocumentForm(forms.Form):
         help_text='max. 42 megabytes'
     )
 
-@csrf_exempt()
+@csrf_exempt
 def upload(request):
     def get_or_update_person_by_jwt():
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
