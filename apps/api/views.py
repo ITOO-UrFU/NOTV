@@ -512,9 +512,8 @@ def upload(request):
                 person.save()
 
             return person
-
         else:
-            return None
+            return Response(status=403)
 
     if request.method == 'POST':
         person = get_or_update_person_by_jwt()
