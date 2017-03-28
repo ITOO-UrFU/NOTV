@@ -486,6 +486,7 @@ class RegisterView(generics.CreateAPIView):
 
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 class DocumentForm(forms.Form):
     file = forms.FileField(
@@ -513,7 +514,7 @@ def upload(request):
 
             return person
         else:
-            return Response(status=403)
+            return JsonResponse({'error': 'Some error'}, status=403)
 
     if request.method == 'POST':
         person = get_or_update_person_by_jwt()
@@ -523,9 +524,9 @@ def upload(request):
             newdoc = Document(file=request.FILES['docfile'])
             newdoc.save()
             person.docs.add(newdoc)
-            return Response(status=203)
+            return JsonResponse({'error': 'Some error'}, status=203)
     else:
-        return Response(status=405)
+        return JsonResponse({'error': 'Some error'}, status=405)
 
 
 @api_view(('POST',))
