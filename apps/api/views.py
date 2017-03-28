@@ -486,9 +486,9 @@ class RegisterView(generics.CreateAPIView):
 
 class FileUploadView(generics.CreateAPIView):
     serializer_class = DocumentSerializer
-    lookup_field = 'id'
+    # lookup_field = 'id'
     queryset = Document.objects.all()
-    parser_classes = (MultiPartParser, FormParser)
+    # parser_classes = (MultiPartParser, FormParser)
     permission_classes = (AllowAny, )
 
     def get_or_update_person_by_jwt(self):
@@ -520,7 +520,6 @@ class FileUploadView(generics.CreateAPIView):
             # serializer = PersonSerializer(person)
             print('!!!!!!!!!!!!!', request.data)
             file_obj = request.data['file']
-
 
             with open(settings.MEDIA_ROOT + file_obj.name, 'wb+') as f:
                 document = Document(title=file_obj.name, file=f)
