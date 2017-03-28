@@ -379,6 +379,7 @@ class RegisterSerializer(serializers.Serializer):
     position = serializers.CharField()
     organisation = serializers.CharField()
     participation = serializers.CharField()
+    phone = serializers.CharField()
 
     def validate_username(self, username):
         username = get_adapter().clean_username(username)
