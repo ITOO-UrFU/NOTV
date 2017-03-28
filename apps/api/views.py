@@ -484,6 +484,13 @@ class RegisterView(generics.CreateAPIView):
         return user
 
 
+
+class DataAndFiles(object):
+    def __init__(self, data, files):
+        self.data = data
+        self.files = files
+
+
 class FileUploadView(views.APIView):
     parser_classes = (MultiPartParser,)
     permission_classes = (AllowAny,)
@@ -508,6 +515,101 @@ class FileUploadView(views.APIView):
 
         else:
             return None
+
+    def parse(self, stream, media_type=None, parser_context=None):
+        """
+        Treats the incoming bytestream as a raw file upload and returns
+        a `DataAndFiles` object.
+        `.data` will be None (we expect request body to be a file content).
+        `.files` will be a `QueryDict` containing one 'file' element.
+        """
+        from django.utils.encoding import force_text
+        from django.http.multipartparser import MultiPartParser as DjangoMultiPartParser
+        from django.http.multipartparser import (
+            ChunkIter, MultiPartParserError, parse_header
+        )
+        from django.core.files.uploadhandler import StopFutureHandlers
+        from rest_framework.exceptions import ParseError
+
+        parser_context = parser_context or {}
+        request = parser_context['request']
+        encoding = parser_context.get('encoding', settings.DEFAULT_CHARSET)
+        meta = request.META
+        upload_handlers = request.upload_handlers
+        filename = self.get_filename(stream, media_type, parser_context)
+
+        if not filename:
+            raise ParseError(self.errors['no_filename'])
+
+        # Note that this code is extracted from Django's handling of
+        # file uploads in MultiPartParser.
+        content_type = meta.get('HTTP_CONTENT_TYPE',
+                                meta.get('CONTENT_TYPE', ''))
+        try:
+            content_length = int(meta.get('HTTP_CONTENT_LENGTH',
+                                          meta.get('CONTENT_LENGTH', 0)))
+        except (ValueError, TypeError):
+            content_length = None
+
+        # See if the handler will want to take care of the parsing.
+        for handler in upload_handlers:
+            result = handler.handle_raw_input(stream,
+                                              meta,
+                                              content_length,
+                                              None,
+                                              encoding)
+            if result is not None:
+                return DataAndFiles({}, {'file': result[1]})
+
+        # This is the standard case.
+        possible_sizes = [x.chunk_size for x in upload_handlers if x.chunk_size]
+        chunk_size = min([2 ** 31 - 4] + possible_sizes)
+        chunks = ChunkIter(stream, chunk_size)
+        counters = [0] * len(upload_handlers)
+
+        for index, handler in enumerate(upload_handlers):
+            try:
+                handler.new_file(None, filename, content_type,
+                                 content_length, encoding)
+            except StopFutureHandlers:
+                upload_handlers = upload_handlers[:index + 1]
+                break
+
+        for chunk in chunks:
+            for index, handler in enumerate(upload_handlers):
+                chunk_length = len(chunk)
+                chunk = handler.receive_data_chunk(chunk, counters[index])
+                counters[index] += chunk_length
+                if chunk is None:
+                    break
+
+        for index, handler in enumerate(upload_handlers):
+            file_obj = handler.file_complete(counters[index])
+            if file_obj is not None:
+                return DataAndFiles({}, {'file': file_obj})
+
+        raise ParseError(self.errors['unhandled'])
+
+    def get_filename(self, stream, media_type, parser_context):
+        """
+        Detects the uploaded file name. First searches a 'filename' url kwarg.
+        Then tries to parse Content-Disposition header.
+        """
+        try:
+            return parser_context['kwargs']['filename']
+        except KeyError:
+            pass
+
+        try:
+            meta = parser_context['request'].META
+            disposition = parse_header(meta['HTTP_CONTENT_DISPOSITION'].encode('utf-8'))
+            filename_parm = disposition[1]
+            if 'filename*' in filename_parm:
+                return self.get_encoded_filename(filename_parm)
+            return force_text(filename_parm['filename'])
+        except (AttributeError, KeyError, ValueError):
+            pass
+
 
     def put(self, request, format=None):
         person = self.get_or_update_person_by_jwt()
