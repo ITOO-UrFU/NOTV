@@ -524,6 +524,8 @@ def upload(request):
             newdoc.save()
             person.docs.add(newdoc)
             return Response(status=203)
+    else
+        return Response(status=405)
 
 
 @api_view(('POST',))
