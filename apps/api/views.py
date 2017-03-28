@@ -513,7 +513,7 @@ class FileUploadView(generics.CreateAPIView):
             return None
 
     # pylint: disable=W0221
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         print('!!!!!!!!!!!!!', request.data)
         person = self.get_or_update_person_by_jwt()
         print('!!!!!!!!', person.id)
