@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework import viewsets, views
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import MultiPartParser
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -485,7 +485,7 @@ class RegisterView(generics.CreateAPIView):
 
 
 class FileUploadView(views.APIView):
-    parser_classes = (FileUploadParser,)
+    parser_classes = (MultiPartParser,)
     permission_classes = (AllowAny,)
 
     def get_or_update_person_by_jwt(self):
