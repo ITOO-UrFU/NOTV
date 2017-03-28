@@ -524,7 +524,7 @@ def upload(request):
             newdoc.save()
             person.docs.add(newdoc)
             return Response(status=203)
-    else
+    else:
         return Response(status=405)
 
 
