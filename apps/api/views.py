@@ -486,6 +486,7 @@ class RegisterView(generics.CreateAPIView):
 
 class FileUploadView(views.APIView):
     parser_classes = (FileUploadParser,)
+    permission_classes = (AllowAny,)
 
     def get_or_update_person_by_jwt(self):
         jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
