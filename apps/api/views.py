@@ -518,8 +518,9 @@ class FileUploadView(generics.CreateAPIView):
         print('!!!!!!!!', person.id)
         if person:
             serializer = PersonSerializer(person)
+            print('!!!!!!!!!!!!!', request.data)
             file_obj = request.data['file']
-            print('!!!!!!!!!!!!!', request.data['file'])
+
 
             with open(settings.MEDIA_ROOT + file_obj.name, 'wb+') as f:
                 document = Document(title=file_obj.name, file=f)
