@@ -509,12 +509,16 @@ class FileUploadView(views.APIView):
         else:
             return None
 
-    def post(self, request, format=None):
+    def post(self, request, format="docx"):
         person = self.get_or_update_person_by_jwt()
         if person:
-            file_obj = request.data['file']
+            file_obj = request.FILES['file']
             person.docs.add(file_obj)
-            return Response(status=204)
+            from django.conf import settings
+            destination = open(settings.MEDIA_ROOT + file_obj.name, 'wb+')
+            for chunk in file_obj.chunks():
+                destination.write(chunk)
+                destination.close()
         else:
             return Response(status=403)
 
