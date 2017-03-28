@@ -514,6 +514,7 @@ class FileUploadView(generics.CreateAPIView):
 
     # pylint: disable=W0221
     def post(self, request):
+        print('!!!!!!!!!!!!!', request.data)
         person = self.get_or_update_person_by_jwt()
         print('!!!!!!!!', person.id)
         if person:
