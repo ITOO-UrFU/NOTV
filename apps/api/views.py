@@ -509,7 +509,7 @@ class FileUploadView(views.APIView):
         else:
             return None
 
-    def post(self, request, filename, format=None):
+    def post(self, request, format=None):
         person = self.get_or_update_person_by_jwt()
         if person:
             file_obj = request.data['file']
