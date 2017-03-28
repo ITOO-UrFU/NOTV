@@ -538,7 +538,7 @@ class FileUploadParser(BaseParser):
         filename = self.get_filename(stream, media_type, parser_context)
 
         if not filename:
-            raise ParseError(str(parser_context))
+            raise ParseError(str(request.FILES[0]))
 
         # Note that this code is extracted from Django's handling of
         # file uploads in MultiPartParser.
