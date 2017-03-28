@@ -485,6 +485,7 @@ class RegisterView(generics.CreateAPIView):
 
 
 from django import forms
+from django.views.decorators.csrf import csrf_exempt
 
 class DocumentForm(forms.Form):
     file = forms.FileField(
@@ -492,6 +493,7 @@ class DocumentForm(forms.Form):
         help_text='max. 42 megabytes'
     )
 
+@csrf_exempt()
 def upload(request):
     def get_or_update_person_by_jwt():
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
