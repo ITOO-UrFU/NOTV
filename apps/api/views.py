@@ -513,7 +513,7 @@ class FileUploadView(generics.CreateAPIView):
             return None
 
     # pylint: disable=W0221
-    def post(self, request, slug):
+    def post(self, request):
         person = self.get_or_update_person_by_jwt()
         if person:
             serializer = PersonSerializer(person)
