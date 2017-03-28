@@ -515,9 +515,11 @@ class FileUploadView(generics.CreateAPIView):
     # pylint: disable=W0221
     def post(self, request):
         person = self.get_or_update_person_by_jwt()
+        print('!!!!!!!!', person.id)
         if person:
             serializer = PersonSerializer(person)
             file_obj = request.data['file']
+            print('!!!!!!!!!!!!!', request.data['file'])
 
             with open(settings.MEDIA_ROOT + file_obj.name, 'wb+') as f:
                 document = Document(title=file_obj.name, file=f)
