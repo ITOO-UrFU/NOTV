@@ -517,7 +517,7 @@ class FileUploadView(generics.CreateAPIView):
         person = self.get_or_update_person_by_jwt()
         print('!!!!!!!!', person.id)
         if person:
-            serializer = PersonSerializer(person)
+            # serializer = PersonSerializer(person)
             print('!!!!!!!!!!!!!', request.data)
             file_obj = request.data['file']
 
@@ -532,8 +532,8 @@ class FileUploadView(generics.CreateAPIView):
 
 
         return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED
+            # serializer.data,
+            status=201
         )
 
 
