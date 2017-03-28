@@ -484,20 +484,15 @@ class RegisterView(generics.CreateAPIView):
         return user
 
 
-from django import forms
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+class FileUploadView(generics.CreateAPIView):
+    serializer_class = DocumentSerializer
+    lookup_field = 'id'
+    queryset = Document.objects.all()
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = (AllowAny, )
 
-class DocumentForm(forms.Form):
-    file = forms.FileField(
-        label='Select a file',
-        help_text='max. 42 megabytes'
-    )
-
-@csrf_exempt
-def upload(request):
-    def get_or_update_person_by_jwt():
-        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+    def get_or_update_person_by_jwt(self):
+        jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
             try:
                 token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
@@ -513,20 +508,30 @@ def upload(request):
                 person.save()
 
             return person
+
         else:
-            return JsonResponse({'error': 'Some error'}, status=403)
+            return None
 
-    if request.method == 'POST':
-        person = get_or_update_person_by_jwt()
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid() and person:
+    # pylint: disable=W0221
+    def post(self, request, slug):
+        person = self.get_or_update_person_by_jwt()
+        if person:
+            serializer = PersonSerializer(person)
+            file_obj = request.data['file']
 
-            newdoc = Document(file=request.FILES['docfile'])
-            newdoc.save()
-            person.docs.add(newdoc)
-            return JsonResponse({'error': 'Some error'}, status=203)
-    else:
-        return JsonResponse({'error': 'Some error'}, status=405)
+            with open(settings.MEDIA_ROOT + file_obj.name, 'wb+') as f:
+                document = Document(title=file_obj.name, file=f)
+                document.save()
+                for chunk in file_obj.chunks():
+                    f.write(chunk)
+
+            person.docs.add(file_obj)
+
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )
 
 
 @api_view(('POST',))
