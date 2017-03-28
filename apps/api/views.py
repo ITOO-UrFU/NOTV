@@ -37,9 +37,23 @@ from rest_framework_extensions.cache.mixins import CacheResponseMixin
 from django.views.decorators.cache import cache_page
 from core.models import *
 from core.serializers import *
+from rest_framework import permissions
+
+
+class IsReadOnly(permissions.BasePermission):
+    """
+    Object-level permission to only allow read-only operations.
+    """
+
+    def has_permission(self, request, view):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
 
 
 class Events(CacheResponseMixin, viewsets.ModelViewSet):
+    permission_classes = (IsReadOnly, )
     queryset = Event.objects.filter(status="p")
     serializer_class = EventSerializer
 
