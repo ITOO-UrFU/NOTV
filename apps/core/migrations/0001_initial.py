@@ -33,8 +33,8 @@ class Migration(migrations.Migration):
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('title', models.CharField(max_length=256, verbose_name='Название события')),
                 ('description', models.TextField(blank=True, default='', max_length=16384, verbose_name='Описание события')),
-                ('startdate', models.DateTimeField(verbose_name='Начало события')),
-                ('enddate', models.DateTimeField(verbose_name='Конец события')),
+                ('_startdate', models.DateTimeField(verbose_name='Начало события')),
+                ('_enddate', models.DateTimeField(verbose_name='Конец события')),
             ],
             options={
                 'verbose_name_plural': 'события',

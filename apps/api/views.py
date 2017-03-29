@@ -39,7 +39,6 @@ from core.models import *
 from core.serializers import *
 from rest_framework import permissions
 
-
 class IsReadOnly(permissions.BasePermission):
     """
     Object-level permission to only allow read-only operations.

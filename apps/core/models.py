@@ -119,8 +119,8 @@ class Event(models.Model):
     line_of_work = models.ForeignKey("LineOfWork", verbose_name=_("Направление работы"), blank=True, null=True)
     block = models.ForeignKey("Block", verbose_name=_("Блок"), blank=True, null=True)
     status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
-    startdate = models.DateTimeField(_("Начало события"))
-    enddate = models.DateTimeField(_("Конец события"))
+    _startdate = models.DateTimeField(_("Начало события"), blank=True, null=True)
+    _enddate = models.DateTimeField(_("Конец события"), blank=True, null=True)
 
     class Meta:
         verbose_name = 'событие'
@@ -160,6 +160,12 @@ class Event(models.Model):
             return self.type.slug
         else:
             return None
+
+    def startdate(self):
+        return self._startdate.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    def enddate(self):
+        return self._enddate.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     def get_line_of_work_display(self):
         if self.line_of_work:

@@ -8,10 +8,10 @@ from .models import *
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
 
-    list_display = ('title', 'description', 'path', 'block', 'startdate', 'enddate', "line_of_work", "status")
-    # fields = ('title', 'description', 'startdate', 'enddate')
+    list_display = ('title', 'description', 'path', 'block', '_startdate', '_enddate', "line_of_work", "status")
+    # fields = ('title', 'description', '_startdate', '_enddate')
     search_fields = ('title', 'description', 'path', "status")
-    list_filter = ('startdate', 'enddate', 'block', 'path', "line_of_work", "status")
+    list_filter = ("_startdate", "_enddate", 'block', 'path', "line_of_work", "status")
 
 
 @admin.register(CustomObject)
