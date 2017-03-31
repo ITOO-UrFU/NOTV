@@ -31,6 +31,7 @@ class EventUserRegistrationAdmin(VersionAdmin):
     list_display = ("__str__", "status")
     search_fields = ("__str__",)
     list_filter = ("person", "event", "type", "status")
+    raw_id_fields = ("person", "event")
 
 
 @admin.register(Page)
