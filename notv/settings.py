@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ajax_select',
     'reversion',
     'rest_framework',
     'rest_framework.authtoken',
@@ -279,4 +280,8 @@ CACHES = {
 
 REST_FRAMEWORK_EXTENSIONS = {
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 15
+}
+
+AJAX_LOOKUP_CHANNELS = {
+    'person': ('core.lookups', 'PersonLookup'),
 }

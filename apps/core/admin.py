@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django import forms
 from reversion.admin import VersionAdmin
+from ajax_select import make_ajax_form
+from ajax_select.admin import AjaxSelectAdmin
 
 
 from .models import *
@@ -26,12 +28,13 @@ class RegistrationTypeAdmin(VersionAdmin):
 
 
 @admin.register(EventUserRegistration)
-class EventUserRegistrationAdmin(VersionAdmin):
+class EventUserRegistrationAdmin(AjaxSelectAdmin):
     fields = ("person", "event", "type", "status")
     list_display = ("__str__", "status")
     search_fields = ("__str__",)
     list_filter = ("person", "event", "type", "status")
-    raw_id_fields = ("person", "event")
+    # raw_id_fields = ("person", "event")
+    form = make_ajax_form(EventUserRegistration, {'person': 'person'})
 
 
 @admin.register(Page)

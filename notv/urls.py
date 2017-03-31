@@ -7,8 +7,10 @@ from django.views.generic import TemplateView
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework_jwt.views import refresh_jwt_token
 
+from ajax_select import urls as ajax_select_urls
+
 from api.views import *
-from core.views import custom_json_view
+from core.views import *
 
 main_urlpatterns = []
 
@@ -31,6 +33,11 @@ main_urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_
                      url(r'^api/v1/rest-auth/events/event_user_list/$', event_user_list, name='event_user_list'),
                      url(r'^api/v1/docs/upload/$', FileUploadView.as_view(), name="upload"),
                      url(r'^api/v1/docs/delete/$', delete_file, name='delete_file'),
+
+                     url(r'^search_form',
+                         view=search_form,
+                         name='search_form'),
+                     url(r'^admin/lookups/', include(ajax_select_urls)),
                      ]
 
 router = routers.DefaultRouter()
