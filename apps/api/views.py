@@ -543,7 +543,7 @@ def delete_file(request):
         else:
             return Response(status=410)
 
-        return Response(status=204)
+        return Response(status=200)
 
     except:
         return Response(status=500)
