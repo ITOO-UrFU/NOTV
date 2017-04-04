@@ -53,7 +53,7 @@ def key():
 def generate_new_filename(filename):
     f, ext = os.path.splitext(filename)
     filename = '%s%s' % (uuid.uuid4().hex, ext)
-    fullpath = 'documents/' + filename
+    fullpath = 'media/documents/' + filename
     return fullpath
 
 
