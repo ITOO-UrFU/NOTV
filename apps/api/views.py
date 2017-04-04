@@ -518,8 +518,6 @@ class RegisterView(generics.CreateAPIView):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def delete_file(request):
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!')
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!', request.data.get("file_id", ""))
 
     try:
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
@@ -533,22 +531,22 @@ def delete_file(request):
     except:
         pass
 
-    # try:
+    try:
 
-    if person:
-        file_id = request.data.get("file_id", "")
-        print('!!!!!!!!', person.id, file_id)
-    else:
-        return Response(status=401)
+        if person:
+            file_id = request.data.get("file_id", "")
+        else:
+            return Response(status=401)
 
-    if file_id:
-        person.docs.remove(Document.objects.get(id=file_id))
-    else:
-        return Response(status=410)
+        if file_id:
+            person.docs.remove(Document.objects.get(id=file_id))
+        else:
+            return Response(status=410)
 
-    return Response(status=204)
-    # except:
-    #     return Response(status=500)
+        return Response(status=204)
+
+    except:
+        return Response(status=500)
 
 
 @api_view(('POST',))
