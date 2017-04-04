@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework import viewsets, views
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -38,6 +38,23 @@ from django.views.decorators.cache import cache_page
 from core.models import *
 from core.serializers import *
 from rest_framework import permissions
+
+import os
+import hashlib
+
+
+def key():
+
+    key = hashlib.md5(os.urandom(128)).hexdigest()
+    return key
+
+
+def generate_new_filename(instance, filename):
+    f, ext = os.path.splitext(filename)
+    filename = '%s%s' % (uuid.uuid4().hex, ext)
+    fullpath = 'documents/' + filename
+    return fullpath
+
 
 class IsReadOnly(permissions.BasePermission):
     """
@@ -497,59 +514,6 @@ class RegisterView(generics.CreateAPIView):
         return user
 
 
-class FileUploadView(generics.CreateAPIView):
-    serializer_class = DocumentSerializer
-    # lookup_field = 'id'
-    queryset = Document.objects.all()
-    # parser_classes = (MultiPartParser, FormParser)
-    permission_classes = (AllowAny, )
-
-    def get_or_update_person_by_jwt(self):
-        jwt_token = self.request.META.get('HTTP_AUTHORIZATION', None)
-        if jwt_token:
-            try:
-                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
-            except jwt.exceptions.ExpiredSignatureError:
-                return Response({"status": "Session expired"})
-
-            current_user = User.objects.get(pk=token_data['user_id'])
-
-            try:
-                person = Person.objects.get(user=current_user)
-            except:
-                person = Person(user=current_user)
-                person.save()
-
-            return person
-
-        else:
-            return None
-
-    # pylint: disable=W0221
-    def post(self, request, *args, **kwargs):
-        print('!!!!!!!!!!!!!', request.data)
-        person = self.get_or_update_person_by_jwt()
-        print('!!!!!!!!', person.id)
-        if person:
-            # serializer = PersonSerializer(person)
-            print('!!!!!!!!!!!!!', request.data)
-            file_obj = request.data['file']
-
-            with open(settings.MEDIA_ROOT + file_obj.name, 'wb+') as f:
-                document = Document(title=file_obj.name, file=f)
-                document.save()
-                for chunk in file_obj.chunks():
-                    f.write(chunk)
-
-            person.docs.add(file_obj)
-
-
-        return Response(
-            # serializer.data,
-            status=201
-        )
-
-
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def delete_file(request):
@@ -574,5 +538,33 @@ def delete_file(request):
     return Response(status=204)
 
 
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def file_upload(request):
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+    except:
+        return Response(status=403)
+
+    file_obj = request.data["uploadFile"]
+    file_addr = settings.MEDIA_ROOT + key()
+
+    import io
 
 
+    with io.open(file_addr, 'wb+') as f:
+        document = Document(title=file_obj.name, file=file_addr)
+        document.save()
+        for chunk in file_obj.chunks():
+            f.write(chunk)
+    if document:
+        person.docs.add(document)
+
+    return Response({"request": str(request.data)})

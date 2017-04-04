@@ -11,3 +11,4 @@ django-rest-auth
 djangorestframework-jwt
 django-allauth
 drf-extensions
+-e git://github.com/MasterGowen/django-ajax-selects.git@develop#egg=django-ajax-selects
