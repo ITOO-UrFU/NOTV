@@ -535,7 +535,7 @@ def delete_file(request):
         print('!!!!!!!!', person.id, file_id)
 
     if file_id:
-        person.docs.delete(Document.objects.get(id=file_id))
+        person.docs.remove(Document.objects.get(id=file_id))
 
     return Response(status=204)
 
