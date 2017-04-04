@@ -518,6 +518,8 @@ class RegisterView(generics.CreateAPIView):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def delete_file(request):
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!')
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!', request.data.get("file_id", ""))
 
     try:
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
