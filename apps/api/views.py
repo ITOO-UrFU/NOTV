@@ -532,6 +532,7 @@ def delete_file(request):
         pass
     if person:
         file_id = request.data.get("file_id", "")
+        print('!!!!!!!!', person.id, file_id)
 
     if file_id:
         person.docs.delete(Document.objects.get(id=file_id))
