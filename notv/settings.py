@@ -222,6 +222,7 @@ ADMIN_REORDER = (
     {'app': 'core', 'label': 'Связи', 'models': ('core.RegistrationType',
                                                  'core.EventUserRegistration')},
     {'app': 'core', 'label': 'Разное', 'models': ('core.CustomObject', "auth.User")},
+    {'app': 'core', 'label': 'Публикации', 'models': ('core.Document', )},
 
 )
 

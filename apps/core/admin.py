@@ -47,7 +47,6 @@ class PageAdmin(VersionAdmin):
     save_as = True
 
 
-
 @admin.register(Document)
 class DocumentAdmin(VersionAdmin):
     fields = ("title", "file")
