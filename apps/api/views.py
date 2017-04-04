@@ -537,12 +537,12 @@ def delete_file(request):
             file_id = request.data.get("file_id", "")
             print('!!!!!!!!', person.id, file_id)
         else:
-            return Response(status=403)
+            return Response(status=401)
 
         if file_id:
             person.docs.remove(Document.objects.get(id=file_id))
         else:
-            return Response(status=404)
+            return Response(status=410)
 
         return Response(status=204)
     except:
