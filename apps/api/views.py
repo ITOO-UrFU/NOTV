@@ -41,6 +41,7 @@ from rest_framework import permissions
 
 import os
 import hashlib
+import uuid
 
 
 def key():
@@ -49,7 +50,7 @@ def key():
     return key
 
 
-def generate_new_filename(instance, filename):
+def generate_new_filename(filename):
     f, ext = os.path.splitext(filename)
     filename = '%s%s' % (uuid.uuid4().hex, ext)
     fullpath = 'documents/' + filename
