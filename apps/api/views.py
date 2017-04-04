@@ -554,7 +554,7 @@ def file_upload(request):
         return Response(status=403)
 
     file_obj = request.data["uploadFile"]
-    file_addr = settings.MEDIA_ROOT + key()
+    file_addr = settings.MEDIA_ROOT + '/' + generate_new_filename(file_obj.name)
 
     import io
 
