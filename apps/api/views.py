@@ -559,8 +559,7 @@ def file_upload(request):
 
     import io
 
-
-    with io.open(file_addr, 'wb+') as f:
+    with io.open('media/' + file_addr, 'wb+') as f:
         document = Document(title=file_obj.name, file=file_addr)
         document.save()
         for chunk in file_obj.chunks():
