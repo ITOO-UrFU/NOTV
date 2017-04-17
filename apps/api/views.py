@@ -586,7 +586,7 @@ def file_upload(request):
 def reset_password(request):
     from random import choice
     email = request.data["email"]
-    user = User.objects.get(email=email)
+    user = User.objects.filter(email=email).first()
     person = Person.objects.get(user=user)
     new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(7)])
     user.make_password(new_password)
