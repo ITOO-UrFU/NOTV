@@ -597,3 +597,32 @@ def reset_password(request):
         {"message": "Новый пароль отправлен вашу на электронную почту.",
          "success": True}
     )
+
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def change_password(request):
+    from django.contrib.auth.hashers import make_password
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+    except:
+        return Response(status=403)
+
+    password1 = request.data["password1"]
+    password2 = request.data["password2"]
+    password_old = request.data["password_old"]
+
+    if not current_user.check_password(password_old):
+        return Response("Пароль неверен")
+
+    if password1 == password2:
+        current_user.password = make_password(password1)
+        current_user.save()
+    else:
+        return Response("Введенные пароли не совпадают")
