@@ -603,6 +603,9 @@ def reset_password(request):
 @permission_classes((permissions.AllowAny,))
 def change_password(request):
     from django.contrib.auth.hashers import make_password
+
+    current_user = None
+
     try:
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
@@ -614,15 +617,19 @@ def change_password(request):
     except:
         return Response(status=403)
 
-    password1 = request.data["password1"]
-    password2 = request.data["password2"]
-    password_old = request.data["password_old"]
+    if current_user:
 
-    if not current_user.check_password(password_old):
-        return Response("Пароль неверен")
+        password1 = request.data["password1"]
+        password2 = request.data["password2"]
+        password_old = request.data["password_old"]
 
-    if password1 == password2:
-        current_user.password = make_password(password1)
-        current_user.save()
+        if not current_user.check_password(password_old):
+            return Response("Пароль неверен")
+
+        if password1 == password2:
+            current_user.password = make_password(password1)
+            current_user.save()
+        else:
+            return Response("Введенные пароли не совпадают")
     else:
-        return Response("Введенные пароли не совпадают")
+        return Response({"status": "Session expired"})
