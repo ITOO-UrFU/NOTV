@@ -38,6 +38,7 @@ from django.views.decorators.cache import cache_page
 from core.models import *
 from core.serializers import *
 from rest_framework import permissions
+from django.core.mail import send_mail
 
 import os
 import hashlib
@@ -568,3 +569,15 @@ def file_upload(request):
         person.docs.add(document)
 
     return Response({"request": str(request.data)})
+
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def reset_password(request):
+    from random import choice
+    email = request.data["email"]
+    user = User.objects.get(email=email)
+    person = Person.objects.get(user=user)
+    new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(7)])
+    user.make_password(new_password)
+    send_mail(person, 'Ваш новый пароль: {}'.format(new_password), 'no-reply@edcrunch.urfu.ru', [email])
