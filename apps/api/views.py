@@ -612,7 +612,7 @@ def change_password(request):
             try:
                 token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
             except jwt.exceptions.ExpiredSignatureError:
-                return Response({"status": "Session expired"})
+                return Response(status=403)
             current_user = User.objects.get(pk=token_data['user_id'])
     except:
         return Response(status=403)
@@ -624,7 +624,7 @@ def change_password(request):
         password_old = request.data["password_old"]
 
         if not current_user.check_password(password_old):
-            return Response("Пароль неверен")
+            return Response(status=450)
 
         if password1 == password2:
             current_user.password = make_password(password1)
@@ -633,4 +633,4 @@ def change_password(request):
         else:
             return Response("Введенные пароли не совпадают")
     else:
-        return Response({"status": "Session expired"})
+        return Response(status=403)
