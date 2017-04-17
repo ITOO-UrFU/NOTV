@@ -50,7 +50,7 @@ class ExtensibleModelSerializer(serializers.ModelSerializer):
 class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
-        fields = ('title', 'file')
+        fields = ('id', 'title', 'file')
 
 
 class TypeSerializer(serializers.ModelSerializer):

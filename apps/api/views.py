@@ -531,13 +531,23 @@ def delete_file(request):
             person = Person.objects.get(user=current_user)
     except:
         pass
-    if person:
-        file_id = request.data.get("file_id", "")
 
-    if file_id:
-        person.docs.delete(Document.objects.get(id=file_id))
+    try:
 
-    return Response(status=204)
+        if person:
+            file_id = request.data.get("file_id", "")
+        else:
+            return Response(status=401)
+
+        if file_id:
+            person.docs.remove(Document.objects.get(id=file_id))
+        else:
+            return Response(status=410)
+
+        return Response(status=200)
+
+    except:
+        return Response(status=500)
 
 
 @api_view(('POST',))
