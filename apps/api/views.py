@@ -626,9 +626,16 @@ def change_password(request):
 
     if current_user:
 
-        password1 = request.data["password1"]
-        password2 = request.data["password2"]
-        password_old = request.data["password_old"]
+        try:
+            password_old = request.data["password_old"]
+        except:
+            return Response(status=450)
+
+        try:
+            password1 = request.data["password1"]
+            password2 = request.data["password2"]
+        except:
+            return Response(status=452)
 
         if not current_user.check_password(password_old):
             return Response(status=450)
