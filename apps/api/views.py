@@ -594,8 +594,8 @@ def reset_password(request):
         user.password = make_password(new_password)
         user.save()
         message = """
-        <p>Вы сменили пароль на сайте конференции #Edcrunch URAL.</p>
-        <p>Ваш новый пароль: {}</p>
+        Вы сменили пароль на сайте конференции #Edcrunch URAL.
+        Ваш новый пароль: {}
         """.format(new_password)
         send_mail(person, message, 'no-reply@edcrunch.urfu.ru', [email])
         return Response(
