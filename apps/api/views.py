@@ -585,9 +585,10 @@ def file_upload(request):
 @permission_classes((permissions.AllowAny,))
 def reset_password(request):
     from random import choice
+    from django.contrib.auth.hashers import make_password
     email = request.data["email"]
     user = User.objects.get(email=email)
-    person = Person.objects.filter(user=user)
+    person = Person.objects.filter(user=user).first()
     new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(7)])
-    user.make_password(new_password)
+    user.password = make_password(new_password)
     send_mail(person, 'Ваш новый пароль: {}'.format(new_password), 'no-reply@edcrunch.urfu.ru', [email])
