@@ -608,14 +608,12 @@ def change_password(request):
 
     try:
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
-        print(jwt_token, '!!!!!!!!!!!!!!!!!!!!!')
         if jwt_token:
             try:
                 token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
             except jwt.exceptions.ExpiredSignatureError:
                 return Response({"status": "Session expired"})
             current_user = User.objects.get(pk=token_data['user_id'])
-            print(current_user, '!!!!!!!!!!!!!!!!!!!!!')
     except:
         return Response(status=403)
 
@@ -631,6 +629,7 @@ def change_password(request):
         if password1 == password2:
             current_user.password = make_password(password1)
             current_user.save()
+            return Response(status=200)
         else:
             return Response("Введенные пароли не совпадают")
     else:
