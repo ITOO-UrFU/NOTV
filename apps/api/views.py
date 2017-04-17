@@ -591,4 +591,9 @@ def reset_password(request):
     person = Person.objects.filter(user=user).first()
     new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(7)])
     user.password = make_password(new_password)
+    user.save()
     send_mail(person, 'Ваш новый пароль: {}'.format(new_password), 'no-reply@edcrunch.urfu.ru', [email])
+    return Response(
+        {"message": "Новый пароль отправлен вашу на электронную почту.",
+         "success": True}
+    )
