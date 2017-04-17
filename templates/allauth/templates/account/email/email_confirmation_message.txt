@@ -1,0 +1,9 @@
+{% load account %}
+{% user_display user as user_display %}
+Добрый день, {{ user_display }}!
+
+Вы зарегистрированы на конференцию #EDCRUNCH Ural: новые образовательные технологии в вузе - 2017.
+
+
+Спасибо за регистрацию!
+{{ site_domain }}{% endblocktrans %}
