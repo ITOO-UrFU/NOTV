@@ -638,6 +638,6 @@ def change_password(request):
             current_user.save()
             return Response(status=200)
         else:
-            return Response("Введенные пароли не совпадают")
+            return Response(status=452)
     else:
         return Response(status=403)
