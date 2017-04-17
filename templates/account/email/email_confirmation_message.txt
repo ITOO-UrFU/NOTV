@@ -6,4 +6,3 @@
 
 
 Спасибо за регистрацию!
-{{ site_domain }}{% endblocktrans %}
