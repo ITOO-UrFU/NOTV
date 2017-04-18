@@ -169,7 +169,6 @@ class UserList(generics.ListCreateAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status="201")
-        print('!!!!!!!!!!!', serializer.data)
         return Response(serializer.errors, status="400")
 
     def list(self, request):
@@ -695,7 +694,6 @@ class RegisterStudentSerializer(serializers.Serializer):
         pass
 
     def get_cleaned_data(self):
-        print('!!!!!!!!!!!!!!!!!!!!!!!!', 798)
         return {
             'username': self.validated_data.get('username', ''),
             'password1': self.validated_data.get('password1', ''),
@@ -719,6 +717,13 @@ class RegisterStudentSerializer(serializers.Serializer):
                         institute=self.cleaned_data['institute'],
                         suggestions=self.cleaned_data['suggestions'],
                         )
+        eur = EventUserRegistration(
+            person=person,
+            event=Event.objects.get(pk="c606dca9-23f6-4015-b251-28ab90956124"),
+            type=RegistrationType.objects.get(title="Участник"),
+            status='r'
+        )
+        eur.save()
 
         person.save()
         self.custom_signup(request, user)
