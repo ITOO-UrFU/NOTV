@@ -5,9 +5,11 @@
     <title>Title</title>
 </head>
 <body>
+{{ event_members }}
 {% for event in events %}
     <div class="event">
         <strong>{{ event.title }}</strong>
+
     </div>
 {% endfor %}
 </body>
