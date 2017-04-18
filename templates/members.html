@@ -5,10 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-{{ event_members }}
 {% for event in events %}
-    <div class="event">
+    <div class="event" id="{{ event.id }}">
         <strong>{{ event.title }}</strong>
+    <p>{{ event.get_users }}</p>
 
     </div>
 {% endfor %}
