@@ -702,7 +702,7 @@ class RegisterStudentSerializer(serializers.Serializer):
             'last_name': self.validated_data.get('last_name', ''),
             'second_name': self.data.get('second_name', ''),
             'institute': self.data.get('institute', ''),
-            'offer': self.data.get('offer', ''),
+            'offer': self.data.get('suggestions', ''),
         }
 
     def save(self, request):
