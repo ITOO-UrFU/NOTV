@@ -704,7 +704,7 @@ class RegisterStudentSerializer(serializers.Serializer):
             'last_name': self.validated_data.get('last_name', ''),
             'second_name': self.data.get('second_name', ''),
             'institute': self.data.get('institute', ''),
-            'offer': self.data.get('suggestions', ''),
+            'suggestions': self.data.get('suggestions', ''),
         }
 
     def save(self, request):
@@ -717,7 +717,7 @@ class RegisterStudentSerializer(serializers.Serializer):
                         last_name=self.cleaned_data['last_name'],
                         second_name=self.cleaned_data['second_name'],
                         institute=self.cleaned_data['institute'],
-                        offer=self.cleaned_data['offer'],
+                        offer=self.cleaned_data['suggestions'],
                         )
 
         person.save()
