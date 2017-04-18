@@ -16,6 +16,8 @@
 
 <!-- Container -->
 <div id="container">
+    <h3>Очных участников: <span class="red">{{ persons_online }}</span></h3>
+<p>&nbsp;</p>
 {% for event in events %}
     <div class="event" id="{{ event.id }}">
         <h2>{{ event.title }} (<span class="red">{{event.get_users | length}} участников</span>)</h2>
