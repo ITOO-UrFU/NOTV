@@ -11,6 +11,7 @@ from ajax_select import urls as ajax_select_urls
 
 from api.views import *
 from core.views import *
+from stat.views import *
 
 main_urlpatterns = []
 
