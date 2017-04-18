@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load i18n static %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
-    <meta charset="UTF-8">
-    <title>Участники мероприятий</title>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+{% block extrahead %}{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
 </head>
-<body>
-<div class="container">
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
 {% for event in events %}
     <div class="event" id="{{ event.id }}">
         <h2>{{ event.title }} (<span class="red">{{event.get_users | length}} участников</span>)</h2>
@@ -32,7 +42,7 @@
 .red {
     color: red;
 }
-.container {
+#container {
     max-width: 1200px;
     margin:0 auto;
 }
