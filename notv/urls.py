@@ -11,7 +11,7 @@ from ajax_select import urls as ajax_select_urls
 
 from api.views import *
 from core.views import *
-from stat.views import *
+# from stat.views import *
 
 main_urlpatterns = []
 
@@ -36,7 +36,7 @@ main_urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_
                      url(r'^api/v1/docs/delete/$', delete_file, name='delete_file'),
                      url(r'^api/v1/reset_password/$', reset_password, name='reset_password'),
                      url(r'^api/v1/change_password/$', change_password, name='change_password'),
-                     url(r'^stats/events_members/$', events_members, name='events_members'),
+                     # url(r'^stats/events_members/$', events_members, name='events_members'),
 
                      url(r'^search_form',
                          view=search_form,
