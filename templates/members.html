@@ -2,15 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Участники мероприятий</title>
 </head>
 <body>
+<div class="container">
 {% for event in events %}
     <div class="event" id="{{ event.id }}">
-        <strong>{{ event.title }}</strong>
-    <p>{{ event.get_users }}</p>
+        <h2>{{ event.title }} (<span class="red">{{event.get_users | length}} участников</span>)</h2>
+        <table>
+    {% for eur in event.get_users %}
+    <tr>
+        <td><strong>{{eur.type}}</strong></td>
+        <td>{{eur.person.user.email}}</td>
+        <td>{{eur.person.first_name}}</td>
+        <td>{{eur.person.second_name}}</td>
+        <td>{{eur.person.last_name}}</td>
+        <td>{{eur.person.organisation}}</td>
+        <td>{{eur.person.position}}</td>
+
+        </tr>
+    {% endfor %}
+    </table>
 
     </div>
 {% endfor %}
+</div>
+
+<style>
+.red {
+    color: red;
+}
+.container {
+    max-width: 1200px;
+    margin:0 auto;
+}
+table {
+  border-spacing: 0.5rem;
+  border-collapse: collapse;
+}
+table, tr, td {
+    border: 1px solid grey;
+    padding: .5rem;
+}
+</style>
 </body>
 </html>
