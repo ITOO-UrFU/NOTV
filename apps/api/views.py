@@ -731,7 +731,7 @@ class RegisterStudentView(generics.CreateAPIView):
 
     @sensitive_post_parameters_m
     def dispatch(self, *args, **kwargs):
-        return super(RegisterView, self).dispatch(*args, **kwargs)
+        return super(RegisterStudentView, self).dispatch(*args, **kwargs)
 
     def get_response_data(self, user):
 
