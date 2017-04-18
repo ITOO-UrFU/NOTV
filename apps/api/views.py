@@ -695,7 +695,7 @@ class RegisterStudentSerializer(serializers.Serializer):
 
     def get_cleaned_data(self):
         return {
-            'username': self.validated_data.get('username', ''),
+            'username': self.get('username', self.validated_data.get('email').split('@')[0]),
             'password1': self.validated_data.get('password1', ''),
             'email': self.validated_data.get('email', ''),
             'first_name': self.validated_data.get('first_name', ''),
@@ -716,7 +716,7 @@ class RegisterStudentSerializer(serializers.Serializer):
                         second_name=self.cleaned_data['second_name'],
                         institute=self.cleaned_data['institute'],
                         offer=self.cleaned_data['offer'],
-        )
+                        )
 
         person.save()
         self.custom_signup(request, user)
