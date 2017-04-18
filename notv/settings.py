@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'admin_reorder',
     'core',
     'api',
+    'stat',
 ]
 
 REST_USE_JWT = True
