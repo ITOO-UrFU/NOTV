@@ -70,13 +70,13 @@ class IsReadOnly(permissions.BasePermission):
             return True
 
 
-class Events(CacheResponseMixin, viewsets.ModelViewSet):
+class Events(viewsets.ModelViewSet):  # CacheResponseMixin
     permission_classes = (IsReadOnly, )
     queryset = Event.objects.filter(status="p")
     serializer_class = EventSerializer
 
 
-class Speakers(CacheResponseMixin, viewsets.ModelViewSet):
+class Speakers(viewsets.ModelViewSet):  # CacheResponseMixin
     serializer_class = SpeakerSerializer
 
     def get_queryset(self):
@@ -86,7 +86,7 @@ class Speakers(CacheResponseMixin, viewsets.ModelViewSet):
         return speakers.order_by("-karma")
 
 
-class Persons(CacheResponseMixin, viewsets.ModelViewSet):
+class Persons(viewsets.ModelViewSet):  # CacheResponseMixin
     queryset = Person.objects.all().order_by("-karma")
     serializer_class = PersonSerializer
 
@@ -96,7 +96,7 @@ class Users(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class Pages(CacheResponseMixin, viewsets.ModelViewSet):
+class Pages(viewsets.ModelViewSet):  # CacheResponseMixin
     queryset = Page.objects.filter(status="p").order_by("weight")
     serializer_class = PageSerializer
 
@@ -648,3 +648,120 @@ def change_password(request):
             return Response(status=452)
     else:
         return Response(status=403)
+
+
+#### Student registration
+
+class RegisterStudentSerializer(serializers.Serializer):
+    username = serializers.CharField(
+        max_length=256,
+        min_length=3,
+        required=False
+    )
+    email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    second_name = serializers.CharField()
+    institute = serializers.CharField()
+    offer = serializers.CharField()
+
+    def validate_username(self, username):
+        username = get_adapter().clean_username(username)
+        return username
+
+    def validate_email(self, email):
+        email = get_adapter().clean_email(email)
+        if allauth_settings.UNIQUE_EMAIL:
+            if email and email_address_exists(email):
+                raise serializers.ValidationError(
+                    _("A user is already registered with this e-mail address."))
+        return email
+
+    def validate_password1(self, password):
+        return get_adapter().clean_password(password)
+
+    def validate(self, data):
+        if data['password1'] != data['password2']:
+            raise serializers.ValidationError(_("The two password fields didn't match."))
+        if data['first_name'] is None or data['last_name'] is None or data['position'] is None or data['organisation'] is None:
+            raise serializers.ValidationError(_("Fields can not be empty."))
+        return data
+
+    def custom_signup(self, request, user):
+        pass
+
+    def get_cleaned_data(self):
+        return {
+            'username': self.validated_data.get('username', ''),
+            'password1': self.validated_data.get('password1', ''),
+            'email': self.validated_data.get('email', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
+            'second_name': self.data.get('second_name', ''),
+            'institute': self.data.get('institute', ''),
+            'offer': self.data.get('offer', ''),
+        }
+
+    def save(self, request):
+        adapter = get_adapter()
+        user = adapter.new_user(request)
+        self.cleaned_data = self.get_cleaned_data()
+        adapter.save_user(request, user, self)
+        person = Person(user=user,
+                        first_name=self.cleaned_data['first_name'],
+                        last_name=self.cleaned_data['last_name'],
+                        second_name=self.cleaned_data['second_name'],
+                        institute=self.cleaned_data['institute'],
+                        offer=self.cleaned_data['offer'],
+        )
+
+        person.save()
+        self.custom_signup(request, user)
+        setup_user_email(request, user, [])
+        return user
+
+
+class RegisterStudentView(generics.CreateAPIView):
+    serializer_class = RegisterStudentSerializer
+    permission_classes = register_permission_classes()
+    token_model = TokenModel
+
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(RegisterView, self).dispatch(*args, **kwargs)
+
+    def get_response_data(self, user):
+
+        if getattr(settings, 'REST_USE_JWT', False):
+            data = {
+                'user': user,
+                'token': self.token
+            }
+            return JWTSerializer(data).data
+        else:
+            return TokenSerializer(user.auth_token).data
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(self.get_response_data(user),
+                        status=status.HTTP_201_CREATED,
+                        headers=headers)
+
+    def perform_create(self, serializer):
+        user = serializer.save(self.request)
+        if getattr(settings, 'REST_USE_JWT', False):
+            self.token = jwt_encode(user)
+        else:
+            create_token(self.token_model, user, serializer)
+
+        complete_signup(self.request._request, user,
+                        allauth_settings.EMAIL_VERIFICATION,
+                        None)
+        return user

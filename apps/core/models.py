@@ -214,6 +214,8 @@ class Person(models.Model):
     phone = models.CharField(_('Телефон'), blank=True, null=True, max_length=32)
     docs = models.ManyToManyField("Document", blank=True)
     karma = models.IntegerField(_("Карма"), default=0)
+    institute = models.CharField(_('Институт/Университет'), max_length=1024, blank=True, null=True)
+    offer = models.CharField(_('Предложение'), max_length=32000, blank=True, null=True)
 
     class Meta:
         verbose_name = 'персона'
