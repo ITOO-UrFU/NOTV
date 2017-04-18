@@ -667,7 +667,7 @@ class RegisterStudentSerializer(serializers.Serializer):
     last_name = serializers.CharField()
     second_name = serializers.CharField()
     institute = serializers.CharField()
-    offer = serializers.CharField()
+    suggestions = serializers.CharField()
 
     def validate_username(self, username):
         username = get_adapter().clean_username(username)
@@ -717,7 +717,7 @@ class RegisterStudentSerializer(serializers.Serializer):
                         last_name=self.cleaned_data['last_name'],
                         second_name=self.cleaned_data['second_name'],
                         institute=self.cleaned_data['institute'],
-                        offer=self.cleaned_data['suggestions'],
+                        suggestions=self.cleaned_data['suggestions'],
                         )
 
         person.save()
