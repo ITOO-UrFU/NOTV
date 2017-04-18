@@ -695,6 +695,7 @@ class RegisterStudentSerializer(serializers.Serializer):
         pass
 
     def get_cleaned_data(self):
+        print('!!!!!!!!!!!!!!!!!!!!!!!!', 798)
         return {
             'username': self.get('username', self.validated_data.get('email').split('@')[0]),
             'password1': self.validated_data.get('password1', ''),
@@ -747,9 +748,7 @@ class RegisterStudentView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!', 750, serializer)
         serializer.is_valid(raise_exception=True)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!', 752)
         user = self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
 
@@ -758,9 +757,7 @@ class RegisterStudentView(generics.CreateAPIView):
                         headers=headers)
 
     def perform_create(self, serializer):
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!', 761)
         user = serializer.save(self.request)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!', 763, user)
         if getattr(settings, 'REST_USE_JWT', False):
             self.token = jwt_encode(user)
         else:
