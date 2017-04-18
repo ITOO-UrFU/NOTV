@@ -8,6 +8,7 @@ from core.models import *
 def events_members(request):
     context = {}
     events = Event.objects.all()
+    context["events"] = events
     for event in events:
         members = [x.person for x in EventUserRegistration.objects.filter(event=event)]
         context[event.title] = members
