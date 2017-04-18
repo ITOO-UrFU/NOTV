@@ -169,6 +169,7 @@ class UserList(generics.ListCreateAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status="201")
+        print('!!!!!!!!!!!', serializer.data)
         return Response(serializer.errors, status="400")
 
     def list(self, request):
