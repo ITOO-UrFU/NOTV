@@ -687,7 +687,7 @@ class RegisterStudentSerializer(serializers.Serializer):
     def validate(self, data):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError(_("The two password fields didn't match."))
-        if data['first_name'] is None or data['last_name'] is None or data['position'] is None or data['organisation'] is None:
+        if data['first_name'] is None or data['last_name'] is None or data['suggestions'] is None or data['institute'] is None:
             raise serializers.ValidationError(_("Fields can not be empty."))
         return data
 
