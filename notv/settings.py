@@ -135,6 +135,8 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
 ]
 
+PASSWORD_MIN_LENGTH = 2
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
