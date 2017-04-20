@@ -27,5 +27,5 @@ def all_persons(request):
 
 
 def get_all_speakers(request):
-    registrations = EventUserRegistration.objects.all().exclude(type__title="Участник")
+    registrations = EventUserRegistration.objects.all().exclude(type__title="Участник").distinct('person__id')
     return render(request, "speakers.html", {"eurs": registrations})
