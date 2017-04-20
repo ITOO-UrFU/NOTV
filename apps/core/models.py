@@ -234,6 +234,14 @@ class Person(models.Model):
     def get_docs(self):
         return ''.join(['<a href="'+doc.file.url+'">'+doc.title+'</a><br>' for doc in self.docs.all()])
 
+    def is_member(self):
+        try:
+            eur = EventUserRegistration.objects.filter(person=self)
+            if eur:
+                return True
+        except:
+            return False
+
     get_docs.allow_tags = True
 
 

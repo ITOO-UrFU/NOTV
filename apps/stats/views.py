@@ -4,6 +4,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from core.models import *
 
+from django.contrib.auth.models import User
+
 
 @staff_member_required
 @cache_page(60 * 5)
@@ -14,3 +16,11 @@ def events_members(request):
     context["events"] = events
     context["persons_online"] = persons_online
     return render(request, 'members.html', context)
+
+@staff_member_required
+def all_persons(request):
+    context = {}
+    persons = Person.objects.all()
+    context["persons"] = persons
+    eur = EventUserRegistration.objects.all()
+    return render(request, 'all.html', context)
