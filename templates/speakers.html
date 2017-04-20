@@ -1,0 +1,55 @@
+{% load i18n static %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+{% block extrahead %}{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
+    <h2>(<span class="red">{{ eurs | length}} спикеров</span>)</h2>
+        <table>
+    {% for eur in eurs %}
+        <tr>
+            <td><strong>{{eur.type}}</strong></td>
+            <td>{{eur.person.user.email}}</td>
+            <td>{{eur.person.first_name}}</td>
+            <td>{{eur.person.second_name}}</td>
+            <td>{{eur.person.last_name}}</td>
+            <td>{{eur.person.organisation}}</td>
+            <td>{{eur.person.position}}</td>
+            <td>{{ eur.person.get_participation_display }}</td>
+
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+
+<style>
+.red {
+    color: red;
+}
+#container {
+    max-width: 1200px;
+    margin:0 auto;
+}
+table {
+  border-spacing: 0.5rem;
+  border-collapse: collapse;
+}
+table, tr, td {
+    border: 1px solid grey;
+    padding: .5rem;
+}
+</style>
+</body>
+</html>
