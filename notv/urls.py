@@ -39,6 +39,7 @@ main_urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_
                      url(r'^api/v1/change_password/$', change_password, name='change_password'),
                      url(r'^admin/events_members/$', events_members, name='events_members'),
                      url(r'^admin/all/$', all_persons, name='all_persons'),
+                     url(r'^admin/speakers/$', get_all_speakers, name='get_all_speakers'),
 
                      url(r'^search_form',
                          view=search_form,
