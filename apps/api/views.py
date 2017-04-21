@@ -84,7 +84,7 @@ class Speakers(viewsets.ModelViewSet):  # CacheResponseMixin
         speakers = Person.objects.filter(
             Q(id__in=EventUserRegistration.objects.filter(type__in=types).values('person_id')) |
             Q(user=None)).filter(
-            ~Q(position="студент") ||
+            ~Q(position="студент") &
             ~Q(photo="")
         )
 
