@@ -81,7 +81,12 @@ class Speakers(viewsets.ModelViewSet):  # CacheResponseMixin
 
     def get_queryset(self):
         types = RegistrationType.objects.exclude(title="Участник")
-        speakers = Person.objects.filter(Q(id__in=EventUserRegistration.objects.filter(type__in=types).values('person_id')) | Q(user=None) | Q(position="студент"))
+        speakers = Person.objects.filter(
+            Q(id__in=EventUserRegistration.objects.filter(type__in=types).values('person_id')) |
+            Q(user=None) |
+            Q(position="студент") |
+            Q(photo_url="")
+        )
 
         return speakers.order_by("-karma")
 
