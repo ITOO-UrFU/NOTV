@@ -21,6 +21,7 @@
         <table>
     {% for person in persons %}
     <tr>
+    <td>{{ person.id }}</td>
         <td>{{person.last_name}} {{person.first_name}} {{person.first_name}}</td>
         <td>{{person.organisation}}</td>
         <td>{{ person.position }}</td>
