@@ -84,8 +84,8 @@ class Speakers(viewsets.ModelViewSet):  # CacheResponseMixin
         speakers = Person.objects.filter(
             Q(id__in=EventUserRegistration.objects.filter(type__in=types).values('person_id')) |
             Q(user=None) |
-            Q(position="студент") |
-            Q(photo="")
+            ~Q(position="студент") |
+            ~Q(photo="")
         )
 
         return speakers.order_by("-karma")
