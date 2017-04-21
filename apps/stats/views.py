@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 from django.views.decorators.cache import cache_page
 from django.contrib.admin.views.decorators import staff_member_required
 
@@ -25,7 +26,12 @@ def all_persons(request):
     eur = EventUserRegistration.objects.all()
     return render(request, 'all.html', context)
 
-
+@staff_member_required
 def get_all_speakers(request):
     registrations = EventUserRegistration.objects.all().exclude(type__title="Участник")
     return render(request, "speakers.html", {"eurs": registrations})
+
+@staff_member_required
+def fulltimers(request):
+    persons = Person.objects.filter(participation='O').filter(~Q(user__last_name__icontains="000_"))
+    return render(request, "fulltimers.html", {"persons": persons})

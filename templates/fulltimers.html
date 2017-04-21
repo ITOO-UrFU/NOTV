@@ -1,0 +1,53 @@
+{% load i18n static %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+{% block extrahead %}{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
+<p>&nbsp;</p>
+    <div class="event">
+        <table>
+    {% for person in persons %}
+    <tr>
+        <td>{{person.last_name}} {{person.first_name}} {{person.first_name}}</td>
+        <td>{{person.organisation}}</td>
+        <td>{{ person.position }}</td>
+
+        </tr>
+    {% endfor %}
+    </table>
+
+    </div>
+</div>
+
+<style>
+.red {
+    color: red;
+}
+#container {
+    max-width: 1200px;
+    margin:0 auto;
+}
+table {
+  border-spacing: 0.5rem;
+  border-collapse: collapse;
+}
+table, tr, td {
+    border: 1px solid grey;
+    padding: .5rem;
+}
+</style>
+</body>
+</html>
