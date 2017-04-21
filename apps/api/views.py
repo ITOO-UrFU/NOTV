@@ -83,8 +83,8 @@ class Speakers(viewsets.ModelViewSet):  # CacheResponseMixin
         types = RegistrationType.objects.exclude(title="Участник")
         speakers = Person.objects.filter(
             Q(id__in=EventUserRegistration.objects.filter(type__in=types).values('person_id')) |
-            Q(user=None) |
-            ~Q(position="студент") |
+            Q(user=None)).filter(
+            ~Q(position="студент") ||
             ~Q(photo="")
         )
 
