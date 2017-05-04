@@ -21,7 +21,7 @@ class Command(BaseCommand):
 
             packet = StringIO.StringIO()
             can = canvas.Canvas(packet, pagesize=letter)
-            can.drawString(10, 100, f"{person.first_name} {person.last_name}")
+            can.drawString(10, 100, " ".join[person.first_name, person.last_name])
             can.save()
 
             packet.seek(0)
@@ -34,6 +34,6 @@ class Command(BaseCommand):
             page.mergePage(new_pdf.getPage(0))
             output.addPage(page)
 
-            outputStream = open(os.path.join(settings.MEDIA_ROOT, "diplomas", f"{person.id}-diploma.pdf", "wb"))
+            outputStream = open(os.path.join(settings.MEDIA_ROOT, "diplomas", person.id + "-" + "diploma.pdf", "wb"))
             output.write(outputStream)
             outputStream.close()
