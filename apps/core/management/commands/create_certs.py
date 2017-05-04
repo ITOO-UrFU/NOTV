@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
             packet = io.BytesIO()
             can = canvas.Canvas(packet, pagesize=letter)
-            name = "{} {}".format(str(person.first_name), str(person.last_name)).decode(encoding='utf-8')
+            name = "{} {}".format(str(person.first_name), str(person.last_name))
             can.drawString(10, 100, name)
             can.save()
 
