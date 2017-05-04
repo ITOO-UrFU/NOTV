@@ -2,7 +2,7 @@ import os
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from pyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfFileWriter, PdfFileReader
 import StringIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
