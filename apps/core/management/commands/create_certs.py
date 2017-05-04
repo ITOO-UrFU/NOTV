@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
             packet.seek(0)
             new_pdf = PdfFileReader(packet)
-            existing_pdf = PdfFileReader(codecs.open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb"))
+            existing_pdf = PdfFileReader(codecs.open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb", encoding='utf-8'))
             output = PdfFileWriter()
 
 
@@ -36,6 +36,6 @@ class Command(BaseCommand):
             page.mergePage(new_pdf.getPage(0))
             output.addPage(page)
 
-            outputStream = open(os.path.join(settings.MEDIA_ROOT, "diplomas", str(person.id) + "-" + "diploma.pdf"), "wb")
+            outputStream = codecs.open(os.path.join(settings.MEDIA_ROOT, "diplomas", str(person.id) + "-" + "diploma.pdf"), "wb", encoding='utf-8')
             output.write(outputStream)
             outputStream.close()
