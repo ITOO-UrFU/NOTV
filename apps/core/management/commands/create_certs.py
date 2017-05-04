@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
             packet.seek(0)
             new_pdf = PdfFileReader(packet)
-            existing_pdf = PdfFileReader(codecs.open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb", encoding='utf-8'))
+            existing_pdf = PdfFileReader(open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb"))
             output = PdfFileWriter()
 
 
