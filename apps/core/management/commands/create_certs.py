@@ -1,4 +1,5 @@
 import os
+import codecs
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
@@ -21,13 +22,13 @@ class Command(BaseCommand):
 
             packet = io.BytesIO()
             can = canvas.Canvas(packet, pagesize=letter)
-            name = "{} {}".format(str(person.first_name), str(person.last_name))
+            name = "{} {}".format(str(person.first_name), str(person.last_name)).decode(encoding='utf-8')
             can.drawString(10, 100, name)
             can.save()
 
             packet.seek(0)
             new_pdf = PdfFileReader(packet)
-            existing_pdf = PdfFileReader(open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb"))
+            existing_pdf = PdfFileReader(codecs.open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb"), encoding='utf-8')
             output = PdfFileWriter()
 
 
