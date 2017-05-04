@@ -1,4 +1,6 @@
+import os
 from django.core.management.base import BaseCommand
+from django.conf import settings
 
 from pyPdf import PdfFileWriter, PdfFileReader
 import StringIO
@@ -24,7 +26,7 @@ class Command(BaseCommand):
 
             packet.seek(0)
             new_pdf = PdfFileReader(packet)
-            existing_pdf = PdfFileReader(open("certificate.pdf", "rb"))
+            existing_pdf = PdfFileReader(open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb"))
             output = PdfFileWriter()
 
 
@@ -32,6 +34,6 @@ class Command(BaseCommand):
             page.mergePage(new_pdf.getPage(0))
             output.addPage(page)
 
-            outputStream = open(f"{person.id}-diploma.pdf", "wb")
+            outputStream = open(os.path.join(settings.MEDIA_ROOT, "diplomas", f"{person.id}-diploma.pdf", "wb"))
             output.write(outputStream)
             outputStream.close()
