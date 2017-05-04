@@ -36,6 +36,6 @@ class Command(BaseCommand):
             page.mergePage(new_pdf.getPage(0))
             output.addPage(page)
 
-            outputStream = codecs.open(os.path.join(settings.MEDIA_ROOT, "diplomas", str(person.id) + "-" + "diploma.pdf"), "wb", encoding='utf-8')
+            outputStream = open(os.path.join(settings.MEDIA_ROOT, "diplomas", str(person.id) + "-" + "diploma.pdf"), "wb")
             output.write(outputStream)
             outputStream.close()
