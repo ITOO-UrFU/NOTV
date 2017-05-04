@@ -21,7 +21,7 @@ class Command(BaseCommand):
 
             packet = io.StringIO()
             can = canvas.Canvas(packet, pagesize=letter)
-            name = " ".join[person.first_name, person.last_name]
+            name = "{} {}".format(person.first_name, person.last_name)
             can.drawString(10, 100, name)
             can.save()
 
