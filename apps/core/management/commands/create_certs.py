@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
-import StringIO
+import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
