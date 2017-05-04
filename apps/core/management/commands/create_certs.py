@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
         for person in Person.objects.all():
 
-            packet = io.StringIO()
+            packet = io.BytesIO()
             can = canvas.Canvas(packet, pagesize=letter)
             name = "{} {}".format(str(person.first_name), str(person.last_name))
             can.drawString(10, 100, name)
