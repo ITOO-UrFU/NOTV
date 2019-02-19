@@ -1,11 +1,8 @@
-from django.shortcuts import render
-from django.db.models import Q
-from django.views.decorators.cache import cache_page
-from django.contrib.admin.views.decorators import staff_member_required
-
 from core.models import *
-
-from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Q
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 
 @staff_member_required

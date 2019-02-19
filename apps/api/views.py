@@ -1,52 +1,41 @@
-from django.http import Http404
-from rest_framework import viewsets, views
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
-from rest_framework import permissions
-from django.db.models import Q
-from rest_framework import serializers
-
-from django.utils.translation import ugettext_lazy as _
+import hashlib
+import os
+import uuid
+from importlib import import_module
 
 import jwt
-from django.conf import settings
-
-from django.contrib.auth.models import User
-
-from rest_framework import status
-from django.utils.decorators import method_decorator
-from django.views.decorators.debug import sensitive_post_parameters
-from rest_auth.models import TokenModel
 from allauth.account import app_settings as allauth_settings
-from rest_auth.app_settings import (TokenSerializer,
-                                JWTSerializer,
-                                create_token)
-from allauth.account.utils import complete_signup
-from rest_auth.utils import jwt_encode
-from importlib import import_module
-from six import string_types
-
 from allauth.account.adapter import get_adapter
-from allauth.utils import email_address_exists
+from allauth.account.utils import complete_signup
 from allauth.account.utils import setup_user_email
-
-from rest_framework_extensions.cache.mixins import CacheResponseMixin
-from django.views.decorators.cache import cache_page
+from allauth.utils import email_address_exists
 from core.models import *
 from core.serializers import *
-from rest_framework import permissions
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
-
-import os
-import hashlib
-import uuid
+from django.db.models import Q
+from django.http import Http404
+from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.debug import sensitive_post_parameters
+from rest_auth.app_settings import (TokenSerializer,
+                                    JWTSerializer,
+                                    create_token)
+from rest_auth.models import TokenModel
+from rest_auth.utils import jwt_encode
+from rest_framework import generics
+from rest_framework import permissions
+from rest_framework import serializers
+from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from six import string_types
 
 
 def key():
-
     key = hashlib.md5(os.urandom(128)).hexdigest()
     return key
 
@@ -71,7 +60,7 @@ class IsReadOnly(permissions.BasePermission):
 
 
 class Events(viewsets.ModelViewSet):  # CacheResponseMixin
-    permission_classes = (IsReadOnly, )
+    permission_classes = (IsReadOnly,)
     queryset = Event.objects.filter(status="p")
     serializer_class = EventSerializer
 
@@ -290,7 +279,6 @@ class PersonUpdate(generics.UpdateAPIView):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def register_on_event(request):
-
     try:
 
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
@@ -325,7 +313,6 @@ def register_on_event(request):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def unregister_on_event(request):
-
     try:
 
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
@@ -356,7 +343,6 @@ def unregister_on_event(request):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def event_user_list(request):
-
     try:
 
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
@@ -387,7 +373,8 @@ def import_callable(path_or_callable):
         assert isinstance(path_or_callable, string_types)
         package, attr = path_or_callable.rsplit('.', 1)
         return getattr(import_module(package), attr)
-    
+
+
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters('password1', 'password2')
 )
@@ -470,7 +457,7 @@ class RegisterSerializer(serializers.Serializer):
                         position=self.cleaned_data['position'],
                         phone=self.cleaned_data['phone'],
                         participation=self.cleaned_data['participation']
-        )
+                        )
 
         person.save()
         self.custom_signup(request, user)
@@ -524,7 +511,6 @@ class RegisterView(generics.CreateAPIView):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def delete_file(request):
-
     try:
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:

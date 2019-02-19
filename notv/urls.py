@@ -1,16 +1,12 @@
-from django.conf.urls import url, include
-from django.contrib import admin
-
-from rest_framework import routers
-from django.views.generic import TemplateView
-
-from rest_framework_jwt.views import obtain_jwt_token
-from rest_framework_jwt.views import refresh_jwt_token
-
 from ajax_select import urls as ajax_select_urls
-
 from api.views import *
 from core.views import *
+from django.conf.urls import url, include
+from django.contrib import admin
+from django.views.generic import TemplateView
+from rest_framework import routers
+from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import refresh_jwt_token
 from stats.views import *
 
 main_urlpatterns = []
@@ -55,7 +51,6 @@ router.register(r'users', Users)
 router.register(r'paths', Paths)
 router.register(r'pages', Pages, base_name='pages')
 router.register(r'speakers', Speakers, base_name='speakers')
-
 
 main_urlpatterns.append(url(r'^api/v1/', include(router.urls, namespace='api')))
 

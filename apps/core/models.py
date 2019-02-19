@@ -1,24 +1,21 @@
+import hashlib
+import os
 import uuid
 
-from django.db import models
-
-from django.contrib.auth.models import User
-from django_countries.fields import CountryField
-from jsonfield import JSONField
-
-from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.translation import ugettext_lazy as _
+from django_countries.fields import CountryField
+from jsonfield import JSONField
 from rest_framework.authtoken.models import Token
-import os
-import hashlib
 
 from .validators import validate_file_extension
 
 
 def key():
-
     key = hashlib.md5(os.urandom(128)).hexdigest()
     return key
 
@@ -104,7 +101,6 @@ class Block(models.Model):
 
 
 class Event(models.Model):
-
     STATUSES = (
         ('h', _("Скрыт")),
         ('p', _("Опубликован")),
@@ -205,7 +201,7 @@ class Person(models.Model):
     alt_email = models.EmailField(_('Альтернативный e-mail'), max_length=254, blank=True)
     country = CountryField(blank=True, default='Russia')
     birthday_date = models.DateField(_('Дата рождения'), null=True, blank=True)
-#   roles = models.ManyToManyField(ROLE)  TODO: Сделать модель 'Роль'
+    #   roles = models.ManyToManyField(ROLE)  TODO: Сделать модель 'Роль'
     biography = models.TextField(_('Биография пользователя'), blank=True, default='')
     position = models.CharField(_('Должность'), max_length=1024, blank=True, null=True)
     division = models.CharField(_('Подразделение'), max_length=1024, blank=True, null=True)
@@ -232,7 +228,7 @@ class Person(models.Model):
         return [registration for registration in registrations]
 
     def get_docs(self):
-        return ''.join(['<a href="'+doc.file.url+'">'+doc.title+'</a><br>' for doc in self.docs.all()])
+        return ''.join(['<a href="' + doc.file.url + '">' + doc.title + '</a><br>' for doc in self.docs.all()])
 
     def is_member(self):
         try:

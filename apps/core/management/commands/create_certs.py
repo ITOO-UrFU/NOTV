@@ -1,16 +1,15 @@
+import io
 import os
-import codecs
-from django.core.management.base import BaseCommand
-from django.conf import settings
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
-import io
-from reportlab.pdfgen import canvas
+from django.conf import settings
+from django.core.management.base import BaseCommand
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase.pdfmetrics import stringWidth
+from reportlab.pdfgen import canvas
 from reportlab.rl_config import defaultPageSize
 
-PAGE_WIDTH  = defaultPageSize[0]
+PAGE_WIDTH = defaultPageSize[0]
 PAGE_HEIGHT = defaultPageSize[1]
 
 from core.models import Person
@@ -22,9 +21,7 @@ class Command(BaseCommand):
     requires_migrations_checks = True
 
     def handle(self, *args, **options):
-
         for person in Person.objects.all():
-
             packet = io.BytesIO()
             can = canvas.Canvas(packet, pagesize=A4)
             name = "{} {}".format(str(person.first_name), str(person.last_name))
@@ -42,7 +39,6 @@ class Command(BaseCommand):
             new_pdf = PdfFileReader(packet)
             existing_pdf = PdfFileReader(open(os.path.join(settings.MEDIA_ROOT, "certificate.pdf"), "rb"))
             output = PdfFileWriter()
-
 
             page = existing_pdf.getPage(0)
             page.mergePage(new_pdf.getPage(0))

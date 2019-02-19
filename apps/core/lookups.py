@@ -1,12 +1,11 @@
+from ajax_select import LookupChannel
 from django.db.models import Q
 from django.utils.html import escape
+
 from .models import Person
-from ajax_select import LookupChannel
-import ajax_select
 
 
 class PersonLookup(LookupChannel):
-
     model = Person
 
     def get_query(self, q, request):

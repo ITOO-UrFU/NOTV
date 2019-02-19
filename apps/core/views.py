@@ -1,11 +1,11 @@
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from .models import CustomObject
-
 from ajax_select.fields import AutoCompleteField
 from django import forms
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+
+from .models import CustomObject
 
 
 def custom_json_view(request, title):
@@ -14,16 +14,14 @@ def custom_json_view(request, title):
 
 
 class SearchForm(forms.Form):
-
     q = AutoCompleteField('cliche',
-        required=True,
-        help_text="Autocomplete will suggest clichés about cats, but you can enter anything you like.",
-        label="Favorite Cliché",
-        attrs={'size': 100})
+                          required=True,
+                          help_text="Autocomplete will suggest clichés about cats, but you can enter anything you like.",
+                          label="Favorite Cliché",
+                          attrs={'size': 100})
 
 
 def search_form(request):
-
     dd = {}
     if 'q' in request.GET:
         dd['entered'] = request.GET.get('q')

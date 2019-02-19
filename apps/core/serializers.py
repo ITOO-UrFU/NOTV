@@ -1,8 +1,6 @@
-from .models import *
 from rest_framework import serializers
 
-from django_countries.serializer_fields import CountryField
-from django.utils import timezone
+from .models import *
 
 
 class DateTimeFieldWihTZ(serializers.DateTimeField):
@@ -78,7 +76,6 @@ class PathSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-
     class Meta:
         model = User
         fields = ('id', 'username', 'email')
@@ -98,7 +95,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
-
     class Meta:
         model = Person
         fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "participation", "photo", "phone", "biography")  # "country",
@@ -108,7 +104,7 @@ class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
 class RegistrationTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RegistrationType
-        fields = ("title", )
+        fields = ("title",)
 
 
 class EventUserRegistrationSerializer(serializers.ModelSerializer):
@@ -136,7 +132,7 @@ class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
 
     class Meta:
         model = EventUserRegistration
-        fields = ("id", "type", "event",  "status")
+        fields = ("id", "type", "event", "status")
 
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
@@ -182,7 +178,6 @@ class SpeakerSerializer(serializers.HyperlinkedModelSerializer):
         model = Person
         fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography")  # "country",
         depth = 1
-
 
 
 class EventSerializer(serializers.ModelSerializer):

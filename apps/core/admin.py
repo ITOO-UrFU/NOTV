@@ -1,15 +1,13 @@
-from django.contrib import admin
-from django import forms
-from reversion.admin import VersionAdmin
 from ajax_select import make_ajax_form
 from ajax_select.admin import AjaxSelectAdmin
-
+from django.contrib import admin
+from reversion.admin import VersionAdmin
 
 from .models import *
 
+
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
-
     list_display = ('title', 'description', 'path', 'block', '_startdate', '_enddate', "line_of_work", "status")
     # fields = ('title', 'description', '_startdate', '_enddate')
     search_fields = ('title', 'description', 'path', "status")
@@ -51,6 +49,7 @@ class PageAdmin(VersionAdmin):
 class DocumentAdmin(VersionAdmin):
     fields = ("title", "file")
 
+
 @admin.register(Person)
 class PersonAdmin(VersionAdmin):
     list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone", "participation", "get_docs", "institute", "suggestions")
@@ -88,5 +87,3 @@ class RoomAdmin(VersionAdmin):
 @admin.register(Path)
 class PathAdmin(VersionAdmin):
     list_display = ("slug", "title")
-
-
