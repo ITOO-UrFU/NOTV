@@ -300,6 +300,7 @@ class Page(models.Model):
     slug = models.SlugField(_("Код"))
     title = models.CharField(_("Название страницы"), max_length=256, blank=True, null=True)
     html = models.TextField(_("Контент"), blank=True, null=True)
+    title_en = models.CharField(_("Название страницы. Английская версия"), max_length=256, blank=True, null=True)
     html_en = models.TextField(_("Контент. Английская версия"), blank=True, null=True)
     pages = models.ManyToManyField("self", verbose_name=_("Вложенные страницы"), blank=True, related_name='+', symmetrical=False)
     keywords = models.TextField("SEO", blank=True, null=True)
