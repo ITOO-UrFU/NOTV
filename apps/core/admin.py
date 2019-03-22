@@ -37,10 +37,10 @@ class EventUserRegistrationAdmin(AjaxSelectAdmin):
 
 @admin.register(Page)
 class PageAdmin(VersionAdmin):
-    fields = ("slug", "weight", "title", "html", "pages", "keywords", "type", "status")
+    fields = ("slug", "weight", "title", "html", "title_en", "html_en", "pages", "keywords", "type", "status")
     list_display = ("slug", "title", "weight", "html", "get_pages_display", "keywords", "type", "status")
     filter_horizontal = ('pages',)
-    search_fields = ("slug", "title", "weight", "html", "get_pages_display", "keywords", "type", "status")
+    search_fields = ("slug", "title", "weight", "html", "title_en", "html_en", "get_pages_display", "keywords", "type", "status")
     list_filter = ("keywords", "type", "status", "weight", "slug")
     save_as = True
 
