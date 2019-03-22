@@ -575,26 +575,26 @@ def file_upload(request):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def reset_password(request):
-    try:
-        from random import choice
-        from django.contrib.auth.hashers import make_password
-        email = request.data["email"]
-        user = User.objects.get(email=email)
-        person = Person.objects.filter(user=user).first()
-        new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(7)])
-        user.password = make_password(new_password)
-        user.save()
-        message = """
-        Вы сменили пароль на сайте конференции #Edcrunch URAL.
-        Ваш новый пароль: {}
-        """.format(new_password)
-        send_mail(person, message, 'no-reply@edcrunch.urfu.ru', [email])
-        return Response(
-            {"message": "Новый пароль отправлен вашу на электронную почту.",
-             "success": True}
-        )
-    except:
-        return Response(status=500)
+    #try:
+    from random import choice
+    from django.contrib.auth.hashers import make_password
+    email = request.data["email"]
+    user = User.objects.get(email=email)
+    person = Person.objects.filter(user=user).first()
+    new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(7)])
+    user.password = make_password(new_password)
+    user.save()
+    message = """
+    Вы сменили пароль на сайте конференции #Edcrunch URAL.
+    Ваш новый пароль: {}
+    """.format(new_password)
+    send_mail(person, message, settings.DEFAULT_FROM_EMAIL, [email])
+    return Response(
+        {"message": "Новый пароль отправлен вашу на электронную почту.",
+        "success": True}
+    )
+    #except:
+    #    return Response(status=500)
 
 
 @api_view(('POST',))
