@@ -44,6 +44,7 @@ def page_as_dict(page):
         "slug": page.slug,
         "title": page.title,
         "html": page.html,
+        "title_en": page.title_en,
         "html_en": page.html_en,
         "pages": page.get_pages_dict(),
         "keywords": page.keywords,
