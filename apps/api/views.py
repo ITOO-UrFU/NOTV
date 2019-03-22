@@ -121,6 +121,7 @@ def page_slug(request, slug):
             "slug": page.slug,
             "title": page.title,
             "html": page.html,
+            "html_en": page.html_en,
             "pages": page.get_pages_dict(),
             "keywords": page.keywords,
             "type": type,

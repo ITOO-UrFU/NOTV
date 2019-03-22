@@ -44,6 +44,7 @@ def page_as_dict(page):
         "slug": page.slug,
         "title": page.title,
         "html": page.html,
+        "html_en": page.html_en,
         "pages": page.get_pages_dict(),
         "keywords": page.keywords,
         "type": type,
@@ -116,6 +117,9 @@ class Event(models.Model):
     status = models.CharField(_("Статус публикации"), max_length=1, choices=STATUSES, default='h')
     _startdate = models.DateTimeField(_("Начало события"), blank=True, null=True)
     _enddate = models.DateTimeField(_("Конец события"), blank=True, null=True)
+
+    title_en = models.CharField(_("Название события. Английская версия"), max_length=256, blank=False)
+    description_en = models.TextField(_("Описание события. Английская версия"), max_length=16384, blank=True, default="")
 
     class Meta:
         verbose_name = 'событие'
@@ -201,7 +205,6 @@ class Person(models.Model):
     alt_email = models.EmailField(_('Альтернативный e-mail'), max_length=254, blank=True)
     country = CountryField(blank=True, default='Russia')
     birthday_date = models.DateField(_('Дата рождения'), null=True, blank=True)
-    #   roles = models.ManyToManyField(ROLE)  TODO: Сделать модель 'Роль'
     biography = models.TextField(_('Биография пользователя'), blank=True, default='')
     position = models.CharField(_('Должность'), max_length=1024, blank=True, null=True)
     division = models.CharField(_('Подразделение'), max_length=1024, blank=True, null=True)
@@ -212,6 +215,13 @@ class Person(models.Model):
     karma = models.IntegerField(_("Карма"), default=0)
     institute = models.CharField(_('Институт/Университет'), max_length=1024, blank=True, null=True)
     suggestions = models.CharField(_('Предложение'), max_length=32000, blank=True, null=True)
+
+    biography_en = models.TextField(_('Биография пользователя. Английская версия'), blank=True, default='')
+    position_en = models.CharField(_('Должность. Английская версия'), max_length=1024, blank=True, null=True)
+    division_en = models.CharField(_('Подразделение. Английская версия'), max_length=1024, blank=True, null=True)
+    organisation_en = models.CharField(_('Организация. Английская версия'), max_length=1024, blank=True, null=True)
+    institute_en = models.CharField(_('Институт/Университет. Английская версия'), max_length=1024, blank=True, null=True)
+    suggestions_en = models.CharField(_('Предложение. Английская версия'), max_length=32000, blank=True, null=True)
 
     class Meta:
         verbose_name = 'персона'
@@ -255,6 +265,7 @@ class Path(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(_("Код"))
     title = models.CharField(_("Название траектории"), max_length=256, blank=True, null=True)
+    title_en = models.CharField(_("Название траектории. Английская версия"), max_length=256, blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -268,6 +279,7 @@ class Room(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(_("Код"))
     title = models.CharField(_("Название аудитории"), max_length=256, blank=True, null=True)
+    title_en = models.CharField(_("Название аудитории. Английская версия"), max_length=256, blank=True, null=True)
     address = models.CharField(_("Адрес"), max_length=256, blank=True, null=True)
     housing = models.CharField(_("Корпус"), max_length=256, blank=True, null=True)
 
@@ -288,6 +300,7 @@ class Page(models.Model):
     slug = models.SlugField(_("Код"))
     title = models.CharField(_("Название страницы"), max_length=256, blank=True, null=True)
     html = models.TextField(_("Контент"), blank=True, null=True)
+    html_en = models.TextField(_("Контент. Английская версия"), blank=True, null=True)
     pages = models.ManyToManyField("self", verbose_name=_("Вложенные страницы"), blank=True, related_name='+', symmetrical=False)
     keywords = models.TextField("SEO", blank=True, null=True)
     weight = models.IntegerField(_("Вес страницы"), default=100)
@@ -328,6 +341,7 @@ class Type(models.Model):
 
 class EventType(models.Model):
     title = models.CharField(_("Тип мероприятия"), max_length=256, blank=True, null=True)
+    title_en = models.CharField(_("Тип мероприятия. Английская версия"), max_length=256, blank=True, null=True)
     slug = models.SlugField(_("Код"), blank=True)
 
     def __str__(self):
