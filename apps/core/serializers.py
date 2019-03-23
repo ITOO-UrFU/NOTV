@@ -189,7 +189,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("id", "title", "description", "get_speakers", "get_type_display", "get_block_slug", "get_event_slug", "get_line_of_work_slug", "room", "path", "startdate", "enddate")
+        fields = ("id", "title", "title_en", "description_en", "description", "get_speakers", "get_type_display", "get_block_slug", "get_event_slug", "get_line_of_work_slug", "room", "path", "startdate", "enddate")
 
 
 class PageSerializer(serializers.ModelSerializer):
@@ -200,7 +200,7 @@ class PageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Page
-        fields = ("id", "slug", "title", "html", "keywords", "pages", "type", "weight")
+        fields = ("id", "slug", "title", "html", "title_en", "html_en", "keywords", "pages", "type", "weight")
 
 
 class RegistrationTypeDetail(serializers.HyperlinkedModelSerializer):
