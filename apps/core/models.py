@@ -86,9 +86,6 @@ class EventUserRegistration(models.Model):
     def get_type_display(self):
         return str(self.type)
 
-    def get_type_display_en(self):
-        return str(self.type_en)
-
     class Meta:
         verbose_name = 'регистрация пользователя на событие'
         verbose_name_plural = 'регистрации пользователей на события'
@@ -143,6 +140,12 @@ class Event(models.Model):
     def get_type_display(self):
         if self.type:
             return self.type.title
+        else:
+            return None
+
+    def get_type_display_en(self):
+        if self.type:
+            return self.type.title_en
         else:
             return None
 
