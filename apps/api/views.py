@@ -848,7 +848,7 @@ def pk_remove(request):
     except:
         return Response(status=403)
 
-    person.get_pk().remove()
+    person.get_pk().delete()
 
     return Response({"request": str(request.data)})
 
