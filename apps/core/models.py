@@ -285,7 +285,10 @@ class PK(models.Model):
     presentation = models.ForeignKey("Presentation", null=True, blank=True)
 
     def get_pres(self):
-        return '<a href="' + self.presentation.file.url + '">' + self.presentation.title + '</a><br>'
+        if self.presentation:
+            return '<a href="' + self.presentation.file.url + '">' + self.presentation.title + '</a><br>'
+        else:
+            return ""
 
     get_pres.allow_tags = True
 
