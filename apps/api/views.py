@@ -823,12 +823,11 @@ def pk_accept(request):
             pk = PK.objects.create(
                 person=person,
             )
+
+            return Response({"status": "ok"})
+
     except:
         return Response(status=403)
-
-
-
-    return Response({"request": str(request.data)})
 
 
 @api_view(('POST', 'GET'))
