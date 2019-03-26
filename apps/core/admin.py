@@ -91,7 +91,7 @@ class PathAdmin(VersionAdmin):
 
 @admin.register(PK)
 class PKAdmin(VersionAdmin):
-    list_display = ("person", "status", "presentation")
+    list_display = ("person", "status", "get_pres")
 
 
 @admin.register(Presentation)

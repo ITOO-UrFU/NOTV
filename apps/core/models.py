@@ -271,7 +271,7 @@ class Person(models.Model):
     def get_pk(self):
         pk_registrations = PK.objects.filter(person=self)
         if pk_registrations.count() > 0:
-            return  pk_registrations.first()
+            return pk_registrations.first()
         else:
             return None
 
@@ -283,6 +283,11 @@ class PK(models.Model):
     person = models.ForeignKey(Person)
     status = models.CharField("Тип участия", max_length=1, choices=STATUSES, default="l")
     presentation = models.ForeignKey("Presentation", null=True, blank=True)
+
+    def get_pres(self):
+        return '<a href="' + self.presentation.file.url + '">' + self.presentation.title + '</a><br>'
+
+    get_pres.allow_tags = True
 
     def __str__(self):
         if self.person.first_name and self.person.last_name:
