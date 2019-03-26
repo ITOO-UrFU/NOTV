@@ -26,6 +26,7 @@ def generate_new_filename(instance, filename):
     fullpath = 'documents/' + filename
     return fullpath
 
+
 def generate_new_presentation(instance, filename):
     f, ext = os.path.splitext(filename)
     filename = '%s%s' % (uuid.uuid4().hex, ext)
@@ -101,6 +102,12 @@ class Document(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(_("Название документа"), max_length=1024, blank=False)
     file = models.FileField(upload_to=generate_new_filename, validators=[validate_file_extension])
+
+
+class Presentation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(_("Название презентации"), max_length=1024, blank=False)
+    file = models.FileField(upload_to=generate_new_presentation)
 
 
 class Block(models.Model):
@@ -261,6 +268,13 @@ class Person(models.Model):
         except:
             return False
 
+    def get_pk(self):
+        pk_registrations = PK.objects.filter(person=self)
+        if pk_registrations.count() > 0:
+            return  pk_registrations.first()
+        else:
+            return None
+
     get_docs.allow_tags = True
 
 
@@ -268,7 +282,7 @@ class PK(models.Model):
     STATUSES = (("l", "Слушатель"), ("a", "Автор идеи онлайн-курса с презентацией"))
     person = models.ForeignKey(Person)
     status = models.CharField("Тип участия", max_length=1, choices=STATUSES, default="l")
-    presentation = models.FileField(upload_to=generate_new_presentation())
+    presentation = models.ForeignKey("Presentation", null=True, blank=True)
 
     def __str__(self):
         if self.person.first_name and self.person.last_name:

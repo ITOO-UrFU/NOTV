@@ -47,6 +47,13 @@ def generate_new_filename(filename):
     return fullpath
 
 
+def generate_new_presentation(instance, filename):
+    f, ext = os.path.splitext(filename)
+    filename = '%s%s' % (uuid.uuid4().hex, ext)
+    fullpath = 'pechakucha_presentations/' + filename
+    return fullpath
+
+
 class IsReadOnly(permissions.BasePermission):
     """
     Object-level permission to only allow read-only operations.
@@ -577,7 +584,7 @@ def file_upload(request):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def reset_password(request):
-    #try:
+    # try:
     from random import choice
     from django.contrib.auth.hashers import make_password
     email = request.data["email"]
@@ -593,9 +600,9 @@ def reset_password(request):
     send_mail(person, message, settings.DEFAULT_FROM_EMAIL, [email])
     return Response(
         {"message": "Новый пароль отправлен вашу на электронную почту.",
-        "success": True}
+         "success": True}
     )
-    #except:
+    # except:
     #    return Response(status=500)
 
 
@@ -765,3 +772,100 @@ class RegisterStudentView(generics.CreateAPIView):
                         allauth_settings.EMAIL_VERIFICATION,
                         None)
         return user
+
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def pk_file_upload(request):
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+            pk = person.get_pk()
+    except:
+        return Response(status=403)
+
+    file_obj = request.data["uploadFile"]
+    file_addr = generate_new_presentation(file_obj.name)
+
+    import io
+
+    with io.open('media/' + file_addr, 'wb+') as f:
+        presentation = Presentation(title=file_obj.name, file=file_addr)
+        presentation.save()
+        for chunk in file_obj.chunks():
+            f.write(chunk)
+    if presentation:
+        pk.presentation = document
+        pk.save()
+
+    return Response({"request": str(request.data)})
+
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def pk_accept(request):
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+    except:
+        return Response(status=403)
+
+    pk = PK.objects.create(
+        person=person,
+    )
+
+    return Response({"request": str(request.data)})
+
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def pk_remove(request):
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+    except:
+        return Response(status=403)
+
+    person.get_pk().remove()
+
+    return Response({"request": str(request.data)})
+
+
+@api_view(('POST',))
+@permission_classes((permissions.AllowAny,))
+def pk_save(request):
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+    except:
+        return Response(status=403)
+
+    pk = person.get_pk()
+    pk.status = request.data['status']
+    pk.save()
+
+    return Response({"request": str(request.data)})
