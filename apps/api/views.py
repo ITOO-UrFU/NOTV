@@ -819,12 +819,14 @@ def pk_accept(request):
                 return Response({"status": "Session expired"})
             current_user = User.objects.get(pk=token_data['user_id'])
             person = Person.objects.get(user=current_user)
+
+            pk = PK.objects.create(
+                person=person,
+            )
     except:
         return Response(status=403)
 
-    pk = PK.objects.create(
-        person=person,
-    )
+
 
     return Response({"request": str(request.data)})
 
