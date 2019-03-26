@@ -820,14 +820,17 @@ def pk_accept(request):
             current_user = User.objects.get(pk=token_data['user_id'])
             person = Person.objects.get(user=current_user)
 
-            pk = PK.objects.create(
-                person=person,
-            )
-
-            return Response({"status": "ok"})
 
     except:
         return Response(status=403)
+
+    pk = PK.objects.create(
+        person=person,
+    )
+    if pk:
+        return Response({"status": "ok"})
+
+    return Response({"status": "error"})
 
 
 @api_view(('POST', 'GET'))
