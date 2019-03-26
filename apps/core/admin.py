@@ -88,6 +88,12 @@ class RoomAdmin(VersionAdmin):
 class PathAdmin(VersionAdmin):
     list_display = ("slug", "title")
 
+
 @admin.register(PK)
 class PKAdmin(VersionAdmin):
     list_display = ("person", "status", "presentation")
+
+
+@admin.register(Presentation)
+class PresentationAdmin(VersionAdmin):
+    fields = ("title", "file")
