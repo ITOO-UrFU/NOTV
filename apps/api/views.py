@@ -807,7 +807,7 @@ def pk_file_upload(request):
     return Response({"request": str(request.data)})
 
 
-@api_view(('POST',))
+@api_view(('POST', 'GET'))
 @permission_classes((permissions.AllowAny,))
 def pk_accept(request):
     try:
@@ -829,7 +829,7 @@ def pk_accept(request):
     return Response({"request": str(request.data)})
 
 
-@api_view(('POST',))
+@api_view(('POST', 'GET'))
 @permission_classes((permissions.AllowAny,))
 def pk_remove(request):
     try:
@@ -849,7 +849,7 @@ def pk_remove(request):
     return Response({"request": str(request.data)})
 
 
-@api_view(('POST',))
+@api_view(('POST', 'GET'))
 @permission_classes((permissions.AllowAny,))
 def pk_save(request):
     try:
