@@ -26,6 +26,12 @@ def generate_new_filename(instance, filename):
     fullpath = 'documents/' + filename
     return fullpath
 
+def generate_new_presentation(instance, filename):
+    f, ext = os.path.splitext(filename)
+    filename = '%s%s' % (uuid.uuid4().hex, ext)
+    fullpath = 'pechakucha_presentations/' + filename
+    return fullpath
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -256,6 +262,19 @@ class Person(models.Model):
             return False
 
     get_docs.allow_tags = True
+
+
+class PK(models.Model):
+    STATUSES = (("l", "Слушатель"), ("a", "Автор идеи онлайн-курса с презентацией"))
+    person = models.ForeignKey(Person)
+    status = models.CharField("Тип участия", max_length=1, choices=STATUSES, default="l")
+    presentation = models.FileField(upload_to=generate_new_presentation())
+
+    def __str__(self):
+        if self.person.first_name and self.person.last_name:
+            return ' '.join([str(self.person.first_name), str(self.person.last_name)])
+        else:
+            return str(self.person.user)
 
 
 # @receiver(post_save, sender=User)
