@@ -905,7 +905,7 @@ def pk_get(request):
             'position': person.position,
             'division': person.division,
             'organisation': person.organisation,
-            'pk_accept': True
+            'pk_accept': False
         }
 
         if pk:
