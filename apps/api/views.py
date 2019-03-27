@@ -890,16 +890,12 @@ def pk_save(request):
                 return Response({"status": "Session expired"})
             current_user = User.objects.get(pk=token_data['user_id'])
             person = Person.objects.get(user=current_user)
+            pk = person.get_pk()
+            pk.status = request.data['body']['status']
+            pk.save()
+            return Response({"pk_status": pk.status})
     except:
         return Response(status=403)
-
-    if person:
-
-        pk = person.get_pk()
-        pk.status = request.data['body']['status']
-        pk.save()
-
-    return Response({"request": str(request.data)})
 
 
 @api_view(('POST', 'GET'))
