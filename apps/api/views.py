@@ -913,7 +913,7 @@ def pk_get(request):
             result['pk_status'] = pk.status
             if pk.presentation:
                 result['pk_presentation_file'] = pk.presentation.file.url
-            result['pk_presentation_title'] = pk.presentation.title
+                result['pk_presentation_title'] = pk.presentation.title
 
         return Response(result)
     else:
