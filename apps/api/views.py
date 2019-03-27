@@ -801,7 +801,7 @@ def pk_file_upload(request):
         for chunk in file_obj.chunks():
             f.write(chunk)
     if presentation:
-        pk.presentation = document
+        pk.presentation = presentation
         pk.save()
 
     return Response({"request": str(request.data)})
