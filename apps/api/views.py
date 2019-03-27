@@ -804,7 +804,11 @@ def pk_file_upload(request):
         pk.presentation = presentation
         pk.save()
 
-    return Response({"request": str(request.data)})
+    return Response({"presentation": {"filename": pk.presentation.title,
+                                      "url": pk.presentation.file.url
+                                      }
+                     }
+                    )
 
 
 @api_view(('POST', 'GET'))
