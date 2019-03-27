@@ -824,9 +824,12 @@ def pk_accept(request):
     except:
         return Response(status=403)
 
-    pk = PK.objects.create(
-        person=person,
-    )
+    if not person.get_pk():
+
+        pk = PK.objects.create(
+            person=person,
+        )
+
     if pk:
         return Response({"status": "ok"})
 
