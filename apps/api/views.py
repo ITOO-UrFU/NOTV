@@ -880,6 +880,7 @@ def pk_remove(request):
 @api_view(('POST', 'GET'))
 @permission_classes((permissions.AllowAny,))
 def pk_save(request):
+    person = None
     try:
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
@@ -892,9 +893,11 @@ def pk_save(request):
     except:
         return Response(status=403)
 
-    pk = person.get_pk()
-    pk.status = request.data['status']
-    pk.save()
+    if person:
+
+        pk = person.get_pk()
+        pk.status = request.data['status']
+        pk.save()
 
     return Response({"request": str(request.data)})
 
