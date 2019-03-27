@@ -905,9 +905,11 @@ def pk_get(request):
             'position': person.position,
             'division': person.division,
             'organisation': person.organisation,
+            'pk_accept': True
         }
 
         if pk:
+            result['pk_accept'] = True
             result['pk_status'] = pk.status
             result['pk_presentation_file'] = pk.presentation.file
             result['pk_presentation_title'] = pk.presentation.title
