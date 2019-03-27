@@ -895,7 +895,7 @@ def pk_save(request):
         return Response(status=403)
 
     pk = person.get_pk()
-    pk.status = request.data['body']['status']
+    pk.status = request.data['status']
     pk.save()
 
     return Response({"pk_status": pk.status})
