@@ -824,6 +824,8 @@ def pk_accept(request):
     except:
         return Response(status=403)
 
+    result = {}
+
     pk = person.get_pk()
 
     if not pk:
@@ -831,7 +833,26 @@ def pk_accept(request):
             person=person,
         )
 
-    return Response({"status": "ok"})
+    result = {
+        'email': person.user.email,
+        'first_name': person.first_name,
+        'last_name': person.last_name,
+        'second_name': person.second_name,
+        'institute': person.institute,
+        'phone': person.phone,
+        'position': person.position,
+        'division': person.division,
+        'organisation': person.organisation,
+        'pk_accept': False
+    }
+
+    result['pk_accept'] = True
+    result['pk_status'] = pk.status
+    if pk.presentation:
+        result['pk_presentation_file'] = pk.presentation.file.url
+        result['pk_presentation_title'] = pk.presentation.title
+
+    return Response(result)
 
 
 @api_view(('POST', 'GET'))
