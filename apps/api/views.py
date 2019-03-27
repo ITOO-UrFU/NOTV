@@ -895,20 +895,23 @@ def pk_get(request):
 
         pk = person.get_pk()
 
-        return Response({
-            'email': pk.person.email,
-            'first_name': pk.person.first_name,
-            'last_name': pk.person.last_name,
-            'second_name': pk.person.second_name,
-            'institute': pk.person.institute,
-            'phone': pk.person.phone,
-            'position': pk.person.position,
-            'division': pk.person.division,
-            'organisation': pk.person.organisation,
-            'pk_status': pk.status,
-            'pk_presentation_file': pk.presentation.file,
-            'pk_presentation_title': pk.presentation.title,
+        result = {
+            'email': person.email,
+            'first_name': person.first_name,
+            'last_name': person.last_name,
+            'second_name': person.second_name,
+            'institute': person.institute,
+            'phone': person.phone,
+            'position': person.position,
+            'division': person.division,
+            'organisation': person.organisation,
+        }
 
-        })
+        if pk:
+            result['pk_status'] = pk.status
+            result['pk_presentation_file'] = pk.presentation.file
+            result['pk_presentation_title'] = pk.presentation.title
+
+        return Response(result)
     else:
         return Response({"status": "false"})
