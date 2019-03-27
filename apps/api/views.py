@@ -911,7 +911,8 @@ def pk_get(request):
         if pk:
             result['pk_accept'] = True
             result['pk_status'] = pk.status
-            result['pk_presentation_file'] = pk.presentation.file.url
+            if pk.presentation:
+                result['pk_presentation_file'] = pk.presentation.file.url
             result['pk_presentation_title'] = pk.presentation.title
 
         return Response(result)
