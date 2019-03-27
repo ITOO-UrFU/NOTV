@@ -878,6 +878,7 @@ def pk_save(request):
 @api_view(('POST', 'GET'))
 @permission_classes((permissions.AllowAny,))
 def pk_get(request):
+    person = None
     try:
         jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
         if jwt_token:
@@ -890,20 +891,24 @@ def pk_get(request):
     except:
         return Response(status=403)
 
-    pk = person.get_pk()
+    if person:
 
-    return Response({
-        'email': pk.person.email,
-        'first_name': pk.person.first_name,
-        'last_name': pk.person.last_name,
-        'second_name': pk.person.second_name,
-        'institute': pk.person.institute,
-        'phone': pk.person.phone,
-        'position': pk.person.position,
-        'division': pk.person.division,
-        'organisation': pk.person.organisation,
-        'pk_status': pk.status,
-        'pk_presentation_file': pk.presentation.file,
-        'pk_presentation_title': pk.presentation.title,
+        pk = person.get_pk()
 
-    })
+        return Response({
+            'email': pk.person.email,
+            'first_name': pk.person.first_name,
+            'last_name': pk.person.last_name,
+            'second_name': pk.person.second_name,
+            'institute': pk.person.institute,
+            'phone': pk.person.phone,
+            'position': pk.person.position,
+            'division': pk.person.division,
+            'organisation': pk.person.organisation,
+            'pk_status': pk.status,
+            'pk_presentation_file': pk.presentation.file,
+            'pk_presentation_title': pk.presentation.title,
+
+        })
+    else:
+        return Response({"status": "false"})
