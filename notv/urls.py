@@ -44,6 +44,7 @@ main_urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_
                      url(r'^api/v1/pechakucha/remove', pk_remove, name='pk_remove'),
                      url(r'^api/v1/pechakucha/save', pk_save, name='pk_save'),
                      url(r'^api/v1/pechakucha/presentation_add', pk_file_upload, name='pk_file_upload'),
+                     url(r'^api/v1/pechakucha/get', pk_get, name='pk_get'),
 
 
                      url(r'^search_form',

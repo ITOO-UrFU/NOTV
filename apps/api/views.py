@@ -30,7 +30,7 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from six import string_types
 
@@ -873,3 +873,37 @@ def pk_save(request):
     pk.save()
 
     return Response({"request": str(request.data)})
+
+
+@api_view(('POST', 'GET'))
+@permission_classes((permissions.AllowAny,))
+def pk_get(request):
+    try:
+        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if jwt_token:
+            try:
+                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+            except jwt.exceptions.ExpiredSignatureError:
+                return Response({"status": "Session expired"})
+            current_user = User.objects.get(pk=token_data['user_id'])
+            person = Person.objects.get(user=current_user)
+    except:
+        return Response(status=403)
+
+    pk = person.get_pk()
+
+    return Response({
+        'email': pk.person.email,
+        'first_name': pk.person.first_name,
+        'last_name': pk.person.last_name,
+        'second_name': pk.person.second_name,
+        'institute': pk.person.institute,
+        'phone': pk.person.phone,
+        'position': pk.person.position,
+        'division': pk.person.division,
+        'organisation': pk.person.organisation,
+        'pk_status': pk.status,
+        'pk_presentation_file': pk.presentation.file,
+        'pk_presentation_title': pk.presentation.title,
+
+    })
