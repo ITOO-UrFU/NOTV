@@ -896,7 +896,7 @@ def pk_get(request):
         pk = person.get_pk()
 
         result = {
-            'email': person.email,
+            'email': person.user.email,
             'first_name': person.first_name,
             'last_name': person.last_name,
             'second_name': person.second_name,
