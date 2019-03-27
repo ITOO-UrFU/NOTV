@@ -47,7 +47,7 @@ def generate_new_filename(filename):
     return fullpath
 
 
-def generate_new_presentation(instance, filename):
+def generate_new_presentation(filename):
     f, ext = os.path.splitext(filename)
     filename = '%s%s' % (uuid.uuid4().hex, ext)
     fullpath = 'pechakucha_presentations/' + filename
