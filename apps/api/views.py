@@ -774,7 +774,7 @@ class RegisterStudentView(generics.CreateAPIView):
         return user
 
 
-@api_view(('POST',))
+@api_view(('POST', 'GET'))
 @permission_classes((permissions.AllowAny,))
 def pk_file_upload(request):
     try:
@@ -823,8 +823,6 @@ def pk_accept(request):
 
     except:
         return Response(status=403)
-
-    result = {}
 
     pk = person.get_pk()
 
