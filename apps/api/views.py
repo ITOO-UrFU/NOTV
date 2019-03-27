@@ -827,15 +827,11 @@ def pk_accept(request):
     pk = person.get_pk()
 
     if not pk:
-
         pk = PK.objects.create(
             person=person,
         )
 
-    else:
-        return Response({"status": "ok"})
-
-    return Response({"status": "error"})
+    return Response({"status": "ok"})
 
 
 @api_view(('POST', 'GET'))
