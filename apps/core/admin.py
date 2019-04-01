@@ -75,8 +75,8 @@ class LineOfWorkAdmin(VersionAdmin):
 
 @admin.register(EventType)
 class EventTypeAdmin(VersionAdmin):
-    fields = ("title", "slug")
-    list_display = ("title", "slug")
+    fields = ("title", "title_en", "slug")
+    list_display = ("title", "title_en", "slug")
 
 
 @admin.register(Room)
