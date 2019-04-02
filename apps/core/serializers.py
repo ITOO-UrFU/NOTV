@@ -66,7 +66,7 @@ class LineOfWorkSerializer(serializers.ModelSerializer):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ('title', 'slug', 'address', 'housing')
+        fields = ('title', 'title_en', 'slug', 'address', 'housing')
 
 
 class PathSerializer(serializers.ModelSerializer):
