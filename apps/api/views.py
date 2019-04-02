@@ -331,6 +331,7 @@ def unregister_on_event(request):
             return Response({"status": "Session expired"})
         current_user = User.objects.get(pk=token_data['user_id'])
         person = Person.objects.get(user=current_user)
+        print(request.data.get('event_id'))
         event = Event.objects.get(id=request.data.get('event_id'))
         type = RegistrationType.objects.filter(title="Участник").first()
 
