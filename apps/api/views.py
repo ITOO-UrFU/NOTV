@@ -322,31 +322,28 @@ def register_on_event(request):
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def unregister_on_event(request):
-    try:
+    jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
 
-        jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+    if jwt_token:
+        try:
+            token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
+        except jwt.exceptions.ExpiredSignatureError:
+            return Response({"status": "Session expired"})
+        current_user = User.objects.get(pk=token_data['user_id'])
+        person = Person.objects.get(user=current_user)
+        event = Event.objects.get(id=request.data.get('event_id'))
+        type = RegistrationType.objects.filter(title="Участник").first()
 
-        if jwt_token:
-            try:
-                token_data = jwt.decode(jwt_token, settings.SECRET_KEY)
-            except jwt.exceptions.ExpiredSignatureError:
-                return Response({"status": "Session expired"})
-            current_user = User.objects.get(pk=token_data['user_id'])
-            person = Person.objects.get(user=current_user)
-            event = Event.objects.get(id=request.data.get('event_id'))
-            type = RegistrationType.objects.filter(title="Участник").first()
-
-            try:
-                eur = EventUserRegistration.objects.filter(person=person, event=event, type=type)
-                if eur:
-                    eur.delete()
-                    return Response({"success": True})
-            except:
-                return Response({"success": False})
-        else:
+        try:
+            eur = EventUserRegistration.objects.filter(person=person, event=event, type=type)
+            if eur:
+                eur.delete()
+                return Response({"success": True})
+        except:
             return Response({"success": False})
-    except:
+    else:
         return Response({"success": False})
+
 
 
 @api_view(('POST',))
