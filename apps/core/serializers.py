@@ -72,7 +72,7 @@ class RoomSerializer(serializers.ModelSerializer):
 class PathSerializer(serializers.ModelSerializer):
     class Meta:
         model = Path
-        fields = ('title', 'slug',)
+        fields = ('title', 'title_en', 'slug',)
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
