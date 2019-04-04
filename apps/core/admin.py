@@ -97,4 +97,5 @@ class PKAdmin(VersionAdmin):
 
 @admin.register(Presentation)
 class PresentationAdmin(VersionAdmin):
+    list_display = ("title", "file", 'get_user')
     fields = ("title", "file")

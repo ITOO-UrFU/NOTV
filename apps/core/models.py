@@ -116,6 +116,13 @@ class Presentation(models.Model):
     title = models.CharField(_("Название презентации"), max_length=1024, blank=False)
     file = models.FileField(upload_to=generate_new_presentation)
 
+    def __str__(self):
+        return self.title
+
+    def get_user(self):
+        user = self.pk_set.first().person
+        return user
+
 
 class Block(models.Model):
     title = models.CharField(_("Название документа"), max_length=1024, blank=False)
