@@ -292,6 +292,9 @@ class Person(models.Model):
         else:
             return None
 
+    def created_at(self):
+        return self.user.date_joined
+
     get_docs.allow_tags = True
 
 
