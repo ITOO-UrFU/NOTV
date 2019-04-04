@@ -47,7 +47,8 @@ class PageAdmin(VersionAdmin):
 
 @admin.register(Document)
 class DocumentAdmin(VersionAdmin):
-    fields = ("title", "file", 'get_user')
+    list_display = ("title", "file", 'get_user')
+    fields = ("title", "file")
 
 
 @admin.register(Person)
