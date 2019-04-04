@@ -120,6 +120,7 @@ class EventSerializer_noperson(serializers.ModelSerializer):
     enddate = DateTimeFieldWihTZ()
     get_speakers = EventUserRegistrationSerializer(many=True)
     room = RoomSerializer()
+    path = PathSerializer()
 
     class Meta:
         model = Event
