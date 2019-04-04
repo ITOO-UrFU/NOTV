@@ -293,7 +293,9 @@ class Person(models.Model):
             return None
 
     def created_at(self):
-        return self.user.date_joined
+        if self.user:
+            return self.user.date_joined
+        return ""
 
     get_docs.allow_tags = True
 
