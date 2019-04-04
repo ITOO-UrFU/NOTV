@@ -120,7 +120,9 @@ class Presentation(models.Model):
         return self.title
 
     def get_user(self):
-        user = self.pk_set.first().person
+        pk = self.pk_set.first()
+        if pk:
+            user = pk.person
         return user
 
 
