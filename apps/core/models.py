@@ -103,6 +103,13 @@ class Document(models.Model):
     title = models.CharField(_("Название документа"), max_length=1024, blank=False)
     file = models.FileField(upload_to=generate_new_filename, validators=[validate_file_extension])
 
+    def __str__(self):
+        return self.title
+
+    def get_user(self):
+        user = self.person_set.first()
+        return user
+
 
 class Presentation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
