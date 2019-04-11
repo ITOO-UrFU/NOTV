@@ -32,7 +32,7 @@ class EventUserRegistrationAdmin(AjaxSelectAdmin):
     search_fields = ("__str__",)
     list_filter = ("person", "event", "type", "status")
     # raw_id_fields = ("person", "event")
-    form = make_ajax_form(EventUserRegistration, {'person': 'person'})
+    form = make_ajax_form(EventUserRegistration, {'person': 'person', 'event': 'event'})
 
 
 @admin.register(Page)
