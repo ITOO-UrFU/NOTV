@@ -240,6 +240,7 @@ REST_FRAMEWORK_EXTENSIONS = {
 
 AJAX_LOOKUP_CHANNELS = {
     'person': ('core.lookups', 'PersonLookup'),
+    'event': ('core.lookups', 'EventLookup'),
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
