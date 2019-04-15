@@ -471,7 +471,7 @@ class RegisterSerializer(serializers.Serializer):
         print(person)
         self.custom_signup(request, user)
         print("custom signup")
-        # setup_user_email(request, user, [])
+        setup_user_email(request, user, [])
         print("user email")
         return user
 
