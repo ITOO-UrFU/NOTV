@@ -729,7 +729,7 @@ class RegisterStudentSerializer(serializers.Serializer):
 
         person.save()
         self.custom_signup(request, user)
-        setup_user_email(request, user, [])
+        # setup_user_email(request, user, [])
         return user
 
 
