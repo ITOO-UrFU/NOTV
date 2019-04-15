@@ -516,7 +516,7 @@ class RegisterView(generics.CreateAPIView):
             create_token(self.token_model, user, serializer)
 
         print("sending блядский email...")
-        complete_signup(self.request._request, user, allauth_settings.EMAIL_VERIFICATION, None)
+        complete_signup(self.request._request, user, False, None)
         print("остался только ретерн")
         return user
 
