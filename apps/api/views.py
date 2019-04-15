@@ -80,8 +80,8 @@ class Speakers(viewsets.ModelViewSet):  # CacheResponseMixin
         speakers = Person.objects.filter(
             Q(id__in=EventUserRegistration.objects.filter(type__in=types).values('person_id')) |
             Q(user=None)).filter(
-            ~Q(position="студент") #&
-            #~Q(photo="")
+            ~Q(position="студент")  # &
+            # ~Q(photo="")
         )
 
         return speakers.order_by("-karma")
@@ -346,7 +346,6 @@ def unregister_on_event(request):
         return Response({"success": False})
 
 
-
 @api_view(('POST',))
 @permission_classes((permissions.AllowAny,))
 def event_user_list(request):
@@ -507,15 +506,18 @@ class RegisterView(generics.CreateAPIView):
                         headers=headers)
 
     def perform_create(self, serializer):
+        print("perform_create")
         user = serializer.save(self.request)
+        print("user saved")
         if getattr(settings, 'REST_USE_JWT', False):
             self.token = jwt_encode(user)
         else:
+            print("creating token")
             create_token(self.token_model, user, serializer)
 
-        complete_signup(self.request._request, user,
-                        allauth_settings.EMAIL_VERIFICATION,
-                        None)
+        print("sending блядский email...")
+        complete_signup(self.request._request, user, allauth_settings.EMAIL_VERIFICATION, None)
+        print("остался только ретерн")
         return user
 
 
