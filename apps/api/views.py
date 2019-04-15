@@ -473,7 +473,7 @@ class RegisterSerializer(serializers.Serializer):
         print("custom signup")
         setup_user_email(request, user, [])
         print("user email")
-        return user
+        return "user"
 
 
 class RegisterView(generics.CreateAPIView):
