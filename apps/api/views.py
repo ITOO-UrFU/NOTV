@@ -456,6 +456,7 @@ class RegisterSerializer(serializers.Serializer):
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
+        print("create person")
         person = Person(user=user,
                         first_name=self.cleaned_data['first_name'],
                         last_name=self.cleaned_data['last_name'],
@@ -467,8 +468,11 @@ class RegisterSerializer(serializers.Serializer):
                         )
 
         person.save()
+        print(person)
         self.custom_signup(request, user)
+        print("custom signup")
         setup_user_email(request, user, [])
+        print("user email")
         return user
 
 
