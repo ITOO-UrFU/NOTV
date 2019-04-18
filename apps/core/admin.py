@@ -11,7 +11,7 @@ from .models import *
 class PkResource(resources.ModelResource):
     class Meta:
         model = PK
-        fields = ("id", "person__email", "person", "status",)
+        fields = ("id", "person", "status",)
 
 
 @admin.register(Event)
