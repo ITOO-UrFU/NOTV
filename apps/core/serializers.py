@@ -177,7 +177,7 @@ class SpeakerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Person
-        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography")  # "country",
+        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "karma")  # "country",
         depth = 1
 
 
