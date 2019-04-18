@@ -3,6 +3,7 @@ from ajax_select.admin import AjaxSelectAdmin
 from django.contrib import admin
 from import_export import resources
 from reversion.admin import VersionAdmin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import *
 
@@ -98,11 +99,12 @@ class PathAdmin(VersionAdmin):
 
 
 @admin.register(PK)
-class PKAdmin(VersionAdmin):
+class PKAdmin(VersionAdmin, ImportExportModelAdmin):
     list_display = ("person", "status", "get_pres")
 
 
 @admin.register(Presentation)
 class PresentationAdmin(VersionAdmin):
+    resource_class = PkResource
     list_display = ("title", "file", 'get_user')
     fields = ("title", "file")
