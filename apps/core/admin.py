@@ -99,7 +99,7 @@ class PathAdmin(VersionAdmin):
 
 
 @admin.register(PK)
-class PKAdmin(VersionAdmin, ImportExportModelAdmin):
+class PKAdmin(ImportExportModelAdmin):
     resource_class = PkResource
     list_display = ("person", "status", "get_pres")
 
