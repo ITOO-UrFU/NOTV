@@ -16,7 +16,9 @@ main_urlpatterns += [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^custom/(?P<title>.*)/$', custom_json_view, name="custom_json_view"),
 ]
-main_urlpatterns += [url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
+main_urlpatterns += [
+                     url(r'^export_action/', include("export_action.urls", namespace="export_action")),
+                     url(r'^api/v1/pages/(?P<slug>.*)/$', page_slug, name="page_slug"),
                      url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
                      url(r'^api/v1/rest-auth/registration/', RegisterView.as_view(), name='rest_register'),
                      url(r'^api/v1/rest-auth/registration-students/', RegisterStudentView.as_view(), name='rest_register_student'),
