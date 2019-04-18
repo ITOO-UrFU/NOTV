@@ -1,9 +1,15 @@
 from ajax_select import make_ajax_form
 from ajax_select.admin import AjaxSelectAdmin
 from django.contrib import admin
+from import_export import resources
 from reversion.admin import VersionAdmin
 
 from .models import *
+
+
+class PkResource(resources.ModelResource):
+    class Meta:
+        model = PK
 
 
 @admin.register(Event)
