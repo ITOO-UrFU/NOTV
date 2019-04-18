@@ -1,17 +1,9 @@
 from ajax_select import make_ajax_form
 from ajax_select.admin import AjaxSelectAdmin
 from django.contrib import admin
-from import_export import resources
 from reversion.admin import VersionAdmin
-from import_export.admin import ImportExportModelAdmin
 
 from .models import *
-
-
-class PkResource(resources.ModelResource):
-    class Meta:
-        model = PK
-        fields = ("id", "person", "status",)
 
 
 @admin.register(Event)
@@ -100,8 +92,7 @@ class PathAdmin(VersionAdmin):
 
 
 @admin.register(PK)
-class PKAdmin(ImportExportModelAdmin):
-    resource_class = PkResource
+class PKAdmin(VersionAdmin):
     list_display = ("person", "status", "get_pres")
 
 
