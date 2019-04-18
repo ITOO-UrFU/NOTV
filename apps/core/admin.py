@@ -100,11 +100,11 @@ class PathAdmin(VersionAdmin):
 
 @admin.register(PK)
 class PKAdmin(VersionAdmin, ImportExportModelAdmin):
+    resource_class = PkResource
     list_display = ("person", "status", "get_pres")
 
 
 @admin.register(Presentation)
 class PresentationAdmin(VersionAdmin):
-    resource_class = PkResource
     list_display = ("title", "file", 'get_user')
     fields = ("title", "file")
