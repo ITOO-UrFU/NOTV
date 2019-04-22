@@ -152,6 +152,8 @@ class Event(models.Model):
     title_en = models.CharField(_("Название события. Английская версия"), max_length=256, blank=False)
     description_en = models.TextField(_("Описание события. Английская версия"), max_length=16384, blank=True, default="")
 
+    translation = models.CharField(_("Трансляция"), max_length=1024, null=True, blank=True)
+
     class Meta:
         verbose_name = 'событие'
         verbose_name_plural = 'события'

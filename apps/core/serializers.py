@@ -124,7 +124,7 @@ class EventSerializer_noperson(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("id", "title", "title_en", "description_en", "description", "get_block_slug", "get_speakers", "get_type_display", "get_type_display_en", "get_event_slug", "startdate", "enddate", "room", "path")
+        fields = ("id", "title", "title_en", "description_en", "description", "get_block_slug", "get_speakers", "get_type_display", "get_type_display_en", "get_event_slug", "startdate", "enddate", "room", "path", "translation")
 
 
 class EventUserRegistrationSerializer_noperson(serializers.ModelSerializer):
@@ -190,7 +190,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("id", "title", "title_en", "description_en", "description", "get_speakers", "get_type_display", "get_type_display_en", "get_block_slug", "get_event_slug", "get_line_of_work_slug", "room", "path", "startdate", "enddate")
+        fields = ("id", "title", "title_en", "description_en", "description", "get_speakers", "get_type_display", "get_type_display_en", "get_block_slug", "get_event_slug", "get_line_of_work_slug", "room", "path", "startdate", "enddate", "translation")
 
 
 class PageSerializer(serializers.ModelSerializer):
