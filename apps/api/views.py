@@ -109,7 +109,7 @@ class Paths(viewsets.ModelViewSet):
 
 @api_view(('GET',))
 @permission_classes((permissions.AllowAny,))
-# @cache_page(60 * 5)
+@cache_page(60 * 5)
 def page_slug(request, slug):
     """
     Courses ids.
