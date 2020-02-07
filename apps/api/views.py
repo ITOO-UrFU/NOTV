@@ -463,6 +463,7 @@ class RegisterSerializer(serializers.Serializer):
                         first_name=self.cleaned_data['first_name'],
                         last_name=self.cleaned_data['last_name'],
                         second_name=self.cleaned_data['second_name'],
+                        leader_id=self.cleaned_data['leader_id'],
                         organisation=self.cleaned_data['organisation'],
                         position=self.cleaned_data['position'],
                         phone=self.cleaned_data['phone'],
