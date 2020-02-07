@@ -446,6 +446,7 @@ class RegisterSerializer(serializers.Serializer):
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
             'second_name': self.data.get('second_name', ''),
+            'leader_id': self.data.get('leader_id', ''),
             'participation': self.data.get('participation', ''),
             'position': self.validated_data.get('position', ''),
             'organisation': self.validated_data.get('organisation', ''),
