@@ -406,6 +406,7 @@ class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
     second_name = serializers.CharField()
+    leader_id = serializers.CharField()
     position = serializers.CharField()
     organisation = serializers.CharField()
     participation = serializers.CharField()
@@ -429,7 +430,8 @@ class RegisterSerializer(serializers.Serializer):
     def validate(self, data):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError(_("The two password fields didn't match."))
-        if data['first_name'] is None or data['last_name'] is None or data['position'] is None or data['organisation'] is None:
+        if data['first_name'] is None or data['last_name'] is None or data['position'] is None or data[
+            'organisation'] is None:
             raise serializers.ValidationError(_("Fields can not be empty."))
         return data
 
@@ -594,11 +596,12 @@ def reset_password(request):
     email = request.data["email"]
     user = User.objects.get(email=email)
     person = Person.objects.filter(user=user).first()
-    new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(7)])
+    new_password = ''.join([choice('1234567890qwertyuiopasdfghjklzxcvbnm') for i in range(12)])
     user.password = make_password(new_password)
     user.save()
     message = """
-    Вы сменили пароль на сайте конференции Edcrunch URAL.
+    Вы сменили пароль на сайте конференции EDCRUNCH Ural: новые образовательные технологии в вузе – 2020.
+    
     Ваш новый пароль: {}
     """.format(new_password)
     send_mail(person, message, settings.DEFAULT_FROM_EMAIL, [email])
@@ -690,7 +693,8 @@ class RegisterStudentSerializer(serializers.Serializer):
     def validate(self, data):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError(_("The two password fields didn't match."))
-        if data['first_name'] is None or data['last_name'] is None or data['suggestions'] is None or data['institute'] is None:
+        if data['first_name'] is None or data['last_name'] is None or data['suggestions'] is None or data[
+            'institute'] is None:
             raise serializers.ValidationError(_("Fields can not be empty."))
         return data
 

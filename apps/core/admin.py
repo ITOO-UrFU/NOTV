@@ -53,7 +53,7 @@ class DocumentAdmin(VersionAdmin):
 
 @admin.register(Person)
 class PersonAdmin(VersionAdmin):
-    list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone", "participation", "get_docs", "institute", "suggestions", "created_at", "user")
+    list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone", "participation", "get_docs", "institute", "suggestions", "created_at", "user", "leader_id")
     list_filter = ("user",)
 
 

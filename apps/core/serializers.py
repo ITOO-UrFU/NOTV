@@ -97,7 +97,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class PersonSerializerSimple(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Person
-        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "participation", "photo", "phone", "biography", "karma")  # "country",
+        fields = ("first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "participation", "photo", "phone", "biography", "karma", "leader_id")  # "country",
         depth = 2
 
 
@@ -156,7 +156,7 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Person
-        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "participation", "user", "phone", "get_events", "docs")  # "country",
+        fields = ("id", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "organisation", "position", "division", "photo_url", "biography", "participation", "user", "phone", "get_events", "docs", "leader_id")  # "country",
         depth = 1
 
 

@@ -254,6 +254,7 @@ class Person(models.Model):
     karma = models.IntegerField(_("Карма"), default=0)
     institute = models.CharField(_('Институт/Университет'), max_length=1024, blank=True, null=True)
     suggestions = models.CharField(_('Предложение'), max_length=32000, blank=True, null=True)
+    leader_id = models.CharField(_('Лидер ИД'), max_length=16, blank=True, null=True)
 
     biography_en = models.TextField(_('Биография пользователя. Английская версия'), blank=True, default='')
     position_en = models.CharField(_('Должность. Английская версия'), max_length=1024, blank=True, null=True)
