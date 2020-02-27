@@ -74,12 +74,10 @@ class PersonAdmin(VersionAdmin):
         "get_docs", "institute", "suggestions", "created_at", "user", "leader_id", "speaker")
 
 
-list_filter = ("user",) \
- \
- \
+list_filter = ("user",)
+
+
 @admin.register(Type)
-
-
 class TypeAdmin(VersionAdmin):
     fields = ("title", "slug")
     list_display = ("title", "slug")
