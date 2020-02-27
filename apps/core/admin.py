@@ -59,18 +59,27 @@ class PersonAdmin(VersionAdmin):
         (None, {
             'fields': ("speaker",)
         }),
-        ('Персональные данные', {
-            'fields': ("last_name", ("first_name", "second_name",))
+        (None, {
+            'fields': (
+                ("last_name", "phone",),
+                ("first_name", "organisation",),
+                ("second_name", "division"),
+                ("leader_id", "position")
+            )
         }),
     )
     list_display = (
         "__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone",
         "participation",
         "get_docs", "institute", "suggestions", "created_at", "user", "leader_id", "speaker")
-    list_filter = ("user",)
 
 
+list_filter = ("user",) \
+ \
+ \
 @admin.register(Type)
+
+
 class TypeAdmin(VersionAdmin):
     fields = ("title", "slug")
     list_display = ("title", "slug")
