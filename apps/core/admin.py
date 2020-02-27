@@ -67,6 +67,15 @@ class PersonAdmin(VersionAdmin):
                 ("leader_id", "position")
             )
         }),
+        (None, {
+            'fields': (
+                ("photo", "karma",),
+                ("country", "birthday_date",),
+                ("biography",),
+                ("participation",)
+            )
+        }),
+        ("user",),
     )
     list_display = (
         "__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone",
