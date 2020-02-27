@@ -60,7 +60,7 @@ class PersonAdmin(VersionAdmin):
             'fields': ("speaker",)
         }),
         ('Персональные данные', {
-            'fields': ('ФИО', ("last_name", "first_name", "second_name",))
+            'fields': ("last_name", ("first_name", "second_name",))
         }),
     )
     list_display = (
