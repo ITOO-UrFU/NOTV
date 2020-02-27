@@ -8,7 +8,8 @@ from .models import *
 
 @admin.register(Event)
 class EventAdmin(VersionAdmin):
-    list_display = ('title', 'description', 'path', 'block', '_startdate', '_enddate', "line_of_work", "status", "translation")
+    list_display = (
+        'title', 'description', 'path', 'block', '_startdate', '_enddate', "line_of_work", "status", "translation")
     # fields = ('title', 'description', '_startdate', '_enddate')
     search_fields = ('title', 'description', 'path', "status", "translation")
     list_filter = ("_startdate", "_enddate", 'block', 'path', "line_of_work", "status")
@@ -40,7 +41,8 @@ class PageAdmin(VersionAdmin):
     fields = ("slug", "weight", "title", "html", "title_en", "html_en", "pages", "keywords", "type", "status")
     list_display = ("slug", "title", "weight", "html", "get_pages_display", "keywords", "type", "status")
     filter_horizontal = ('pages',)
-    search_fields = ("slug", "title", "weight", "html", "title_en", "html_en", "get_pages_display", "keywords", "type", "status")
+    search_fields = (
+        "slug", "title", "weight", "html", "title_en", "html_en", "get_pages_display", "keywords", "type", "status")
     list_filter = ("keywords", "type", "status", "weight", "slug")
     save_as = True
 
@@ -53,7 +55,18 @@ class DocumentAdmin(VersionAdmin):
 
 @admin.register(Person)
 class PersonAdmin(VersionAdmin):
-    list_display = ("__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone", "participation", "get_docs", "institute", "suggestions", "created_at", "user", "leader_id")
+    fieldsets = (
+        (None, {
+            'fields': ("speaker",)
+        }),
+        ('Персональные данные', {
+            'fields': ('ФИО', ("last_name", "first_name", "second_name",))
+        }),
+    )
+    list_display = (
+        "__str__", "first_name", "last_name", "second_name", "sex", "alt_email", "birthday_date", "phone",
+        "participation",
+        "get_docs", "institute", "suggestions", "created_at", "user", "leader_id", "speaker")
     list_filter = ("user",)
 
 
