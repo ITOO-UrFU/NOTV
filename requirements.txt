@@ -13,7 +13,7 @@ django-klingon==0.0.7
 django-modeladmin-reorder==0.2
 django-rest-auth==0.9.1
 django-reversion==2.0.8
-djangorestframework==3.5.3
+djangorestframework==3.11.2
 djangorestframework-jwt==1.9.0
 drf-extensions==0.3.1
 gunicorn==19.7.0
